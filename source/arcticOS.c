@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
- * This is meant to run on EVT 3, which is based on the reference schematic for the RP2040 chip.
+ * This is meant to run on RP2040-based boards.
  */
 
 // CHANGE THE LINE BELOW TO CHANGE LANGUAGE
