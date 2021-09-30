@@ -22,20 +22,11 @@
 #include <pico/stdlib.h>
 #include <hardware/gpio.h>
 
-int keypad_buttons[9];
+int keypad_buttons[9] = {7, 8, 9, 10, 11, 12, 13, 14, 15};
 
-void keypad_init(int x0, int x1, int x2, int x3, int y0, int y1, int y2, int y3, int ok) {
+void keypad_init() {
     // "X" pins are used to pull down "Y" pins to GND.
-
-    keypad_buttons[0] = x0;
-    keypad_buttons[1] = x1;
-    keypad_buttons[2] = x2;
-    keypad_buttons[3] = x3;
-    keypad_buttons[4] = y0;
-    keypad_buttons[5] = y1;
-    keypad_buttons[6] = y2;
-    keypad_buttons[7] = y3;
-    keypad_buttons[8] = ok;
+    // First 4 and last are "X" pins, others are "Y" pins
 
     for(int i = 0; i < 4; i++) {
         gpio_init(keypad_buttons[i]);
@@ -43,8 +34,8 @@ void keypad_init(int x0, int x1, int x2, int x3, int y0, int y1, int y2, int y3,
     }
 
     // The "OK" pin is also an "X" pin.
-    gpio_init(ok);
-    gpio_set_dir(ok, GPIO_OUT);
+    gpio_init(keypad_buttons[8]);
+    gpio_set_dir(keypad_buttons[8], GPIO_OUT);
 
     for(int i = 4; i < 8; i++) {
         gpio_init(keypad_buttons[i]);

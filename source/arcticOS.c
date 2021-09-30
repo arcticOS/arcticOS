@@ -30,6 +30,8 @@
 // Used for interfacing with other hardware on motherboard
 #include <hardware/cellular.h>
 #include <hardware/keypad.h>
+
+// TODO: Replace this with a hardware/screen.h thing
 #include <hardware/ili9341/mode2.h>
 #include <hardware/ili9341/ili9341.h>
 
@@ -39,10 +41,10 @@ int main(void) {
     printf(STRING_HELLO_WORLD);
 
     // Init cellular
-    cellular_init(20, 21, CELLULAR_DEFAULT_BAUDRATE, CELLULAR_DEFAULT_UART);
+    cellular_init();
 
     // Init keypad
-    keypad_init(7, 8, 9, 10, 11, 12, 13, 14, 15);
+    keypad_init();
 
     // Init screen
     ili9341_init();

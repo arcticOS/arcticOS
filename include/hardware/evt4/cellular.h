@@ -22,14 +22,10 @@
 #include <pico/stdlib.h>
 #include <hardware/uart.h>
 
-#define CELLULAR_DEFAULT_BAUDRATE 115200
-
-#define CELLULAR_DEFAULT_UART uart0
-
-void cellular_init(int tx_pin, int rx_pin, int baudrate, int uart) {
-    uart_init(uart, baudrate);
+void cellular_init() {
+    uart_init(uart0, 115200);
     
-    gpio_set_function(tx_pin, GPIO_FUNC_UART);
-    gpio_set_function(rx_pin, GPIO_FUNC_UART);
+    gpio_set_function(20, GPIO_FUNC_UART);
+    gpio_set_function(21, GPIO_FUNC_UART);
 }
 #endif
