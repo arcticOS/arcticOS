@@ -17,4 +17,6 @@
 
 #if defined(EVT4)
 #include <hardware/evt4/keypad.h>
+#elif defined(EVT3)
+#include <hardware/evt3/keypad.h>
 #endif
