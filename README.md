@@ -16,6 +16,7 @@ Every modern phone company either sells your data or your attention, and they ma
 - ILI9341 display driver
 - Keypad driver for EVT1/EVT3
 - Sick BIOS font
+- Low-power sleep mode
   
 ## Planned features
 - Calls and SMS with the EC25X series of modems.

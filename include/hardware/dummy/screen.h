@@ -18,6 +18,7 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include <arcticOS.h>
 #include <graphics/fonts/vga.h>
 
 #define SCREEN_WIDTH 0
@@ -32,6 +33,6 @@ void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {}
 void screen_fill(uint16_t color) {}
 void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character) {}
 void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string)}
-void screen_refresh() {}
+void screen_refresh() {system_sleep_ok();}
 
 #endif

@@ -39,6 +39,10 @@ uint16_t sleep_timer_goal = 0;
 uint16_t sleep_timer_elapsed = 0;
 int system_go_to_sleep = 0;
 
+// Theme
+uint16_t background_color = 0x0000;
+uint16_t foreground_color = 0xFFFF;
+
 // Used for interfacing with other hardware on motherboard
 #include <hardware/arcticOS/cellular.h>
 #include <hardware/arcticOS/keypad.h>
@@ -77,19 +81,6 @@ int main(void) {
     char time_buffer[9];
     char date_buffer[32];
 
-    // Finish booting
-    uint16_t background_color = 0x0000;
-    uint16_t foreground_color = 0xFFFF;
-
-    if(user_data[0] == 0x00) {
-        user_data[0] = 0x01;
-    } else {
-        user_data[0] = 0x00;
-        background_color = 0xFFFF;
-        foreground_color = 0x0000;
-    }
-    flash_write_user_data();
-
     // Init sleep mode timer
     struct repeating_timer timer;
     add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &timer);
@@ -97,8 +88,6 @@ int main(void) {
 
     // OS loop
     while(1) {
-        if(system_go_to_sleep) system_sleep();
-
         screen_fill(background_color);
 
         // Get the actual time
@@ -151,4 +140,8 @@ bool system_sleep_timer_process(struct repeating_timer *t) {
         sleep_timer_elapsed ++;
     }
     return true;
+}
+
+void system_sleep_ok() {
+    if(system_go_to_sleep) system_sleep();
 }

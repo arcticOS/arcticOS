@@ -18,6 +18,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include <arcticOS.h>
+
 #include <hardware/ili9341/mode2.h>
 #include <hardware/ili9341/ili9341.h>
 
@@ -61,6 +63,7 @@ void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* fo
 
 void screen_refresh() {
     mode2_render();
+    system_sleep_ok();
 }
 
 #endif
