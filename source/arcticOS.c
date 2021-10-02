@@ -27,6 +27,18 @@
 #include <pico/stdlib.h>
 #include <hardware/spi.h>
 
+// Used for RTC
+#include <hardware/rtc.h>
+#include <pico/util/datetime.h>
+
+const char* weekday_names[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+const char* month_names[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+// Used for low-power mode
+uint16_t sleep_timer_goal = 0;
+uint16_t sleep_timer_elapsed = 0;
+int system_go_to_sleep = 0;
+
 // Used for interfacing with other hardware on motherboard
 #include <hardware/arcticOS/cellular.h>
 #include <hardware/arcticOS/keypad.h>
@@ -47,6 +59,25 @@ int main(void) {
     // Init flash
     flash_load_user_data();
 
+    // Init RTC
+    // This is the same on all platforms
+    datetime_t time = {
+        .year  = 2021,
+        .month = 10,
+        .day   = 02,
+        .dotw  = 7,
+        .hour  = 0,
+        .min   = 41,
+        .sec   = 00
+    };
+
+    rtc_init();
+    rtc_set_datetime(&time);
+
+    char time_buffer[9];
+    char date_buffer[32];
+
+    // Finish booting
     uint16_t background_color = 0x0000;
     uint16_t foreground_color = 0xFFFF;
 
@@ -59,13 +90,65 @@ int main(void) {
     }
     flash_write_user_data();
 
+    // Init sleep mode timer
+    struct repeating_timer timer;
+    add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &timer);
+    system_set_sleep_timer(5000);
+
+    // OS loop
     while(1) {
+        if(system_go_to_sleep) system_sleep();
+
         screen_fill(background_color);
 
-        screen_print(10, 10, foreground_color, 2, SCREEN_FONT_VGA, "12:41 PM");
-        screen_print(10, 42, foreground_color, 1, SCREEN_FONT_VGA, "Sat. 02/10/2021");
+        // Get the actual time
+        rtc_get_datetime(&time);
+
+        // Calculate time in 12-hour time and get it as a string
+        int hour = time.hour;
+        if(hour > 12) hour /= 2;
+        if(hour == 0) hour = 12;
+        if(time.hour > 12) sprintf(time_buffer, "%d:%d PM", hour / 2, time.min);
+        else sprintf(time_buffer, "%d:%d AM", hour, time.min);
+
+        // Get date as a string
+        sprintf(date_buffer, "%s, %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
+
+        screen_print(10, 10, foreground_color, 2, SCREEN_FONT_VGA, &time_buffer);
+        screen_print(10, 42, foreground_color, 1, SCREEN_FONT_VGA, &date_buffer);
         screen_print(10, 58, foreground_color, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
         screen_refresh();
     }
     return 0;
+}
+
+void system_sleep() {
+    screen_backlight_off();
+    while(1) {
+        sleep_ms(10);
+        if(keypad_get_button_pressed() != 0x00) { // Button is pressed, wake up
+            screen_backlight_on();
+            system_go_to_sleep = 0;
+            system_reset_sleep_timer();
+            return;
+        }
+    }
+}
+
+void system_set_sleep_timer(int ms) {
+    sleep_timer_goal = ms / 2;
+    sleep_timer_elapsed = 0;
+}
+
+void system_reset_sleep_timer() {
+    sleep_timer_elapsed = 0;
+}
+
+bool system_sleep_timer_process(struct repeating_timer *t) {
+    if(sleep_timer_goal) {
+        if(keypad_get_button_pressed()) sleep_timer_elapsed = 0;
+        else if(sleep_timer_elapsed >= sleep_timer_goal) system_go_to_sleep = 1;
+        sleep_timer_elapsed ++;
+    }
+    return true;
 }
