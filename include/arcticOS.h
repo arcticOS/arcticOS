@@ -25,3 +25,5 @@ void system_set_sleep_timer(int ms); // Sets the amount of milliseconds before t
 void system_reset_sleep_timer(); // Resets the amount of milliseconds passed in the sleep timer.
 bool system_sleep_timer_process(struct repeating_timer *t); // Increments the sleep timer, or resets it if user input given.
 void system_sleep_ok(); // Tell the system it is okay to go to sleep if needed.
+void system_clear_interrupts(); // Disable interrupts
+void system_restore_interrupts(); // Enable interrupts

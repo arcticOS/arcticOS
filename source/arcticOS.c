@@ -38,6 +38,7 @@ const char* month_names[12] = {"January", "February", "March", "April", "May", "
 uint16_t sleep_timer_goal = 0;
 uint16_t sleep_timer_elapsed = 0;
 int system_go_to_sleep = 0;
+struct repeating_timer sleep_timer;
 
 // Theme
 uint16_t background_color = 0x0000;
@@ -82,8 +83,7 @@ int main(void) {
     char date_buffer[32];
 
     // Init sleep mode timer
-    struct repeating_timer timer;
-    add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &timer);
+    add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &sleep_timer);
     system_set_sleep_timer(5000);
 
     // OS loop
@@ -106,6 +106,8 @@ int main(void) {
         screen_print(10, 10, foreground_color, 2, SCREEN_FONT_VGA, &time_buffer);
         screen_print(10, 42, foreground_color, 1, SCREEN_FONT_VGA, &date_buffer);
         screen_print(10, 58, foreground_color, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
+
+        if(keypad_is_button_pressed(BUTTON_6)) screen_putchar(20, 80, foreground_color, 1, SCREEN_FONT_VGA, 'G');
         screen_refresh();
     }
     return 0;
@@ -115,7 +117,7 @@ void system_sleep() {
     screen_backlight_off();
     while(1) {
         sleep_ms(10);
-        if(keypad_get_button_pressed() != 0x00) { // Button is pressed, wake up
+        if(keypad_no_buttons_pressed() != 0x00) { // Button is pressed, wake up
             screen_backlight_on();
             system_go_to_sleep = 0;
             system_reset_sleep_timer();
@@ -135,7 +137,7 @@ void system_reset_sleep_timer() {
 
 bool system_sleep_timer_process(struct repeating_timer *t) {
     if(sleep_timer_goal) {
-        if(keypad_get_button_pressed()) sleep_timer_elapsed = 0;
+        if(keypad_no_buttons_pressed()) sleep_timer_elapsed = 0;
         else if(sleep_timer_elapsed >= sleep_timer_goal) system_go_to_sleep = 1;
         sleep_timer_elapsed ++;
     }
@@ -144,4 +146,12 @@ bool system_sleep_timer_process(struct repeating_timer *t) {
 
 void system_sleep_ok() {
     if(system_go_to_sleep) system_sleep();
+}
+
+void system_clear_interrupts() {
+    cancel_repeating_timer(&sleep_timer);
+}
+
+void system_restore_interrupts() {
+    add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &sleep_timer);
 }

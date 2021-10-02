@@ -18,16 +18,22 @@
 #ifndef KEYPAD_H
 #define KEYPAD_H
 
+#include <pico/stdlib.h>
+
 void keypad_init() {}
 
-char keypad_get_button_pressed() {
-    return 0x00;
+bool keypad_no_buttons_pressed() {
+    return true;
+}
+
+bool keypad_is_character_pressed(char character){ 
+    return false;
+}
+
+bool keypad_is_button_pressed(uint16_t button){ 
+    return false;
 }
 
 void keypad_wait_for_no_button() {}
-
-char keypad_wait_for_button() {
-    return 0x00;
-}
 
 #endif

@@ -62,7 +62,9 @@ void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* fo
 }
 
 void screen_refresh() {
+    system_clear_interrupts();
     mode2_render();
+    system_restore_interrupts();
     system_sleep_ok();
 }
 

@@ -24,13 +24,39 @@
 
 int keypad_buttons[8] = {7, 8, 9, 10, 11, 12, 13, 14};
 
+uint16_t buttons_pressed = 0;
+char characters_pressed[16];
 
-char keypad_button_translation[5][3] = { // I don't even know what the fuck causes this bug but there's no way in hell I'm hunting it down right now
-    {'*', 'O', 'E'},
-    {'A', '2', '3'},
-    {'1', '5', '6'},
-    {'4', '8', '9'},
-    {'7', '0', '#'}
+#define BUTTON_A 0b0000000000000001
+#define BUTTON_O 0b0000000000000010
+#define BUTTON_E 0b0000000000000100
+#define BUTTON_1 0b0000000000001000
+#define BUTTON_2 0b0000000000010000
+#define BUTTON_3 0b0000000000100000
+#define BUTTON_4 0b0000000001000000
+#define BUTTON_5 0b0000000010000000
+#define BUTTON_6 0b0000000100000000
+#define BUTTON_7 0b0000001000000000
+#define BUTTON_8 0b0000010000000000
+#define BUTTON_9 0b0000100000000000
+#define BUTTON_STAR 0b0001000000000000
+#define BUTTON_0 0b0010000000000000
+#define BUTTON_POUND 0b0100000000000000
+
+uint16_t keypad_button_matrix[5][3] = { // I don't even know what the fuck causes this bug but there's no way in hell I'm hunting it down right now
+    {BUTTON_A, BUTTON_O, BUTTON_E},
+    {BUTTON_1, BUTTON_2, BUTTON_3},
+    {BUTTON_4, BUTTON_5, BUTTON_6},
+    {BUTTON_7, BUTTON_8, BUTTON_9},
+    {BUTTON_STAR, BUTTON_0, BUTTON_POUND}
+};
+
+char keypad_button_translation[5][3] = {
+    {'A', 'O', 'E'},
+    {'1', '2', '3'},
+    {'4', '5', '6'},
+    {'7', '8', '9'},
+    {'*', '0', '#'},
 };
 
 void keypad_init() {
@@ -50,43 +76,48 @@ void keypad_init() {
     }
 }
 
-char keypad_get_button_pressed() {
+void keypad_refresh() {
+    buttons_pressed = 0x0000;
     for(int y = 3; y < 8; y++) {
         gpio_put(keypad_buttons[y], 0);
+        busy_wait_us(200);
 
         for(int x = 0; x < 3; x++) {
-            if(!gpio_get(keypad_buttons[x])) return keypad_button_translation[y - 3][x];
+            busy_wait_us(200);
+            if(!gpio_get(keypad_buttons[x])) {
+                buttons_pressed |= keypad_button_matrix[y - 3][x];
+                characters_pressed[(y * 3) + x] = keypad_button_translation[y - 3][x];
+            } else characters_pressed[(y * 3) + x] = 0x00;
         }
 
         gpio_put(keypad_buttons[y], 1);
+        busy_wait_us(200);
     }
 
     return 0x00;
 }
 
+bool keypad_no_buttons_pressed() {
+    keypad_refresh();
+    return buttons_pressed == 0x0000;
+}
+
+bool keypad_is_character_pressed(char character){ 
+    keypad_refresh();
+    for(int i = 0; i < 16; i++) {
+        if(characters_pressed[i] == character) return true;
+    }
+    return false;
+}
+
+bool keypad_is_button_pressed(uint16_t button){ 
+    keypad_refresh();
+    return buttons_pressed & button;
+}
+
 void keypad_wait_for_no_button() {
-    while(1) {
-        int good = 1;
-        for(int y = 3; y < 8; y++) {
-            gpio_put(keypad_buttons[y], 0);
-
-            for(int x = 0; x < 3; x++) {
-                if(!gpio_get(keypad_buttons[x])) good = 0;
-            }
-
-            gpio_put(keypad_buttons[y], 1);
-        }
-        if(good) return;
+    while(buttons_pressed) {
+        keypad_refresh();
     }
 }
-
-char keypad_wait_for_button() {
-    char button = 0x00;
-    while(!button) {
-        button = keypad_get_button_pressed();
-    }
-    keypad_wait_for_no_button();
-    return button;
-}
-
 #endif
