@@ -41,7 +41,7 @@ struct repeating_timer sleep_timer;
 
 // Used for global timer
 int enable_global_timer = 1;
-#define GLOBAL_TIMER_INTERVAL 1
+#define GLOBAL_TIMER_INTERVAL 10
 
 // Theme
 uint16_t background_color = 0x0000;
