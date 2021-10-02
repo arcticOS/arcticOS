@@ -1,0 +1,19 @@
+screen.h docs
+=========
+
+All devices must provide a screen.h file (registered properly in hardware/screen.h) with the following functions & defines. Whether they are functional or placeholder does not
+necessarily matter, but for the proper experience, having each one function properly is recommended.
+
+FUNCTIONS:
+screen_init() - Initialise the screen.
+screen_backlight_on() - Turn on the screen backlight.
+screen_backlight_off() - Turn off the screen backlight.
+screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
+screen_fill(uint16_t color) - Fills the screen with one color.
+screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) - Prints a string on screen with a given font.
+screen_refresh() - Pushes the screen buffer to the screen.
+
+DEFINES:
+SCREEN_WIDTH - Screen width.
+SCREEN_HEIGHT - Screen height.
+SCREEN_FONT_DEFAULT - Default screen font.

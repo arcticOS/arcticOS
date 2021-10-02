@@ -30,10 +30,7 @@
 // Used for interfacing with other hardware on motherboard
 //#include <hardware/cellular.h> // EVT3 doesn't have cellular and EVT4 isn't ready yet
 #include <hardware/keypad.h>
-
-// TODO: Replace this with a hardware/screen.h thing
-#include <hardware/ili9341/mode2.h>
-#include <hardware/ili9341/ili9341.h>
+#include <hardware/screen.h>
 
 // Initialise arcticOS
 int main(void) {
@@ -44,16 +41,15 @@ int main(void) {
     keypad_init();
 
     // Init screen
-    ili9341_init();
-    ili9341_backlight(1);
-    mode2_init();
+    screen_init();
 
     while(1) {
-        mode2_clear(background_color);
-        mode2_draw_string(10, 10, 2, foreground_color, "12:04 PM");
-        mode2_draw_string(10, 42, 1, foreground_color, "Sat. 02/10/2021");
-        mode2_draw_string(10, 58, 1, foreground_color, "arcticOS 0.2a Demo");
-        mode2_render();
+        screen_fill(0x0000);
+
+        screen_print(10, 10, 0xFFFF, 2, SCREEN_FONT_VGA, "12:41 PM");
+        screen_print(10, 42, 0xFFFF, 1, SCREEN_FONT_VGA, "Sat. 02/10/2021");
+        screen_print(10, 58, 0xFFFF, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
+        screen_refresh();
     }
     return 0;
 }

@@ -16,21 +16,20 @@
 
 #include <hardware/ili9341/mode2.h>
 #include <string.h>
-#include <hardware/ili9341/font.h>
 
 #define SIZE (ILI9341_TFTHEIGHT*ILI9341_TFTWIDTH)
 
 uint16_t mode2_buffer[SIZE] = { 0 };
 
-void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, const char* string) {
+void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, int* font, const char* string) {
 	int i = 0;
 	while(string[i] != 0x00) {
-		mode2_draw_char(x + (i * 8 * size), y, size, color, string[i]);
+		mode2_draw_char(x + (i * 8 * size), y, size, color, font, string[i]);
 		i++;
 	}
 }
 
-void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, char character) {
+void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, int* font, char character) {
 	int* character_data = &font[character * 16];
 
 	for(int font_y = 0; font_y < 16; font_y++) {

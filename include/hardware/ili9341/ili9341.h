@@ -114,4 +114,5 @@ void ili9341_write_data(void *buffer, int bytes);
 void ili9341_start_writing();
 void ili9341_stop_writing();
 void ili9341_write_data_continuous(void *biffer, int bytes);
+void ili9341_backlight(int state);
 #endif
