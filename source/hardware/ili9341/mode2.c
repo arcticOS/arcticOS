@@ -30,18 +30,22 @@ void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, int* fo
 }
 
 void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, int* font, char character) {
-	int* character_data = &font[character * 16];
+	int* character_data = &font[3 + (character * 16)];
 
-	for(int font_y = 0; font_y < 16; font_y++) {
-		int draw_x = 7; // There is a better solution to this, but I am too fucking tired for it.
-		for(int font_x = 0; font_x < 8; font_x++) {
-			int bit = (character_data[font_y] >> font_x) & 1;
-			for(int scale_x = 0; scale_x < size; scale_x ++) {
-				for(int scale_y = 0; scale_y < size; scale_y ++) {
-					if(bit) mode2_pixel(x + scale_x + (draw_x * size), y + scale_y + (font_y * size), color);
+	int i = 0; // Character data index
+	for(int font_y = 0; font_y < font[1]; font_y ++) {
+		int draw_x = (font[2] * 8) - 1;
+		for(int byte = 0; byte < font[2]; byte++) {
+			for(int font_x = 0; font_x < 8; font_x++) {
+				int bit = (character_data[i] >> font_x) & 1;
+				for(int scale_x = 0; scale_x < size; scale_x ++) {
+					for(int scale_y = 0; scale_y < size; scale_y ++) {
+						if(bit) mode2_pixel(x + scale_x + (draw_x * size), y + scale_y + (font_y * size), color);
+					}
 				}
+				draw_x--;
 			}
-			draw_x--;
+			i ++;
 		}
 	}
 }
