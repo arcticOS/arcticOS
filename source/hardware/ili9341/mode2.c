@@ -16,16 +16,48 @@
 
 #include <hardware/ili9341/mode2.h>
 #include <string.h>
+#include <hardware/ili9341/font.h>
 
 #define SIZE (ILI9341_TFTHEIGHT*ILI9341_TFTWIDTH)
 
 uint16_t mode2_buffer[SIZE] = { 0 };
+
+void mode2_draw_string(uint16_t x, uint16_t y, int size, const char* string) {
+	int i = 0;
+	while(string[i] != 0x00) {
+		mode2_draw_char(x + (i * 8 * size), y, size, string[i]);
+		i++;
+	}
+}
+
+void mode2_draw_char(uint16_t x, uint16_t y, int size, char character) {
+	int* character_data = &font[character * 16];
+
+	for(int font_y = 0; font_y < 16; font_y++) {
+		int draw_x = 7; // There is a better solution to this, but I am too fucking tired for it.
+		for(int font_x = 0; font_x < 8; font_x++) {
+			int bit = (character_data[font_y] >> font_x) & 1;
+			for(int scale_x = 0; scale_x < size; scale_x ++) {
+				for(int scale_y = 0; scale_y < size; scale_y ++) {
+					mode2_pixel(x + scale_x + (draw_x * size), y + scale_y + (font_y * size), 0xFFFF * bit);
+				}
+			}
+			draw_x--;
+		}
+	}
+}
 
 void mode2_init() {
 }
 
 void mode2_clear() {
     memset(mode2_buffer, 0, SIZE*sizeof(uint16_t));
+}
+
+void mode2_pixel(uint16_t x, uint16_t y, uint16_t color) {
+	if(x < 0 || x >= ILI9341_TFTWIDTH) return;
+	if(y < 0 || y >= ILI9341_TFTHEIGHT) return;
+	mode2_buffer[y*ILI9341_TFTWIDTH+x] = color;
 }
 
 void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color) {

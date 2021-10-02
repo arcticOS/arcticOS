@@ -37,9 +37,6 @@
 
 // Initialise arcticOS
 int main(void) {
-    stdio_init_all();
-    printf(STRING_HELLO_WORLD);
-
     // Init cellular
     cellular_init();
 
@@ -48,6 +45,11 @@ int main(void) {
 
     // Init screen
     ili9341_init();
+    ili9341_backlight(1);
     mode2_init();
+    mode2_clear();
+    mode2_draw_string(10, 10, 2, "12:00 PM");
+    mode2_draw_string(10, 42, 1, "Fri. 01/10/2021");
+    mode2_render();
     return 0;
 }

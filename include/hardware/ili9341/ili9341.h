@@ -39,6 +39,7 @@ typedef struct {
     uint pin_mosi;
     uint pin_reset;
     uint pin_dc;
+    uint pin_bl;
 } ili9341_config_t;
 
 extern ili9341_config_t ili9341_config;

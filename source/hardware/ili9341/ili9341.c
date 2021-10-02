@@ -34,14 +34,15 @@
  
  */
 
-ili9341_config_t ili9341_config = {
+ili9341_config_t ili9341_config = { // swap gp4 and gp6
 	.port = spi0,
-	.pin_miso = 6,
+	.pin_miso = 4,
 	.pin_cs = 0,
-	.pin_sck = 4,
+	.pin_sck = 6,
 	.pin_mosi = 3,
 	.pin_reset = 1,
-	.pin_dc = 2
+	.pin_dc = 2,
+    .pin_bl = 5
 };
 
 static inline void cs_select() {
@@ -88,6 +89,10 @@ inline void ili9341_stop_writing() {
     cs_deselect();
 }
 
+void ili9341_backlight(int state) {
+    gpio_put(ili9341_config.pin_bl, state);
+}
+
 void ili9341_init() {
     // This example will use SPI0 at 0.5MHz.
     spi_init(ili9341_config.port, 500 * 1000);
@@ -96,6 +101,9 @@ void ili9341_init() {
     gpio_set_function(ili9341_config.pin_miso, GPIO_FUNC_SPI);
     gpio_set_function(ili9341_config.pin_sck, GPIO_FUNC_SPI);
     gpio_set_function(ili9341_config.pin_mosi, GPIO_FUNC_SPI);
+
+    gpio_init(ili9341_config.pin_bl);
+    gpio_set_dir(ili9341_config.pin_bl, GPIO_OUT);
 
     // Chip select is active-low, so we'll initialise it to a driven-high state
     gpio_init(ili9341_config.pin_cs);
