@@ -22,13 +22,13 @@
 extern uint16_t mode2_buffer[ILI9341_TFTWIDTH*ILI9341_TFTHEIGHT];
 
 void mode2_init();
-void mode2_clear();
+void mode2_clear(uint16_t color);
 void mode2_pixel(uint16_t x, uint16_t y, uint16_t color);
 void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 void mode2_render();
 
 // Text rendering functions
-void mode2_draw_char(uint16_t x, uint16_t y, int size, char character);
-void mode2_draw_string(uint16_t x, uint16_t y, int size, const char* string);
+void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, char character);
+void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, const char* string);
 #endif
 

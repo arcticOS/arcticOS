@@ -47,9 +47,45 @@ int main(void) {
     ili9341_init();
     ili9341_backlight(1);
     mode2_init();
-    mode2_clear();
-    mode2_draw_string(10, 10, 2, "12:00 PM");
-    mode2_draw_string(10, 42, 1, "Fri. 01/10/2021");
-    mode2_render();
+
+    int x = 20;
+    int y = 55;
+    int dir_x = 1;
+    int dir_y = 1;
+    int speed = 2;
+
+    uint16_t foreground_color = 0xFFFF;
+    uint16_t background_color = 0x0000;
+    uint16_t logo_color = 0x37F8;
+
+    while(1) {
+        mode2_clear(background_color);
+        mode2_draw_string(10, 10, 2, foreground_color, "12:04 PM");
+        mode2_draw_string(10, 42, 1, foreground_color, "Sat. 02/10/2021");
+        mode2_draw_string(10, 58, 1, foreground_color, "arcticOS 0.2a Demo");
+
+        mode2_draw_string(x, y, 2, logo_color, "DVD");
+
+        x += dir_x * speed;
+        y += dir_y * speed;
+        if(x + (16 * 3) >= ILI9341_TFTWIDTH) dir_x = -1;
+        if(x <= 0) dir_x = 1; 
+        if(y + 32 >= ILI9341_TFTHEIGHT) dir_y = -1;
+        if(y <= 0) dir_y = 1; 
+
+        if(x + (16 * 3) >= ILI9341_TFTWIDTH || x <= 0 || y + 32 >= ILI9341_TFTHEIGHT || y <= 0) {
+            foreground_color = background_color;
+            if(background_color) {
+                background_color = 0x0000;
+                logo_color += 0x0381;
+            }
+            else {
+                background_color = 0xFFFF;
+                logo_color *= 39;
+            }
+        }
+
+        mode2_render();
+    }
     return 0;
 }

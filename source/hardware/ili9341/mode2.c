@@ -22,15 +22,15 @@
 
 uint16_t mode2_buffer[SIZE] = { 0 };
 
-void mode2_draw_string(uint16_t x, uint16_t y, int size, const char* string) {
+void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, const char* string) {
 	int i = 0;
 	while(string[i] != 0x00) {
-		mode2_draw_char(x + (i * 8 * size), y, size, string[i]);
+		mode2_draw_char(x + (i * 8 * size), y, size, color, string[i]);
 		i++;
 	}
 }
 
-void mode2_draw_char(uint16_t x, uint16_t y, int size, char character) {
+void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, char character) {
 	int* character_data = &font[character * 16];
 
 	for(int font_y = 0; font_y < 16; font_y++) {
@@ -39,7 +39,7 @@ void mode2_draw_char(uint16_t x, uint16_t y, int size, char character) {
 			int bit = (character_data[font_y] >> font_x) & 1;
 			for(int scale_x = 0; scale_x < size; scale_x ++) {
 				for(int scale_y = 0; scale_y < size; scale_y ++) {
-					mode2_pixel(x + scale_x + (draw_x * size), y + scale_y + (font_y * size), 0xFFFF * bit);
+					if(bit) mode2_pixel(x + scale_x + (draw_x * size), y + scale_y + (font_y * size), color);
 				}
 			}
 			draw_x--;
@@ -50,8 +50,8 @@ void mode2_draw_char(uint16_t x, uint16_t y, int size, char character) {
 void mode2_init() {
 }
 
-void mode2_clear() {
-    memset(mode2_buffer, 0, SIZE*sizeof(uint16_t));
+void mode2_clear(uint16_t color) {
+    memset(mode2_buffer, color, SIZE*sizeof(uint16_t));
 }
 
 void mode2_pixel(uint16_t x, uint16_t y, uint16_t color) {
