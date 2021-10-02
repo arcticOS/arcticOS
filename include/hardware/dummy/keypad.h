@@ -15,8 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#if defined(EVT4)
-#include <hardware/evt4/cellular.h>
-#elif defined(EVT3)
-#include <hardware/evt3/cellular.h>
+#ifndef KEYPAD_H
+#define KEYPAD_H
+
+void keypad_init() {}
+
+char keypad_get_button_pressed() {
+    return 0x00;
+}
+
+void keypad_wait_for_no_button() {}
+
+char keypad_wait_for_button() {
+    return 0x00;
+}
+
 #endif

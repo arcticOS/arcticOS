@@ -15,17 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef CELLULAR_H
-#define CELLULAR_H
-
-#include <stdio.h>
-#include <pico/stdlib.h>
-#include <hardware/uart.h>
-
-void cellular_init() {
-    uart_init(uart0, 115200);
-    
-    gpio_set_function(20, GPIO_FUNC_UART);
-    gpio_set_function(21, GPIO_FUNC_UART);
-}
+#if defined(EVT4)
+#include <hardware/ec25/cellular.h>
+#elif defined(EVT3)
+#include <hardware/dummy/cellular.h>
 #endif
