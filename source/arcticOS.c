@@ -36,9 +36,12 @@ const char* month_names[12] = {"January", "February", "March", "April", "May", "
 
 // Used for low-power mode
 uint16_t sleep_timer_goal = 0;
-uint16_t sleep_timer_elapsed = 0;
-int system_go_to_sleep = 0;
+uint64_t sleep_timer_last = 0;
 struct repeating_timer sleep_timer;
+
+// Used for global timer
+int enable_global_timer = 1;
+#define GLOBAL_TIMER_INTERVAL 1
 
 // Theme
 uint16_t background_color = 0x0000;
@@ -83,7 +86,7 @@ int main(void) {
     char date_buffer[32];
 
     // Init sleep mode timer
-    add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &sleep_timer);
+    add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &sleep_timer);
     system_set_sleep_timer(5000);
 
     // OS loop
@@ -117,9 +120,8 @@ void system_sleep() {
     screen_backlight_off();
     while(1) {
         sleep_ms(10);
-        if(keypad_no_buttons_pressed() != 0x00) { // Button is pressed, wake up
+        if(!keypad_no_buttons_pressed()) { // Button is pressed, wake up
             screen_backlight_on();
-            system_go_to_sleep = 0;
             system_reset_sleep_timer();
             return;
         }
@@ -127,31 +129,28 @@ void system_sleep() {
 }
 
 void system_set_sleep_timer(int ms) {
-    sleep_timer_goal = ms / 2;
-    sleep_timer_elapsed = 0;
+    sleep_timer_goal = ms;
 }
 
 void system_reset_sleep_timer() {
-    sleep_timer_elapsed = 0;
+    sleep_timer_last = time_us_64();
 }
 
-bool system_sleep_timer_process(struct repeating_timer *t) {
+bool system_timer_process(struct repeating_timer *t) {
+    if(!enable_global_timer) return true;
+
+    enable_global_timer = 0;
     if(sleep_timer_goal) {
-        if(keypad_no_buttons_pressed()) sleep_timer_elapsed = 0;
-        else if(sleep_timer_elapsed >= sleep_timer_goal) system_go_to_sleep = 1;
-        sleep_timer_elapsed ++;
+        if(!keypad_no_buttons_pressed()) sleep_timer_last = time_us_64();
     }
+
+    enable_global_timer = 1;
     return true;
 }
 
 void system_sleep_ok() {
-    if(system_go_to_sleep) system_sleep();
-}
-
-void system_clear_interrupts() {
-    cancel_repeating_timer(&sleep_timer);
-}
-
-void system_restore_interrupts() {
-    add_repeating_timer_ms(5, system_sleep_timer_process, NULL, &sleep_timer);
+    if(!sleep_timer_goal) return;
+    if((time_us_64() - sleep_timer_last) / 1000 >= sleep_timer_goal) {
+        system_sleep();
+    } 
 }
