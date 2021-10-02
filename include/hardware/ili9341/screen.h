@@ -51,6 +51,10 @@ void screen_fill(uint16_t color) {
     mode2_clear(color);
 }
 
+void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character) {
+    mode2_draw_char(x, y, (int) size, color, font, character);
+}
+
 void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) {
     mode2_draw_string(x, y, (int) size, color, font, string);
 }
