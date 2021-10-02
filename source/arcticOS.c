@@ -37,10 +37,10 @@ const char* month_names[12] = {"January", "February", "March", "April", "May", "
 // Used for low-power mode
 uint16_t sleep_timer_goal = 0;
 uint64_t sleep_timer_last = 0;
-struct repeating_timer sleep_timer;
 
 // Used for global timer
 int enable_global_timer = 1;
+struct repeating_timer global_timer;
 #define GLOBAL_TIMER_INTERVAL 10
 
 // Theme
@@ -85,8 +85,8 @@ int main(void) {
     char time_buffer[9];
     char date_buffer[32];
 
-    // Init sleep mode timer
-    add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &sleep_timer);
+    // Init global timer + sleep mode
+    add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
     system_set_sleep_timer(5000);
 
     // OS loop

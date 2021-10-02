@@ -18,3 +18,6 @@ TODO for version 0.2a
     - Contacts page, notes page, settings page, etc...
 - Add persistent settings
 - Add notes app or smth
+
+== GPIO ==
+- Add PWM
