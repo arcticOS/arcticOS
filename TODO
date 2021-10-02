@@ -1,0 +1,13 @@
+TODO for version 0.2a
+- Move ILI9341-specific code into hardware/screen.h file
+    - Add graphics rendering
+        * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
+- Finish keypad support
+- Add flash storage support
+    - Add persistent settings
+    - Add notes app or smth
+- Let EVT4 and EVT3 share code where possible
+    - Cellular
+        * Give them each their own #defines for where the UART is
+    - Display
+        * They should(?) have the same pinout, but do #defines anyway for whoever doesn't
