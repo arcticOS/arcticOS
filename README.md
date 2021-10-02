@@ -13,7 +13,9 @@ Every modern phone company either sells your data or your attention, and they ma
 
 ## Features
 
-None right now - a massive rewrite is in progress.
+- ILI9341 display driver
+- Keypad driver for EVT1/EVT3
+- Sick BIOS font
   
 ## Planned features
 - Calls and SMS with the EC25X series of modems.
