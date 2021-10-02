@@ -1,9 +1,11 @@
 TODO for version 0.2a
 - Add graphics rendering
     * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
-- Use flash storage support
+- Finish flash storage support
+    - Write to different pages for each "app"
+        - Contacts page, notes page, settings page, etc...
     - Add persistent settings
     - Add notes app or smth
 - Add non-monospace fonts
 - Add standard functions for getting font character size
-- Add proper date/time
+- printf implementation for screen functions
