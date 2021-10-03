@@ -40,9 +40,10 @@ uint64_t sleep_timer_last = 0;
 
 // Used for global timer
 int enable_global_timer = 1;
-int global_timer_watchdog;
+int in_global_timer = 0;
+int global_timer_watchdog = 0;
 struct repeating_timer global_timer;
-#define GLOBAL_TIMER_INTERVAL 10
+#define GLOBAL_TIMER_INTERVAL 40
 
 // Theme
 uint16_t background_color = 0x0000;
@@ -85,7 +86,6 @@ int main(void) {
         flash_buffer[FLASH_SETTINGS_SLEEP_TIME] = 15000 >> 8;
         flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) 15000;
         flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
-        flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
     }
 
     // Init RTC
@@ -160,20 +160,22 @@ void system_reset_sleep_timer() {
 }
 
 bool system_timer_process(struct repeating_timer *t) {
-    if(!enable_global_timer) {
+    if(in_global_timer) {
         if(ENFORCE_WATCHDOG_COUNT) {
             global_timer_watchdog ++;
             if(global_timer_watchdog >= ENFORCE_WATCHDOG_COUNT) system_panic("Watchdog BITE!");
         }
         return true;
     }
+    if(!enable_global_timer) return true;
 
-    enable_global_timer = 0;
+    in_global_timer = 0;
     if(sleep_timer_goal) {
         if(!keypad_no_buttons_pressed()) sleep_timer_last = time_us_64();
     }
 
-    enable_global_timer = 1;
+    global_timer_watchdog = 0;
+    in_global_timer = 1;
     return true;
 }
 
@@ -199,14 +201,14 @@ void system_enable_interrupts() {
 
 void system_panic(const char* message) {
     sleep_timer_goal = 0;
-    screen_fill(0xF800);
-    screen_print(10, 56, 0xFFFF, 1, SCREEN_FONT_VGA, message);
+    screen_fill(SCREEN_COLOR_RED);
+    screen_print(10, 56, SCREEN_COLOR_WHITE, 1, SCREEN_FONT_VGA, message);
     while(1) {
         enable_global_timer = 0;
-        screen_print(10, 10, 0xFFFF, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_print(10, 10, SCREEN_COLOR_WHITE, 3, SCREEN_FONT_VGA, "PANIC!");
         screen_refresh();
         sleep_ms(500);
-        screen_print(10, 10, 0xF800, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_print(10, 10, SCREEN_COLOR_RED, 3, SCREEN_FONT_VGA, "PANIC!");
         screen_refresh();
         sleep_ms(500);
     }

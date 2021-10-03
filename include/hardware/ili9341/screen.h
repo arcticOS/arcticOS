@@ -31,6 +31,13 @@
 #define SCREEN_FONT_VGA &vga_font[0]
 #define SCREEN_FONT_DEFAULT &vga_font[0]
 
+// BRG for some stupid reason
+#define SCREEN_COLOR_BLACK 0x0000
+#define SCREEN_COLOR_WHITE 0xFFFF
+#define SCREEN_COLOR_RED 0x07E0
+#define SCREEN_COLOR_BLUE 0xF800
+#define SCREEN_COLOR_GREEN 0x001F
+
 void screen_init() {
     ili9341_init();
     mode2_init();

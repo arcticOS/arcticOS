@@ -41,9 +41,23 @@ void flash_load_user_data(uint32_t offset, uint8_t* buffer) {
 }
 
 void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
-    system_disable_interrupts();
-    flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE);
-    flash_range_program(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), buffer, USER_DATA_SIZE);
-    system_enable_interrupts();
+    for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) {
+        system_disable_interrupts();
+        flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE);
+        flash_range_program(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), buffer, USER_DATA_SIZE);
+        system_enable_interrupts();
+
+        if(ENFORCE_FLASH_WRITE_SUCCESS) {
+            int fail = 0;
+            for(int i = 0; i < USER_DATA_SIZE; i++) {
+                if(buffer[i] != flash_user_data[i + (offset * USER_DATA_SIZE)]) {
+                    fail = 1;
+                    break;
+                }
+            }
+            if(!fail) return;
+        } else return;
+    }
+    system_panic("Flash failed to verify");
 }
 #endif

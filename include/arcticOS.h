@@ -17,7 +17,8 @@
 
 // Build settings
 #define ENFORCE_RTC_ENABLED 0
-#define ENFORCE_WATCHDOG_COUNT 5
+#define ENFORCE_WATCHDOG_COUNT 0
+#define ENFORCE_FLASH_WRITE_SUCCESS 1
 
 #define BUILD_VERSION "0.2"
 #define BUILD_SUFFIX "-alpha"
