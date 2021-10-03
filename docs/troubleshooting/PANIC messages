@@ -1,0 +1,7 @@
+PANIC messages appear when a severe error occurs. Use the table below to determine the cause and solution for various PANIC messages.
+
+Message                 | Cause                                                 | Solution
+------------------------+-------------------------------------------------------+---------------------------------------------------
+Watchdog BITE!          | The global timer thread took longer than usual.       | Restart the device.
+RTC Failure             | The internal system clock is not running.             | Check to see if it has been disabled.
+Flash Failed to Verify  | Writing to memory failed 3 times.                     | Check to make sure the internal flash memory has not failed.

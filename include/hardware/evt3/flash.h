@@ -58,6 +58,6 @@ void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
             if(!fail) return;
         } else return;
     }
-    system_panic("Flash failed to verify");
+    system_panic("Flash Failed to Verify");
 }
 #endif

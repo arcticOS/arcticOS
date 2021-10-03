@@ -18,3 +18,8 @@ DEFINES:
 SCREEN_WIDTH - Screen width.
 SCREEN_HEIGHT - Screen height.
 SCREEN_FONT_DEFAULT - Default screen font.
+SCREEN_COLOR_BLACK - Value for the color black.
+SCREEN_COLOR_WHITE - Value for the color white.
+SCREEN_COLOR_RED - Value for the color red.
+SCREEN_COLOR_BLUE - Value for the color blue.
+SCREEN_COLOR_GREEN - Value for the color green.
