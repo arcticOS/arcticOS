@@ -14,6 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+// Build settings
+#define ENFORCE_RTC_ENABLED 0
+#define ENFORCE_WATCHDOG_COUNT 5
+
 #define BUILD_VERSION "0.2"
 #define BUILD_SUFFIX "-alpha"
 
@@ -25,3 +30,10 @@ void system_set_sleep_timer(int ms); // Sets the amount of milliseconds before t
 void system_reset_sleep_timer(); // Resets the amount of milliseconds passed in the sleep timer.
 bool system_timer_process(struct repeating_timer *t); // Increments the sleep timer, or resets it if user input given.
 void system_sleep_ok(); // Tell the system it is okay to go to sleep if needed.
+
+// Interrupt functions
+void system_disable_interrupts(); // Disable interrupts.
+void system_enable_interrupts(); // Enable interrupts.
+
+// Other functions
+void system_panic(const char* message); // Kernel panic.

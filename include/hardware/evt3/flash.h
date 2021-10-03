@@ -15,30 +15,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// For some reason this won't build, it can't even see uint8_ts
-
 #ifndef FLASH_H
 #define FLASH_H
 
+// 256k from start
 #define USER_DATA_ADDRESS (256 * 1024)
-#define USER_DATA_SIZE FLASH_PAGE_SIZE
+
+// 4k sectors
+#define USER_DATA_SIZE FLASH_SECTOR_SIZE
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <pico/stdlib.h>
 #include <hardware/flash.h>
+#include <arcticOS.h>
 
-int user_data[USER_DATA_SIZE];
 const uint8_t *flash_user_data = (const uint8_t *) (XIP_BASE + USER_DATA_ADDRESS);
 
-void flash_load_user_data() {
+void flash_load_user_data(uint32_t offset, uint8_t* buffer) {
+    system_disable_interrupts();
     for(int i = 0; i < USER_DATA_SIZE; i++) {
-        user_data[i] = flash_user_data[i];
+        buffer[i] = flash_user_data[i + (offset * USER_DATA_SIZE)];
     }
+    system_enable_interrupts();
 }
 
-void flash_write_user_data() {
-    flash_range_erase(USER_DATA_ADDRESS, USER_DATA_SIZE);
-    flash_range_program(USER_DATA_ADDRESS, &user_data, USER_DATA_SIZE);
+void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
+    system_disable_interrupts();
+    flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE);
+    flash_range_program(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), buffer, USER_DATA_SIZE);
+    system_enable_interrupts();
 }
 #endif

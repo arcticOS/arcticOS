@@ -18,6 +18,10 @@ TODO for version 0.2a
     - Contacts page, notes page, settings page, etc...
 - Add persistent settings
 - Add notes app or smth
+- Fix flash storage (reads 0xFF for everything)
 
 == GPIO ==
 - Add PWM
+
+== RTC ==
+Figure out how to make RTC actually run

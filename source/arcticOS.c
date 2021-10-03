@@ -40,6 +40,7 @@ uint64_t sleep_timer_last = 0;
 
 // Used for global timer
 int enable_global_timer = 1;
+int global_timer_watchdog;
 struct repeating_timer global_timer;
 #define GLOBAL_TIMER_INTERVAL 10
 
@@ -47,11 +48,21 @@ struct repeating_timer global_timer;
 uint16_t background_color = 0x0000;
 uint16_t foreground_color = 0xFFFF;
 
+// Used for disabling/enabling interrupts
+#include <hardware/irq.h>
+int irq_table[25];
+
 // Used for interfacing with other hardware on motherboard
 #include <hardware/arcticOS/cellular.h>
 #include <hardware/arcticOS/keypad.h>
 #include <hardware/arcticOS/screen.h>
+
+// Used for flash memory
 #include <hardware/arcticOS/flash.h>
+#include <flash-layout/flash-layout.h>
+#include <flash-layout/settings.h>
+
+uint8_t flash_buffer[USER_DATA_SIZE];
 
 // Initialise arcticOS
 int main(void) {
@@ -64,8 +75,18 @@ int main(void) {
     // Init screen
     screen_init();
 
-    // Init flash
-    flash_load_user_data();
+    // Load settings from flash
+    flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+
+    // Do OOBE if needed
+    // For now, this just sets all defaults.
+    if(!flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE]) {
+        flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] = 1;
+        flash_buffer[FLASH_SETTINGS_SLEEP_TIME] = 15000 >> 8;
+        flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) 15000;
+        flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+        flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+    }
 
     // Init RTC
     // This is the same on all platforms
@@ -87,14 +108,16 @@ int main(void) {
 
     // Init global timer + sleep mode
     add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
-    system_set_sleep_timer(5000);
+    system_set_sleep_timer(/*( (uint16_t) flash_buffer[FLASH_SETTINGS_SLEEP_TIME] << 8) + flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1]*/15000);
 
     // OS loop
     while(1) {
         screen_fill(background_color);
 
         // Get the actual time
-        rtc_get_datetime(&time);
+        if(!rtc_get_datetime(&time) && ENFORCE_RTC_ENABLED) {
+            system_panic("RTC Failure");
+        }
 
         // Calculate time in 12-hour time and get it as a string
         int hour = time.hour;
@@ -137,7 +160,13 @@ void system_reset_sleep_timer() {
 }
 
 bool system_timer_process(struct repeating_timer *t) {
-    if(!enable_global_timer) return true;
+    if(!enable_global_timer) {
+        if(ENFORCE_WATCHDOG_COUNT) {
+            global_timer_watchdog ++;
+            if(global_timer_watchdog >= ENFORCE_WATCHDOG_COUNT) system_panic("Watchdog BITE!");
+        }
+        return true;
+    }
 
     enable_global_timer = 0;
     if(sleep_timer_goal) {
@@ -153,4 +182,32 @@ void system_sleep_ok() {
     if((time_us_64() - sleep_timer_last) / 1000 >= sleep_timer_goal) {
         system_sleep();
     } 
+}
+
+void system_disable_interrupts() {
+    for(int i = 0; i < 25; i++) {
+        irq_table[i] = irq_is_enabled(i);
+        irq_set_enabled(i, 0);
+    }
+}
+
+void system_enable_interrupts() {
+    for(int i = 0; i < 25; i++) {
+        irq_set_enabled(i, irq_table[i]); // If we enable unhandled interrupts, it triggers a breakpoint for some reason
+    }
+}
+
+void system_panic(const char* message) {
+    sleep_timer_goal = 0;
+    screen_fill(0xF800);
+    screen_print(10, 56, 0xFFFF, 1, SCREEN_FONT_VGA, message);
+    while(1) {
+        enable_global_timer = 0;
+        screen_print(10, 10, 0xFFFF, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_refresh();
+        sleep_ms(500);
+        screen_print(10, 10, 0xF800, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_refresh();
+        sleep_ms(500);
+    }
 }
