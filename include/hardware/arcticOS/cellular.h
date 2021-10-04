@@ -18,5 +18,5 @@
 #if defined(EVT4)
 #include <hardware/ec25/cellular.h>
 #elif defined(EVT3)
-#include <hardware/dummy/cellular.h>
+#include <hardware/ec25/cellular.h>
 #endif
