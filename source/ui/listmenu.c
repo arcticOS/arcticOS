@@ -27,19 +27,22 @@ int ui_list_menu(const char* title, char** items, int count) {
         int font_height = font_character_height(SCREEN_FONT_DEFAULT);
         int font_width = font_character_width(SCREEN_FONT_DEFAULT);
         screen_fill(background_color);
-        screen_print(10, 10, foreground_color, 2, SCREEN_FONT_DEFAULT, title);
+        screen_print_centered(10, foreground_color, 2, SCREEN_FONT_DEFAULT, title);
 
         for(int i = 0; i < count; i++) {
-            int x = (SCREEN_WIDTH / 2) - (font_string_width(SCREEN_FONT_DEFAULT, items[i]) / 2);
             int y = (10 * (i + 1)) + (font_height * 2) + (i * font_height);
-            screen_print(x, y, foreground_color, 1, SCREEN_FONT_DEFAULT, items[i]);
+            if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
+            screen_print_centered(y, foreground_color, 1, SCREEN_FONT_DEFAULT, items[i]);
 
             if(i == selected) {
-                for(int lx = x; lx < x + font_string_width(SCREEN_FONT_DEFAULT, items[i]); lx ++) {
+                int x = (SCREEN_WIDTH / 2) - (font_string_width(SCREEN_FONT_DEFAULT, items[i]) / 2);
+                for(int lx = x; lx < x + font_width + font_string_width(SCREEN_FONT_DEFAULT, items[i]); lx ++) {
                     screen_plot_pixel(lx, y + font_height, foreground_color);
                 }
             }
         }
+
+        screen_print_centered(SCREEN_HEIGHT - font_height - 10, foreground_color, 1, SCREEN_FONT_DEFAULT, "Select");
 
         screen_refresh();
 
