@@ -15,6 +15,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <pico/stdlib.h>
+
+#include <graphics/fonts/vga.h>
+#define SCREEN_FONT_VGA &vga_font
+#define SCREEN_FONT_DEFAULT &vga_font
+
+void screen_init();
+void screen_backlight_on();
+void screen_backlight_off();
+void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color);
+void screen_fill(uint16_t color);
+void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character);
+void screen_refresh();
+
+void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string);
+
 #if defined(EVT3) || defined(EVT4)
-#include <hardware/ili9341/screen.h>
+#define SCREEN_WIDTH 240
+#define SCREEN_HEIGHT 320
+
+// BRG for some stupid reason
+#define SCREEN_COLOR_BLACK 0x0000
+#define SCREEN_COLOR_WHITE 0xFFFF
+#define SCREEN_COLOR_RED 0x07E0
+#define SCREEN_COLOR_BLUE 0xF800
+#define SCREEN_COLOR_GREEN 0x001F
 #endif

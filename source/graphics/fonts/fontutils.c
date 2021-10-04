@@ -1,5 +1,4 @@
 /*
- * arcticOS
  * Copyright (C) 2021 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +14,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREEN_H
-#define SCREEN_H
+int font_character_width(int* font) {
+    return font[0];
+}
 
-#include <arcticOS.h>
-#include <graphics/fonts/vga.h>
+int font_character_height(int* font) {
+    return font[1];
+}
 
-#define SCREEN_WIDTH 0
-#define SCREEN_HEIGHT 0
-
-#define SCREEN_FONT_DEFAULT &vga_font[0]
-
-void screen_init() {}
-void screen_backlight_on() {}
-void screen_backlight_off() {}
-void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {}
-void screen_fill(uint16_t color) {}
-void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character) {}
-void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string)}
-void screen_refresh() {system_sleep_ok();}
-
-#endif
+int font_string_width(int* font, const char* string) {
+    return font[0] * (strlen(string) - 1);
+}

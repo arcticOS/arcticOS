@@ -63,6 +63,9 @@ int irq_table[25];
 #include <flash-layout/flash-layout.h>
 #include <flash-layout/settings.h>
 
+// Used for GUI
+#include <ui/listmenu.h>
+
 uint8_t flash_buffer[USER_DATA_SIZE];
 
 // Initialise arcticOS
@@ -76,16 +79,48 @@ int main(void) {
     // Init screen
     screen_init();
 
+    if(keypad_is_button_pressed(BUTTON_E)) {
+        const char* menu_items[6] = {"No", "No", "No", "No", "Yes", "No"};
+        if(ui_list_menu("Erase Data?", &menu_items, 6) == 4) {
+            flash_erase_user_data(FLASH_OFFSET_SETTINGS);
+            screen_fill(SCREEN_COLOR_RED);
+            screen_print(10, 10, foreground_color, 1, SCREEN_FONT_VGA, "Data erased.");
+            screen_print(10, 26, foreground_color, 1, SCREEN_FONT_VGA, "Restart your device.");
+            screen_refresh();
+            return;
+        }
+    }
+
     // Load settings from flash
     flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
 
     // Do OOBE if needed
     // For now, this just sets all defaults.
-    if(!flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE]) {
+    if(flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] == 0xFF) {
         flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] = 1;
-        flash_buffer[FLASH_SETTINGS_SLEEP_TIME] = 15000 >> 8;
-        flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) 15000;
+
+        // Time until sleep
+        uint16_t sleep_time = 0;
+        uint16_t sleep_times[5] = {5000, 15000, 30000, 60000, 120000};
+        const char* sleep_times_menu[5] = {"5 Seconds", "15 Seconds", "30 Seconds", "1 Minute", "2 Minutes"};
+        sleep_time = sleep_times[ui_list_menu("Sleep Time", &sleep_times_menu, 5)];
+        flash_buffer[FLASH_SETTINGS_SLEEP_TIME] = sleep_time >> 8;
+        flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) sleep_time;
+
+        // Theme
+        const char* theme_menu[5] = {"Light", "Dark"};
+        flash_buffer[FLASH_SETTINGS_THEME] = ui_list_menu("Theme", &theme_menu, 2);
+
         flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+    }
+
+    int theme = flash_buffer[FLASH_SETTINGS_THEME];
+    if(theme == 0) {
+        background_color = 0xFFFF;
+        foreground_color = 0x0000;
+    } else if(theme == 1) {
+        background_color = 0x0000;
+        foreground_color = 0xFFFF;
     }
 
     // Init RTC
@@ -108,7 +143,7 @@ int main(void) {
 
     // Init global timer + sleep mode
     add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
-    system_set_sleep_timer(/*( (uint16_t) flash_buffer[FLASH_SETTINGS_SLEEP_TIME] << 8) + flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1]*/15000);
+    system_set_sleep_timer(( (uint16_t) flash_buffer[FLASH_SETTINGS_SLEEP_TIME] << 8) + flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1]);
 
     // OS loop
     while(1) {

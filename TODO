@@ -13,6 +13,9 @@ TODO for version 0.2a
     - Circle
     - Round Rect
 
+== UI ==
+
+
 == STORAGE ==
 - Write to different pages for each "app"
     - Contacts page, notes page, settings page, etc...

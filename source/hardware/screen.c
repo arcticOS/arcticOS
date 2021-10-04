@@ -15,28 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREEN_H
-#define SCREEN_H
+#include <hardware/arcticOS/screen.h>
+#include <graphics/fonts/fontutils.h>
 
-#include <arcticOS.h>
+void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) {
+    int i = 0;
+	while(string[i]) {
+		screen_putchar(x + (i * 8 * size), y, color, size, font, string[i]);
+		i++;
+	}
+}
+
+#if defined(EVT3) || defined(EVT4)
 
 #include <hardware/ili9341/mode2.h>
 #include <hardware/ili9341/ili9341.h>
-
-#include <graphics/fonts/vga.h>
-
-#define SCREEN_WIDTH 240
-#define SCREEN_HEIGHT 320
-
-#define SCREEN_FONT_VGA &vga_font[0]
-#define SCREEN_FONT_DEFAULT &vga_font[0]
-
-// BRG for some stupid reason
-#define SCREEN_COLOR_BLACK 0x0000
-#define SCREEN_COLOR_WHITE 0xFFFF
-#define SCREEN_COLOR_RED 0x07E0
-#define SCREEN_COLOR_BLUE 0xF800
-#define SCREEN_COLOR_GREEN 0x001F
 
 void screen_init() {
     ili9341_init();
@@ -62,10 +55,6 @@ void screen_fill(uint16_t color) {
 
 void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character) {
     mode2_draw_char(x, y, (int) size, color, font, character);
-}
-
-void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) {
-    mode2_draw_string(x, y, (int) size, color, font, string);
 }
 
 void screen_refresh() {

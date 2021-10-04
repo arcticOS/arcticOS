@@ -15,8 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <pico/stdlib.h>
+
+void flash_load_user_data(uint32_t offset, uint8_t* buffer);
+void flash_write_user_data(uint32_t offset, uint8_t* buffer);
+void flash_erase_user_data(uint32_t offset);
+
 #if defined(EVT4)
-#include <hardware/dummy/flash.h>
+
 #elif defined(EVT3)
-#include <hardware/evt3/flash.h>
+#define USER_DATA_ADDRESS (256 * 1024)
+#define USER_DATA_SIZE FLASH_SECTOR_SIZE
+#include <hardware/flash.h>
 #endif

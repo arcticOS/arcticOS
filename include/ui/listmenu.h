@@ -15,25 +15,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef KEYPAD_H
-#define KEYPAD_H
-
-#include <pico/stdlib.h>
-
-void keypad_init() {}
-
-bool keypad_no_buttons_pressed() {
-    return true;
-}
-
-bool keypad_is_character_pressed(char character){ 
-    return false;
-}
-
-bool keypad_is_button_pressed(uint16_t button){ 
-    return false;
-}
-
-void keypad_wait_for_no_button() {}
-
-#endif
+int ui_list_menu(const char* title, char** items, int count);

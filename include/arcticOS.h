@@ -25,6 +25,9 @@
 
 #include <pico/stdlib.h>
 
+extern uint16_t background_color;
+extern uint16_t foreground_color;
+
 // Sleep/Low-power functions
 void system_sleep(); // Causes system to enter low-power mode for 10ms, and then check if we need to wake up before again entering low-power mode
 void system_set_sleep_timer(int ms); // Sets the amount of milliseconds before the system enters sleep mode.

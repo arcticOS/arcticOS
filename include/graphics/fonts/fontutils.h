@@ -1,5 +1,4 @@
 /*
- * arcticOS
  * Copyright (C) 2021 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +14,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// 1 byte
-#define FLASH_SETTINGS_OOBE_COMPLETE 0
-
-// 2 bytes
-#define FLASH_SETTINGS_SLEEP_TIME 1
-
-// 1 byte
-#define FLASH_SETTINGS_THEME 3
+int font_character_width(int* font);
+int font_character_height(int* font);
+int font_string_width(int* font, const char* string);
