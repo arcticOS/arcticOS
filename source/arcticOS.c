@@ -97,9 +97,26 @@ int main(void) {
     // Do OOBE if needed
     // For now, this just sets all defaults.
     if(flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] == 0xFF) {
-        flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] = 1;
+        screen_fill(background_color);
+
+        screen_print_centered(30, foreground_color, 3, SCREEN_FONT_VGA, "Hello!");
+        screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, 1, SCREEN_FONT_VGA, "Press the left button");
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, "to set up your phone.");
+        screen_refresh();
+        while(!keypad_is_button_pressed(BUTTON_A)) {}
+        keypad_wait_for_no_button();
 
         // Time until sleep
+        screen_fill(background_color);
+        screen_print_centered(30, foreground_color, 1, SCREEN_FONT_VGA, "First, pick how long");
+        screen_print_centered(46, foreground_color, 1, SCREEN_FONT_VGA, "your phone should wait");
+        screen_print_centered(62, foreground_color, 1, SCREEN_FONT_VGA, "before it goes to sleep.");
+        screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, 1, SCREEN_FONT_VGA, "Press the left button");
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, "to continue.");
+        screen_refresh();
+        while(!keypad_is_button_pressed(BUTTON_A)) {}
+        keypad_wait_for_no_button();
+
         uint16_t sleep_time = 0;
         uint16_t sleep_times[5] = {5000, 15000, 30000, 60000, 120000};
         const char* sleep_times_menu[5] = {"5 Seconds", "15 Seconds", "30 Seconds", "1 Minute", "2 Minutes"};
@@ -108,10 +125,28 @@ int main(void) {
         flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) sleep_time;
 
         // Theme
+        screen_fill(background_color);
+        screen_print_centered(30, foreground_color, 1, SCREEN_FONT_VGA, "Next, pick whether you");
+        screen_print_centered(46, foreground_color, 1, SCREEN_FONT_VGA, "want your phone to have a");
+        screen_print_centered(62, foreground_color, 1, SCREEN_FONT_VGA, "light theme or a dark theme.");
+        screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, 1, SCREEN_FONT_VGA, "Press the left button");
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, "to continue.");
+        screen_refresh();
+        while(!keypad_is_button_pressed(BUTTON_A)) {}
+        keypad_wait_for_no_button();
         const char* theme_menu[5] = {"Light", "Dark"};
         flash_buffer[FLASH_SETTINGS_THEME] = ui_list_menu("Theme", &theme_menu, 2);
 
+        flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] = 1;
         flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+
+        screen_fill(background_color);
+        screen_print_centered(30, foreground_color, 3, SCREEN_FONT_VGA, "All set!");
+        screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, 1, SCREEN_FONT_VGA, "Press the left button");
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, "to use your phone.");
+        screen_refresh();
+        while(!keypad_is_button_pressed(BUTTON_A)) {}
+        keypad_wait_for_no_button();
     }
 
     int theme = flash_buffer[FLASH_SETTINGS_THEME];

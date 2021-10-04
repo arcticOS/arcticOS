@@ -26,6 +26,11 @@ void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* fo
 	}
 }
 
+void screen_print_centered(uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) {
+    uint16_t x = (SCREEN_WIDTH / 2) - ((font_string_width(font, string) * size) / 2);
+    screen_print(x, y, color, size, font, string);
+}
+
 #if defined(EVT3) || defined(EVT4)
 
 #include <hardware/ili9341/mode2.h>

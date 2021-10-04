@@ -30,6 +30,8 @@ void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* 
 void screen_refresh();
 
 void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string);
+void screen_print_centered(uint16_t y, uint16_t color, uint16_t size, int* font, const char* string);
+
 
 #if defined(EVT3) || defined(EVT4)
 #define SCREEN_WIDTH 240
