@@ -88,22 +88,7 @@ int main(void) {
     screen_init();
 
     // Factory reset if user is holding down end call button
-    if(keypad_is_button_pressed(BUTTON_E)) settings_run_factory_reset();
-
-    // Load settings from flash
-    flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
-
-    // Do OOBE if needed
-    if(flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] == 0xFF) settings_run_oobe();
-
-    int theme = flash_buffer[FLASH_SETTINGS_THEME];
-    if(theme == 0) {
-        background_color = 0xFFFF;
-        foreground_color = 0x0000;
-    } else if(theme == 1) {
-        background_color = 0x0000;
-        foreground_color = 0xFFFF;
-    }
+    if(keypad_is_button_pressed(BUTTON_E)) { keypad_wait_for_no_button(); settings_run_factory_reset(); }
 
     // Init RTC
     rtc_init();
@@ -111,7 +96,8 @@ int main(void) {
 
     // Init global timer + sleep mode
     add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
-    system_set_sleep_timer(( (uint16_t) flash_buffer[FLASH_SETTINGS_SLEEP_TIME] << 8) + flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1]);
+    
+    system_refresh_settings();
 
     // Start launcher app
     start_launcher();

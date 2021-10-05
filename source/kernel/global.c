@@ -15,8 +15,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-void settings_run();
-int settings_run_theme_picker();
-int settings_run_sleep_time_picker();
-void settings_run_factory_reset();
-void settings_run_oobe();
+#include <arcticOS.h>
+#include <hardware/arcticOS/flash.h>
+
+void system_refresh_settings() {
+    // Load settings from flash
+    flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+
+    // Do OOBE if needed
+    if(flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] == 0xFF) settings_run_oobe();
+
+    int theme = flash_buffer[FLASH_SETTINGS_THEME];
+    if(theme == 0) {
+        background_color = 0xFFFF;
+        foreground_color = 0x0000;
+    } else if(theme == 1) {
+        background_color = 0x0000;
+        foreground_color = 0xFFFF;
+    }
+
+    system_set_sleep_timer(( (uint16_t) flash_buffer[FLASH_SETTINGS_SLEEP_TIME] << 8) + flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1]);
+}

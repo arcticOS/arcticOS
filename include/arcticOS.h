@@ -62,3 +62,6 @@ void system_enable_interrupts(); // Enable interrupts.
 // Debug functions
 void system_panic(const char* message); // Kernel panic.
 void system_hang(); // Freeze system.
+
+// Functions for managing global data
+void system_refresh_settings();

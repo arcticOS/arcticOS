@@ -23,6 +23,7 @@
 #include <hardware/arcticOS/keypad.h>
 
 #include <apps/launcher/launcher.h>
+#include <apps/settings/settings.h>
 
 char time_buffer[9];
 char date_buffer[32];
@@ -51,7 +52,12 @@ void start_launcher() {
         screen_print_centered(SCREEN_HEIGHT - 52, foreground_color, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
         screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, STRING_MENU);
 
-        if(keypad_is_button_pressed(BUTTON_6)) screen_putchar(20, 80, foreground_color, 1, SCREEN_FONT_VGA, 'G');
+        if(keypad_is_button_pressed(BUTTON_O)) {
+            keypad_wait_for_no_button();
+            const char* apps[1] = {STRING_APP_SETTINGS};
+            int choice = ui_list_menu(STRING_MENU, apps, 1);
+            if(choice == 0) settings_run();
+        }
         screen_refresh();
     }
 }

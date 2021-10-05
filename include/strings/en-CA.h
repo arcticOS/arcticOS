@@ -19,7 +19,12 @@
 #define STRING_MENU "Menu"
 #define STRING_NO "No"
 #define STRING_YES "Yes"
+#define STRING_SELECT "Select"
+#define STRING_BACK "Back"
 #define STRING_RESTART_DEVICE "Please restart your device."
+
+// App Names
+#define STRING_APP_SETTINGS "Settings"
 
 // Theme text
 #define STRING_THEME "Theme"
@@ -35,13 +40,14 @@
 #define STRING_TWO_MINUTES "2 Minutes"
 
 // Factory reset text
-#define STRING_ERASE_DATA "Erase data?"
+#define STRING_ERASE_DATA "Erase Data"
+#define STRING_CONFIRM_ERASE_DATA "Erase data?"
 #define STRING_DATA_ERASED "Data erased."
 
 // OOBE text
 #define STRING_HELLO "Hello!"
 #define STRING_ALL_SET "All set!"
-#define STRING_PRESS_LEFT_BUTTON "Press the left button"
+#define STRING_PRESS_MIDDLE_BUTTON "Press the middle button"
 #define STRING_TO_SET_UP_PHONE "to set up your phone."
 #define STRING_TO_CONTINUE "to continue."
 #define STRING_TO_USE_PHONE "to use your phone."
