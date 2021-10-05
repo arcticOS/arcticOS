@@ -43,8 +43,9 @@ int settings_run_theme_picker() {
     screen_fill(background_color);
     const char* theme_menu[5] = {STRING_LIGHT, STRING_DARK};
     int result = ui_list_menu(STRING_THEME, &theme_menu, 2);
-    if(result == -1) return 1;
+    if(result == -1) { keypad_wait_for_no_button(); return 1; }
     flash_buffer[FLASH_SETTINGS_THEME] = result;
+    keypad_wait_for_no_button();
     return 0;
 }
 
@@ -55,10 +56,11 @@ int settings_run_sleep_time_picker() {
     uint16_t sleep_times[5] = {5000, 15000, 30000, 60000, 120000};
     const char* sleep_times_menu[5] = {STRING_FIVE_SECONDS, STRING_FIFTEEN_SECONDS, STRING_THIRTY_SECONDS, STRING_ONE_MINUTE, STRING_TWO_MINUTES};
     int result = ui_list_menu(STRING_SLEEP_TIME, &sleep_times_menu, 5);
-    if(result == -1) return 1;
+    if(result == -1) { keypad_wait_for_no_button(); return 1; }
     sleep_time = sleep_times[result];
     flash_buffer[FLASH_SETTINGS_SLEEP_TIME] = sleep_time >> 8;
     flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) sleep_time;
+    keypad_wait_for_no_button();
     return 0;
 }
 

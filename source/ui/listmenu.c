@@ -43,7 +43,7 @@ int ui_list_menu(const char* title, char** items, int count) {
         }
 
         screen_print_centered(SCREEN_HEIGHT - font_height - 10, foreground_color, 1, SCREEN_FONT_DEFAULT, STRING_SELECT);
-        screen_print(SCREEN_WIDTH - 10 - font_string_width(SCREEN_FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - font_height - 10, foreground_color, 1, SCREEN_FONT_DEFAULT, STRING_BACK);
+        screen_print(SCREEN_WIDTH - 20 - font_string_width(SCREEN_FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - font_height - 10, foreground_color, 1, SCREEN_FONT_DEFAULT, STRING_BACK);
 
         screen_refresh();
 

@@ -28,13 +28,13 @@ bool system_timer_process(struct repeating_timer *t) {
     }
     if(!enable_global_timer) return true;
 
-    in_global_timer = 0;
+    in_global_timer = 1;
     if(sleep_timer_goal) {
         if(!keypad_no_buttons_pressed()) sleep_timer_last = time_us_64();
     }
 
     global_timer_watchdog = 0;
-    in_global_timer = 1;
+    in_global_timer = 0;
     return true;
 }
 
