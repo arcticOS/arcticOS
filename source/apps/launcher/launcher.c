@@ -46,9 +46,10 @@ void start_launcher() {
         // Get date as a string
         sprintf(date_buffer, "%s, %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
 
-        screen_print(10, 10, foreground_color, 2, SCREEN_FONT_VGA, &time_buffer);
-        screen_print(10, 42, foreground_color, 1, SCREEN_FONT_VGA, &date_buffer);
-        screen_print(10, 58, foreground_color, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
+        screen_print_centered(10, foreground_color, 2, SCREEN_FONT_VGA, &time_buffer);
+        screen_print_centered(42, foreground_color, 1, SCREEN_FONT_VGA, &date_buffer);
+        screen_print_centered(SCREEN_HEIGHT - 52, foreground_color, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_6)) screen_putchar(20, 80, foreground_color, 1, SCREEN_FONT_VGA, 'G');
         screen_refresh();

@@ -15,6 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// CHANGE THE LINE BELOW TO CHANGE LANGUAGE
+#include <strings/en-CA.h>
+
 // Build settings
 #define ENFORCE_RTC_ENABLED 0
 #define ENFORCE_WATCHDOG_COUNT 0
@@ -23,6 +26,7 @@
 #define BUILD_VERSION "0.2"
 #define BUILD_SUFFIX "-alpha"
 
+// No longer build settings
 #include <pico/stdlib.h>
 
 extern datetime_t time;
@@ -55,5 +59,6 @@ void system_sleep_ok(); // Tell the system it is okay to go to sleep if needed.
 void system_disable_interrupts(); // Disable interrupts.
 void system_enable_interrupts(); // Enable interrupts.
 
-// Other functions
+// Debug functions
 void system_panic(const char* message); // Kernel panic.
+void system_hang(); // Freeze system.

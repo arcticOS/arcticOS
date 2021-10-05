@@ -32,3 +32,8 @@ void system_panic(const char* message) {
         sleep_ms(500);
     }
 }
+
+void system_hang() {
+    system_disable_interrupts();
+    while(1) {}
+}

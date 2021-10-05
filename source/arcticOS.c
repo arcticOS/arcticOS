@@ -15,9 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// CHANGE THE LINE BELOW TO CHANGE LANGUAGE
-#include <strings/en-CA.h>
-
 #include <arcticOS.h>
 
 // Used for I/O
@@ -40,8 +37,9 @@ datetime_t time = {
     .sec   = 00
 };
 
-const char* weekday_names[7] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-const char* month_names[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+const char* weekday_names[7] = {STRING_DAY_SUNDAY, STRING_DAY_MONDAY, STRING_DAY_TUESDAY, STRING_DAY_WEDNESDAY, STRING_DAY_THURSDAY, STRING_DAY_FRIDAY, STRING_DAY_SATURDAY};
+const char* month_names[12] = {STRING_MONTH_JANUARY, STRING_MONTH_FEBRUARY, STRING_MONTH_MARCH, STRING_MONTH_APRIL, STRING_MONTH_MAY, STRING_MONTH_JUNE, 
+                                STRING_MONTH_JULY, STRING_MONTH_AUGUST, STRING_MONTH_SEPTEMBER, STRING_MONTH_OCTOBER, STRING_MONTH_NOVEMBER, STRING_MONTH_DECEMBER};
 
 // Used for low-power mode
 uint16_t sleep_timer_goal = 0;
