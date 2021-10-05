@@ -15,11 +15,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// 1 byte
-#define FLASH_SETTINGS_OOBE_COMPLETE 0
-
-// 2 bytes
-#define FLASH_SETTINGS_SLEEP_TIME 1
-
-// 1 byte
-#define FLASH_SETTINGS_THEME 3
+void settings_run_factory_reset();
+void settings_run_oobe();

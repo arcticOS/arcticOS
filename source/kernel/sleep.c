@@ -15,5 +15,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define FLASH_OFFSET_SETTINGS (0 * USER_DATA_SIZE)
-#define FLASH_OFFSET_CONTACTS (1 * USER_DATA_SIZE)
+#include <arcticOS.h>
+
+#include <hardware/arcticOS/screen.h>
+
+void system_sleep() {
+    screen_backlight_off();
+    while(1) {
+        sleep_ms(10);
+        if(!keypad_no_buttons_pressed()) { // Button is pressed, wake up
+            screen_backlight_on();
+            system_reset_sleep_timer();
+            return;
+        }
+    }
+}
+
+void system_set_sleep_timer(int ms) {
+    sleep_timer_goal = ms;
+}
+
+void system_reset_sleep_timer() {
+    sleep_timer_last = time_us_64();
+}
+
+void system_sleep_ok() {
+    if(!sleep_timer_goal) return;
+    if((time_us_64() - sleep_timer_last) / 1000 >= sleep_timer_goal) {
+        system_sleep();
+    } 
+}

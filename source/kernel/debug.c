@@ -15,27 +15,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <pico/stdlib.h>
-#include <hardware/flash.h>
+#include <arcticOS.h>
+#include <hardware/arcticOS/screen.h>
 
-// Flash layout
-#define FLASH_OFFSET_SETTINGS (0 * USER_DATA_SIZE)
-// 1 byte
-#define FLASH_SETTINGS_OOBE_COMPLETE 0
-// 2 bytes
-#define FLASH_SETTINGS_SLEEP_TIME 1
-// 1 byte
-#define FLASH_SETTINGS_THEME 3
-
-#define FLASH_OFFSET_CONTACTS (1 * USER_DATA_SIZE)
-
-void flash_load_user_data(uint32_t offset, uint8_t* buffer);
-void flash_write_user_data(uint32_t offset, uint8_t* buffer);
-void flash_erase_user_data(uint32_t offset);
-
-#if defined(EVT4)
-
-#elif defined(EVT3)
-#define USER_DATA_ADDRESS (256 * 1024)
-#define USER_DATA_SIZE FLASH_SECTOR_SIZE
-#endif
+void system_panic(const char* message) {
+    sleep_timer_goal = 0;
+    screen_fill(SCREEN_COLOR_RED);
+    screen_print(10, 56, SCREEN_COLOR_WHITE, 1, SCREEN_FONT_VGA, message);
+    while(1) {
+        enable_global_timer = 0;
+        screen_print(10, 10, SCREEN_COLOR_WHITE, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_refresh();
+        sleep_ms(500);
+        screen_print(10, 10, SCREEN_COLOR_RED, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_refresh();
+        sleep_ms(500);
+    }
+}

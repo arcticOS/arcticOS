@@ -5,3 +5,4 @@ Message                 | Cause                                                 
 Watchdog BITE!          | The global timer thread took longer than usual.       | Restart the device.
 RTC Failure             | The internal system clock is not running.             | Check to see if it has been disabled.
 Flash Failed to Verify  | Writing to memory failed 3 times.                     | Check to make sure the internal flash memory has not failed.
+Launcher exited         | The home menu crashed.                                | Discontinue use of whatever app caused the crash.

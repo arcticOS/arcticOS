@@ -25,8 +25,24 @@
 
 #include <pico/stdlib.h>
 
+extern datetime_t time;
+
+extern const char* weekday_names[];
+extern const char* month_names[];
+
+extern uint16_t sleep_timer_goal;
+extern uint64_t sleep_timer_last;
+extern int enable_global_timer;
+extern int in_global_timer;
+extern int global_timer_watchdog;
+extern struct repeating_timer global_timer;
+
 extern uint16_t background_color;
 extern uint16_t foreground_color;
+
+extern uint8_t flash_buffer[];
+
+extern int irq_table[];
 
 // Sleep/Low-power functions
 void system_sleep(); // Causes system to enter low-power mode for 10ms, and then check if we need to wake up before again entering low-power mode
