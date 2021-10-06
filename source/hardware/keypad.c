@@ -77,8 +77,6 @@ void keypad_refresh() {
         gpio_put(keypad_buttons[y], 1);
         busy_wait_us(200);
     }
-
-    return 0x00;
 }
 
 bool keypad_no_buttons_pressed() {

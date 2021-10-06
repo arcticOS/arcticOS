@@ -28,7 +28,6 @@ void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_
 void mode2_render();
 
 // Text rendering functions
-void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, int* font, char character);
-void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, int* font, const char* string);
+void mode2_draw_char(uint16_t x, uint16_t y, uint16_t color, int* font, char character);
 #endif
 

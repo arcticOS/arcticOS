@@ -17,10 +17,11 @@
 
 #include <arcticOS.h>
 #include <hardware/arcticOS/flash.h>
+#include <apps/settings/settings.h>
 
 void system_refresh_settings() {
     // Load settings from flash
-    flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer);
+    flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
 
     // Do OOBE if needed
     if(flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] == 0xFF) settings_run_oobe();

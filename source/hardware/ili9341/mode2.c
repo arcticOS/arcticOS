@@ -21,29 +21,19 @@
 
 uint16_t mode2_buffer[SIZE] = { 0 };
 
-void mode2_draw_string(uint16_t x, uint16_t y, int size, uint16_t color, int* font, const char* string) {
-	int i = 0;
-	while(string[i] != 0x00) {
-		mode2_draw_char(x + (i * 8 * size), y, size, color, font, string[i]);
-		i++;
-	}
-}
-
-void mode2_draw_char(uint16_t x, uint16_t y, int size, uint16_t color, int* font, char character) {
-	int* character_data = &font[3 + (character * 16)];
+void mode2_draw_char(uint16_t x, uint16_t y, uint16_t color, int* font, char character) {
+	character -= 0x20; // Get rid of the 32 unused characters in the ASCII table
+	int font_byte_length = font[0] * font[1];
+	int* character_data = &font[2 + (character * (font_byte_length + 2))];
+	int character_width = character_data[0];
+	int character_height = character_data[1];
+	character_data = &character_data[2];
 
 	int i = 0; // Character data index
-	for(int font_y = 0; font_y < font[1]; font_y ++) {
-		int draw_x = (font[2] * 8) - 1;
-		for(int byte = 0; byte < font[2]; byte++) {
+	for(int font_y = 0; font_y < character_height; font_y ++) {
+		for(int byte = 0; byte < font[0]; byte++) {
 			for(int font_x = 0; font_x < 8; font_x++) {
-				int bit = (character_data[i] >> font_x) & 1;
-				for(int scale_x = 0; scale_x < size; scale_x ++) {
-					for(int scale_y = 0; scale_y < size; scale_y ++) {
-						if(bit) mode2_pixel(x + scale_x + (draw_x * size), y + scale_y + (font_y * size), color);
-					}
-				}
-				draw_x--;
+				if((character_data[i] >> font_x) & 1) mode2_pixel(x + font_x + (8*byte), y + font_y, color);
 			}
 			i ++;
 		}

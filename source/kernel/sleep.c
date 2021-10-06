@@ -18,6 +18,7 @@
 #include <arcticOS.h>
 
 #include <hardware/arcticOS/screen.h>
+#include <hardware/arcticOS/keypad.h>
 
 void system_sleep() {
     screen_backlight_off();

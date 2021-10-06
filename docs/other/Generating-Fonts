@@ -1,0 +1,10 @@
+1. Convert OTF/TTF into BDF
+otf2bdf font.ttf -p size -o font.bdf
+
+2. Edit AVERAGE_WIDTH to an even number in the generated BDF file
+
+3. Convert BDF to PSF
+bdf2psf --fb font.bdf /usr/share/bdf2psf/standard.equivalents /usr/share/bdf2psf/fontsets/Uni2.512 512 font.psf
+
+3. Convert PSF to C include file
+psf2inc font.psf font.c

@@ -14,6 +14,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-int font_character_width(int* font);
+int* font_get_offset(int* font, char character);
+int font_character_width(int* font, char character);
 int font_character_height(int* font);
 int font_string_width(int* font, const char* string);

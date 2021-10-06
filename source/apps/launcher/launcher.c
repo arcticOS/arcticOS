@@ -45,12 +45,12 @@ void start_launcher() {
         else sprintf(time_buffer, "%d:%d AM", hour, time.min);
 
         // Get date as a string
-        sprintf(date_buffer, "%s, %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
+        sprintf(date_buffer, "%s %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
 
-        screen_print_centered(10, foreground_color, 2, SCREEN_FONT_VGA, &time_buffer);
-        screen_print_centered(42, foreground_color, 1, SCREEN_FONT_VGA, &date_buffer);
-        screen_print_centered(SCREEN_HEIGHT - 52, foreground_color, 1, SCREEN_FONT_VGA, "arcticOS v0.2-alpha");
-        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, 1, SCREEN_FONT_VGA, STRING_MENU);
+        screen_print_centered(10, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, &time_buffer);
+        screen_print_centered(42, foreground_color, SCREEN_FONT_DEFAULT, &date_buffer);
+        screen_print_centered(SCREEN_HEIGHT - 52, foreground_color, SCREEN_FONT_DEFAULT, "Ver. 0.2a");
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_O)) {
             keypad_wait_for_no_button();

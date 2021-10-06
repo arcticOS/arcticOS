@@ -17,6 +17,7 @@
 
 #include <arcticOS.h>
 #include <hardware/arcticOS/keypad.h>
+#include <hardware/irq.h>
 
 bool system_timer_process(struct repeating_timer *t) {
     if(in_global_timer) {

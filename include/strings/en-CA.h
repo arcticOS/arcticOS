@@ -59,13 +59,13 @@
 #define STRING_OOBE_THEME3 "light theme or a dark theme."
 
 // Days
-#define STRING_DAY_SUNDAY "Sunday"
-#define STRING_DAY_MONDAY "Monday"
-#define STRING_DAY_TUESDAY "Tuesday"
-#define STRING_DAY_WEDNESDAY "Wednesday"
-#define STRING_DAY_THURSDAY "Thursday"
-#define STRING_DAY_FRIDAY "Friday"
-#define STRING_DAY_SATURDAY "Saturday"
+#define STRING_DAY_SUNDAY "Sun."
+#define STRING_DAY_MONDAY "Mon."
+#define STRING_DAY_TUESDAY "Tue."
+#define STRING_DAY_WEDNESDAY "Wed."
+#define STRING_DAY_THURSDAY "Thu."
+#define STRING_DAY_FRIDAY "Fri."
+#define STRING_DAY_SATURDAY "Sat."
 
 // Months
 #define STRING_MONTH_JANUARY "January"

@@ -17,20 +17,28 @@
 
 #include <pico/stdlib.h>
 
-#include <graphics/fonts/vga.h>
-#define SCREEN_FONT_VGA &vga_font
-#define SCREEN_FONT_DEFAULT &vga_font
+#include <graphics/fonts/sono.h>
+#define SCREEN_FONT_SONO_TINY &sono_tiny[0]
+#define SCREEN_FONT_SONO_SMALL &sono_small[0]
+#define SCREEN_FONT_SONO_MEDIUM &sono_medium[0]
+
+#define SCREEN_FONT_DEFAULT_TINY SCREEN_FONT_SONO_TINY
+#define SCREEN_FONT_DEFAULT_SMALL SCREEN_FONT_SONO_SMALL
+#define SCREEN_FONT_DEFAULT_MEDIUM SCREEN_FONT_SONO_MEDIUM
+#define SCREEN_FONT_DEFAULT_LARGE SCREEN_FONT_SONO_MEDIUM
+
+#define SCREEN_FONT_DEFAULT SCREEN_FONT_DEFAULT_SMALL
 
 void screen_init();
 void screen_backlight_on();
 void screen_backlight_off();
 void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color);
 void screen_fill(uint16_t color);
-void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character);
+void screen_putchar(uint16_t x, uint16_t y, uint16_t color, int* font, char character);
 void screen_refresh();
 
-void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string);
-void screen_print_centered(uint16_t y, uint16_t color, uint16_t size, int* font, const char* string);
+void screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string);
+void screen_print_centered(uint16_t y, uint16_t color, int* font, const char* string);
 
 
 #if defined(EVT3) || defined(EVT4)

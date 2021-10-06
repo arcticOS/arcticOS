@@ -21,13 +21,13 @@
 void system_panic(const char* message) {
     sleep_timer_goal = 0;
     screen_fill(SCREEN_COLOR_RED);
-    screen_print(10, 56, SCREEN_COLOR_WHITE, 1, SCREEN_FONT_VGA, message);
+    screen_print(10, 56, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT, message);
     while(1) {
         enable_global_timer = 0;
-        screen_print(10, 10, SCREEN_COLOR_WHITE, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_print(10, 10, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT_LARGE, "PANIC!");
         screen_refresh();
         sleep_ms(500);
-        screen_print(10, 10, SCREEN_COLOR_RED, 3, SCREEN_FONT_VGA, "PANIC!");
+        screen_print(10, 10, SCREEN_COLOR_RED, SCREEN_FONT_DEFAULT_LARGE, "PANIC!");
         screen_refresh();
         sleep_ms(500);
     }

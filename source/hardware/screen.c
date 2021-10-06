@@ -15,20 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <arcticOS.h>
 #include <hardware/arcticOS/screen.h>
 #include <graphics/fonts/fontutils.h>
 
-void screen_print(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) {
+void screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) {
     int i = 0;
 	while(string[i]) {
-		screen_putchar(x + (i * 8 * size), y, color, size, font, string[i]);
+		screen_putchar(x + (i * font_character_width(font, string[i])), y, color, font, string[i]);
 		i++;
 	}
 }
 
-void screen_print_centered(uint16_t y, uint16_t color, uint16_t size, int* font, const char* string) {
-    uint16_t x = (SCREEN_WIDTH / 2) - ((font_string_width(font, string) * size) / 2);
-    screen_print(x, y, color, size, font, string);
+void screen_print_centered(uint16_t y, uint16_t color, int* font, const char* string) {
+    uint16_t x = (SCREEN_WIDTH / 2) - (font_string_width(font, string) / 2);
+    screen_print(x, y, color, font, string);
 }
 
 #if defined(EVT3) || defined(EVT4)
@@ -58,8 +59,8 @@ void screen_fill(uint16_t color) {
     mode2_clear(color);
 }
 
-void screen_putchar(uint16_t x, uint16_t y, uint16_t color, uint16_t size, int* font, char character) {
-    mode2_draw_char(x, y, (int) size, color, font, character);
+void screen_putchar(uint16_t x, uint16_t y, uint16_t color, int* font, char character) {
+    mode2_draw_char(x, y, color, font, character);
 }
 
 void screen_refresh() {
