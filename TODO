@@ -13,11 +13,7 @@ TODO for version 0.2a
 
 == UI ==
 
-
 == STORAGE ==
-- Write to different pages for each "app"
-    - Contacts page, notes page, settings page, etc...
-- Add persistent settings
 - Add notes app or smth
 
 == GPIO ==
