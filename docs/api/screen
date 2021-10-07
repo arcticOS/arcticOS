@@ -14,7 +14,13 @@ screen_putchar(uint16_t x, uint16_t y, uint16_t color, int* font, char character
 screen_refresh() - Pushes the screen buffer to the screen.
 
 GLOBAL FUNCTIONS:
-screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) - 
+screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) - Print a string to the screen.
+screen_print_centered(uint16_t y, uint16_t color, int* font, const char* string) - Print a string to the screen, centered on the X axis.
+screen_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a rectangle to the screen.
+screen_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a filled rectangle to the screen.
+screen_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a line on the screen.
+screen_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) - Quickly (skip DDA) draw a horizontal line on the screen.
+screen_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) - Quickly (skip DDA) draw a vertical line on the screen.
 
 DEVICE-SPECIFIC DEFINES:
 SCREEN_WIDTH - Screen width.

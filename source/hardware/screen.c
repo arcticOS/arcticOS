@@ -19,6 +19,59 @@
 #include <hardware/arcticOS/screen.h>
 #include <graphics/fonts/fontutils.h>
 
+void screen_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) {
+    screen_fasthline(x, y, x2, color);
+    screen_fasthline(x, y2, x2, color);
+    screen_fastvline(x, y, y2, color);
+    screen_fastvline(x2, y, y2, color);
+}
+
+void screen_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) { 
+    for(int dx = x; dx < x2; dx ++) {
+        for(int dy = y; dy < y2; dy ++) {
+            screen_plot_pixel(dx, dy, color);
+        }
+    }
+}
+
+void screen_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) {
+    if(x == x2) screen_fastvline(x, y, y2, color);
+    else if(y == y2) screen_fasthline(x, y, x2, color);
+    else {
+        // DDA Line Drawing Algorithm
+        int dx = x2 - x;
+        int dy = y2 - y;
+        int steps = 0;
+
+        if(abs(dx) > abs(dy)) steps = abs(dx);
+        else steps = abs(dy);
+
+        float x_increment = dx / (float) steps;
+        float y_increment = dy / (float) steps;
+
+        float px = x;
+        float py = y;
+
+        for(int v = 0; v < steps; v ++) {
+            screen_plot_pixel(px, py, color);
+            px += x_increment;
+            py += y_increment;
+        }
+    }
+}
+
+void screen_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) {
+    for(int dx = x; dx < x2; dx++) {
+        screen_plot_pixel(dx, y, color);
+    }
+}
+
+void screen_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) {
+    for(int dy = y; dy < y2; dy++) {
+        screen_plot_pixel(x, dy, color);
+    }
+}
+
 void screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) {
     // TODO: This won't work for non-monospace fonts. A width variable is needed - copy the
     // fontutils width code.
