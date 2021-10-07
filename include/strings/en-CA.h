@@ -21,7 +21,7 @@
 #define STRING_YES "Yes"
 #define STRING_SELECT "Select"
 #define STRING_BACK "Back"
-#define STRING_RESTART_DEVICE "Please restart your device."
+#define STRING_RESTART_DEVICE "Restart your device."
 #define STRING_ABOUT "About"
 
 // App Names
@@ -53,12 +53,15 @@
 #define STRING_TO_SET_UP_PHONE "to set up your phone."
 #define STRING_TO_CONTINUE "to continue."
 #define STRING_TO_USE_PHONE "to use your phone."
+#define STRING_OOBE_PROTOTYPE1 "Please note that this is"
+#define STRING_OOBE_PROTOTYPE2 "prototype software. You"
+#define STRING_OOBE_PROTOTYPE3 "may experience issues."
 #define STRING_OOBE_SLEEP1 "First, pick how long"
 #define STRING_OOBE_SLEEP2 "your phone should wait"
 #define STRING_OOBE_SLEEP3 "before it goes to sleep."
-#define STRING_OOBE_THEME1 "Next, pick whether you"
-#define STRING_OOBE_THEME2 "want your phone to have a"
-#define STRING_OOBE_THEME3 "light theme or a dark theme."
+#define STRING_OOBE_THEME1 "Next, pick what theme you"
+#define STRING_OOBE_THEME2 "would like your device to"
+#define STRING_OOBE_THEME3 "have."
 
 // Days
 #define STRING_DAY_SUNDAY "Sun."

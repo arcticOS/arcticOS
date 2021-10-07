@@ -108,36 +108,45 @@ void settings_run_factory_reset() {
 
         // Show a screen telling the user to restart, then hang the phone.
         // We do this so we can avoid issues relating to data accidentally sticking around after format.
-        // TODO: Use small fonts, the "restart your device" line runs past the edge of the screen.
         screen_fill(SCREEN_COLOR_RED);
-        screen_print(10, 10, foreground_color, SCREEN_FONT_DEFAULT, STRING_DATA_ERASED);
-        screen_print(10, 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_RESTART_DEVICE);
+        screen_print(10, 10, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_DATA_ERASED);
+        screen_print(10, 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_RESTART_DEVICE);
         screen_refresh();
         system_hang();
     }
 }
 
 void settings_run_oobe() {
-    // TODO: Use small fonts, most of the text runs past the screen edges.
     keypad_wait_for_no_button();
     flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
 
     // Friendly boot screen
     screen_fill(background_color);
-    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_LARGE, STRING_HELLO);
-    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT, STRING_PRESS_MIDDLE_BUTTON);
-    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_TO_SET_UP_PHONE);
+    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, STRING_HELLO);
+    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_TO_SET_UP_PHONE);
+    screen_refresh();
+    while(!keypad_is_button_pressed(BUTTON_O)) {}
+    keypad_wait_for_no_button();
+
+    // Friendly warning
+    screen_fill(background_color);
+    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE1);
+    screen_print_centered(46, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE2);
+    screen_print_centered(62, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE3);
+    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
     screen_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();
 
     // Time until sleep
     screen_fill(background_color);
-    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT, STRING_OOBE_SLEEP1);
-    screen_print_centered(46, foreground_color, SCREEN_FONT_DEFAULT, STRING_OOBE_SLEEP2);
-    screen_print_centered(62, foreground_color, SCREEN_FONT_DEFAULT, STRING_OOBE_SLEEP3);
-    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT, STRING_PRESS_MIDDLE_BUTTON);
-    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_TO_CONTINUE);
+    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_SLEEP1);
+    screen_print_centered(46, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_SLEEP2);
+    screen_print_centered(62, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_SLEEP3);
+    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
     screen_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();
@@ -145,11 +154,11 @@ void settings_run_oobe() {
 
     // Theme
     screen_fill(background_color);
-    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT, STRING_OOBE_THEME1);
-    screen_print_centered(46, foreground_color, SCREEN_FONT_DEFAULT, STRING_OOBE_THEME2);
-    screen_print_centered(62, foreground_color, SCREEN_FONT_DEFAULT, STRING_OOBE_THEME3);
-    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT, STRING_PRESS_MIDDLE_BUTTON);
-    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_TO_CONTINUE);
+    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_THEME1);
+    screen_print_centered(46, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_THEME2);
+    screen_print_centered(62, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_OOBE_THEME3);
+    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
     screen_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();
@@ -161,9 +170,9 @@ void settings_run_oobe() {
 
     // Friendly outro screen
     screen_fill(background_color);
-    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_LARGE, STRING_ALL_SET);
-    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT, STRING_PRESS_MIDDLE_BUTTON);
-    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_TO_USE_PHONE);
+    screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, STRING_ALL_SET);
+    screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_TO_USE_PHONE);
     screen_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();

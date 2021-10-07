@@ -52,7 +52,7 @@ void launcher_run() {
         screen_print_centered(42, foreground_color, SCREEN_FONT_DEFAULT, &date_buffer);
 
         // Draw the bottom bar
-        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_MENU);
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_O)) launcher_run_app_picker();
 

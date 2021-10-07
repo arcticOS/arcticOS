@@ -17,12 +17,16 @@
 
 #include <pico/stdlib.h>
 
+#include <graphics/fonts/vga.h>
 #include <graphics/fonts/sono.h>
+
+#define SCREEN_FONT_VGA &vga[0]
+
 #define SCREEN_FONT_SONO_TINY &sono_tiny[0]
 #define SCREEN_FONT_SONO_SMALL &sono_small[0]
 #define SCREEN_FONT_SONO_MEDIUM &sono_medium[0]
 
-#define SCREEN_FONT_DEFAULT_TINY SCREEN_FONT_SONO_TINY
+#define SCREEN_FONT_DEFAULT_TINY SCREEN_FONT_VGA
 #define SCREEN_FONT_DEFAULT_SMALL SCREEN_FONT_SONO_SMALL
 #define SCREEN_FONT_DEFAULT_MEDIUM SCREEN_FONT_SONO_MEDIUM
 #define SCREEN_FONT_DEFAULT_LARGE SCREEN_FONT_SONO_MEDIUM

@@ -22,7 +22,7 @@
 void system_panic(const char* message) {
     sleep_timer_goal = 0;
     screen_fill(SCREEN_COLOR_RED);
-    screen_print(10, 56, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT, message); // Print error
+    screen_print(10, 56, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT_TINY, message); // Print error
     while(1) { // Disable global timer and flash PANIC! on screen
         enable_global_timer = 0;
         screen_print(10, 10, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT_LARGE, "PANIC!");

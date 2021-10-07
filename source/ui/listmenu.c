@@ -44,8 +44,8 @@ int ui_list_menu(const char* title, char** items, int count) {
         }
 
         // Draw hint bar
-        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_SELECT);
-        screen_print(SCREEN_WIDTH - 10 - font_string_width(SCREEN_FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_BACK);
+        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_SELECT);
+        screen_print(SCREEN_WIDTH - 10 - font_string_width(SCREEN_FONT_DEFAULT_TINY, STRING_BACK), SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_BACK);
 
         screen_refresh();
 
