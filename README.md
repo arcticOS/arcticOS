@@ -15,7 +15,10 @@ Every modern phone company either sells your data or your attention, and they ma
 
 - ILI9341 display driver
 - Keypad driver for EVT1/EVT3
-- Sick BIOS font
+- Font rendering
+- Basic menus
+- Settings app
+- Factory reset
 - Low-power sleep mode
   
 ## Planned features
@@ -37,7 +40,7 @@ TBD
 ## Building
 
 Building arcticOS requires the Raspberry Pi Pico SDK to be located at `~/.pico_sdk` and the Raspberry Pi Pico toolchain binaries to be located at `~/opt/arm/bin`.  
-To build, run `build-<DEVICE>.sh`. For custom devices, create a new buildscript and `include/hardware` folder.  
+To build, run `build-<DEVICE>.sh`. For custom devices, create a new buildscript and sections in the files in `include/hardware/arcticOS` and `source/hardware`.
 
 ## FAQ
 
@@ -56,6 +59,7 @@ The final hardware configuration hasn't been fully decided yet, but it should lo
 - RP2040 CPU
 - Quectel EC25X modem (depends on region)
 - USB Type C
+- Triple-tap keypad + directional stick.
 
 ## License
 
