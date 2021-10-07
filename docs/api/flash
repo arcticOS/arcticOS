@@ -1,0 +1,22 @@
+Flash Storage API documentation
+=========
+
+API
+=========
+
+FUNCTIONS:
+flash_load_user_data(uint32_t offset, uint8_t* buffer);
+flash_write_user_data(uint32_t offset, uint8_t* buffer);
+flash_erase_user_data(uint32_t offset);
+
+DEVICE-SPECIFIC DEFINES:
+USER_DATA_ADDRESS Where in flash the user data starts
+USER_DATA_SIZE User data buffer size
+
+GLOBAL DEFINES:
+FLASH_OFFSET_SETTINGS - Offset in flash where user settings are stored.
+FLASH_OFFSET_CONTACTS - Offset in flash where user contacts are stored.
+
+PORTING 
+=========
+All devices must provide a (or use a pre-existing) section in include/hardware/arcticOS/flash.h and source/hardware/screen.c with the device-specific functions and defines above.

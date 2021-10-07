@@ -1,0 +1,24 @@
+Kernel API documentation
+=========
+
+FUNCTIONS:
+system_sleep(); - Causes system to enter low-power mode for 10ms, and then check if we need to wake up before again entering low-power mode
+system_set_sleep_timer(int ms); - Sets the amount of milliseconds before the system enters sleep mode.
+system_reset_sleep_timer(); - Resets the amount of milliseconds passed in the sleep timer.
+system_timer_process(struct repeating_timer *t); - Increments the sleep timer, or resets it if user input given.
+system_sleep_ok(); - Tell the system it is okay to go to sleep if needed.
+
+system_disable_interrupts(); - Disable interrupts.
+system_enable_interrupts(); - Enable interrupts.
+
+system_panic(const char* message); - Kernel panic.
+system_hang(); - Freeze system.
+
+system_refresh_settings();
+
+DEFINES:
+ENFORCE_RTC_ENABLED - Whether or not to kernel panic when the RTC is not running.
+ENFORCE_WATCHDOG_COUNT - Amount of times the global timer must be called while it is running before a kernel panic (0 means do not kernel panic)
+ENFORCE_FLASH_WRITE_SUCCESS - Whether or not to kernel panic when writing to flash fails.
+
+BUILD_STRING - A string containing the current version of arcticOS.

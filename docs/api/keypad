@@ -1,0 +1,37 @@
+Keypad API documentation
+=========
+
+API
+=========
+
+DEVICE-SPECIFIC FUNCTIONS:
+keypad_init(); - Initialise keypad.
+keypad_no_buttons_pressed(); - Returns 1 if no buttons are pressed.
+keypad_is_character_pressed(char character); - Returns 1 if character is pressed.
+keypad_is_button_pressed(uint16_t button); - Returns button bit mapping if button is pressed.
+keypad_wait_for_no_button(); - Waits until no button is pressed, and then returns.
+
+DEVICE-SPECIFIC DEFINES:
+BUTTON_A - Bit mapping for the ANSWER button.
+BUTTON_O - Bit mapping for the OK button.
+BUTTON_E - Bit mapping for the END CALL button.
+BUTTON_1 - Bit mapping for the 1 button.
+BUTTON_2 - Bit mapping for the 2 button.
+BUTTON_3 - Bit mapping for the 3 button.
+BUTTON_4 - Bit mapping for the 4 button.
+BUTTON_5 - Bit mapping for the 5 button.
+BUTTON_6 - Bit mapping for the 6 button.
+BUTTON_7 - Bit mapping for the 7 button.
+BUTTON_8 - Bit mapping for the 8 button.
+BUTTON_9 - Bit mapping for the 9 button.
+BUTTON_STAR - Bit mapping for the STAR button.
+BUTTON_0 - Bit mapping for the 0 button.
+BUTTON_POUND - Bit mapping for the POUND button.
+
+GLOBAL DEFINES:
+SCREEN_FONT_DEFAULT - Pointer to the default font.
+
+PORTING 
+=========
+All devices must provide a (or use a pre-existing) section in include/hardware/arcticOS/keypad.h and source/hardware/keypad.c with the device-specific functions and defines above.
+All devices must at least have the buttons in EVT3.
