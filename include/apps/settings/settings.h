@@ -16,6 +16,7 @@
  */
 
 void settings_run();
+void settings_run_about();
 int settings_run_theme_picker();
 int settings_run_sleep_time_picker();
 void settings_run_factory_reset();

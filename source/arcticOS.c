@@ -97,11 +97,14 @@ int main(void) {
     // Init global timer + sleep mode
     add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
     
+    // Load user settings from flash
     system_refresh_settings();
 
     // Start launcher app
-    start_launcher();
+    launcher_run();
 
+    // This code should never run. If it does, the RAM has been so horribly corrupted that 
+    // it is somehow dropping a return call in the launcher.
     system_panic("Launcher exited!");
     return 0;
 }

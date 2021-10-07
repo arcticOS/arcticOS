@@ -22,6 +22,7 @@
 #define STRING_SELECT "Select"
 #define STRING_BACK "Back"
 #define STRING_RESTART_DEVICE "Please restart your device."
+#define STRING_ABOUT "About"
 
 // App Names
 #define STRING_APP_SETTINGS "Settings"
@@ -32,6 +33,7 @@
 #define STRING_LIGHT "Light"
 
 // Sleep time text
+#define STRING_DO_NOT_SLEEP "Do not sleep"
 #define STRING_SLEEP_TIME "Sleep Time"
 #define STRING_FIVE_SECONDS "5 Seconds"
 #define STRING_FIFTEEN_SECONDS "15 Seconds"

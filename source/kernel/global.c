@@ -26,6 +26,7 @@ void system_refresh_settings() {
     // Do OOBE if needed
     if(flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] == 0xFF) settings_run_oobe();
 
+    // Set theme
     int theme = flash_buffer[FLASH_SETTINGS_THEME];
     if(theme == 0) {
         background_color = 0xFFFF;
@@ -35,5 +36,6 @@ void system_refresh_settings() {
         foreground_color = 0xFFFF;
     }
 
+    // Set sleep timer
     system_set_sleep_timer(( (uint16_t) flash_buffer[FLASH_SETTINGS_SLEEP_TIME] << 8) + flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1]);
 }

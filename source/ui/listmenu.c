@@ -28,11 +28,13 @@ int ui_list_menu(const char* title, char** items, int count) {
         screen_fill(background_color);
         screen_print_centered(10, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, title);
 
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < count; i++) { // Loop through all items
+            // Draw text
             int y = (10 * (i + 1)) + (font_height * 2) + (i * font_height);
             if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
             screen_print_centered(y, foreground_color, SCREEN_FONT_DEFAULT, items[i]);
 
+            // Draw a line under the current line of text
             if(i == selected) {
                 int x = (SCREEN_WIDTH / 2) - (font_string_width(SCREEN_FONT_DEFAULT, items[i]) / 2);
                 for(int lx = x; lx < x + font_string_width(SCREEN_FONT_DEFAULT, items[i]); lx ++) {
@@ -41,6 +43,7 @@ int ui_list_menu(const char* title, char** items, int count) {
             }
         }
 
+        // Draw hint bar
         screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_SELECT);
         screen_print(SCREEN_WIDTH - 10 - font_string_width(SCREEN_FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_BACK);
 
@@ -49,6 +52,7 @@ int ui_list_menu(const char* title, char** items, int count) {
         if(KEYPAD_HAS_DPAD) {
 
         } else {
+            // Basic menu code
             if(keypad_is_button_pressed(BUTTON_8)) {
                 selected ++;
                 if(selected >= count) selected = 0;

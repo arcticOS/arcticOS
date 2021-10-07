@@ -20,6 +20,7 @@
 #include <hardware/arcticOS/screen.h>
 #include <hardware/arcticOS/keypad.h>
 
+// Just a basic loop where we sleep for 10ms, then check buttons, then loop
 void system_sleep() {
     screen_backlight_off();
     while(1) {
@@ -32,14 +33,18 @@ void system_sleep() {
     }
 }
 
+// Not needed but makes code look nicer
 void system_set_sleep_timer(int ms) {
     sleep_timer_goal = ms;
 }
 
+// Not needed but makes code look nicer
 void system_reset_sleep_timer() {
     sleep_timer_last = time_us_64();
 }
 
+// Tells the system it is good to go to sleep if needed
+// Happens every refresh
 void system_sleep_ok() {
     if(!sleep_timer_goal) return;
     if((time_us_64() - sleep_timer_last) / 1000 >= sleep_timer_goal) {

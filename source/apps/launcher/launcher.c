@@ -28,7 +28,7 @@
 char time_buffer[9];
 char date_buffer[32];
 
-void start_launcher() { 
+void launcher_run() { 
     while(1) {
         screen_fill(background_color);
 
@@ -47,17 +47,23 @@ void start_launcher() {
         // Get date as a string
         sprintf(date_buffer, "%s %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
 
+        // Draw the time & date
         screen_print_centered(10, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, &time_buffer);
         screen_print_centered(42, foreground_color, SCREEN_FONT_DEFAULT, &date_buffer);
-        screen_print_centered(SCREEN_HEIGHT - 52, foreground_color, SCREEN_FONT_DEFAULT, "Ver. 0.2a");
+
+        // Draw the bottom bar
         screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_MENU);
 
-        if(keypad_is_button_pressed(BUTTON_O)) {
-            keypad_wait_for_no_button();
-            const char* apps[1] = {STRING_APP_SETTINGS};
-            int choice = ui_list_menu(STRING_MENU, apps, 1);
-            if(choice == 0) settings_run();
-        }
+        if(keypad_is_button_pressed(BUTTON_O)) launcher_run_app_picker();
+
         screen_refresh();
     }
+}
+
+void launcher_run_app_picker() {
+    // Just a basic list of apps
+    keypad_wait_for_no_button();
+    const char* apps[1] = {STRING_APP_SETTINGS};
+    int choice = ui_list_menu(STRING_MENU, apps, 1);
+    if(choice == 0) settings_run();
 }

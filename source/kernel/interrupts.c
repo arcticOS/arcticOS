@@ -19,29 +19,33 @@
 #include <hardware/arcticOS/keypad.h>
 #include <hardware/irq.h>
 
+// Global timer
+// Keep this as fast as possible
 bool system_timer_process(struct repeating_timer *t) {
-    if(in_global_timer) {
-        if(ENFORCE_WATCHDOG_COUNT) {
+    if(in_global_timer) { // Don't go into global timer if we're already in it
+        if(ENFORCE_WATCHDOG_COUNT) { // This just makes sure no long operations in the global timer hang the system
             global_timer_watchdog ++;
             if(global_timer_watchdog >= ENFORCE_WATCHDOG_COUNT) system_panic("Watchdog BITE!");
         }
         return true;
     }
-    if(!enable_global_timer) return true;
+    if(!enable_global_timer) return true; // Don't go into global timer if it's disabled
 
     in_global_timer = 1;
+
+    // Reset the sleep timer if buttons are pressed
     if(sleep_timer_goal) {
         if(!keypad_no_buttons_pressed()) sleep_timer_last = time_us_64();
     }
 
-    global_timer_watchdog = 0;
+    global_timer_watchdog = 0; // Reset the watchdog, we're done here
     in_global_timer = 0;
     return true;
 }
 
 void system_disable_interrupts() {
     for(int i = 0; i < 25; i++) {
-        irq_table[i] = irq_is_enabled(i);
+        irq_table[i] = irq_is_enabled(i); // We need to save IRQ state, see system_enable_interrupts() for reason
         irq_set_enabled(i, 0);
     }
 }

@@ -15,21 +15,24 @@
  */
 
 int* font_get_offset(int* font, char character) {
-    character -= 0x20;
+    character -= 0x20; // Remove the unused 32 ASCII characters
+
+    // TODO: This won't work with non-monospace fonts.
     int font_byte_length = font[0] * font[1];
 	int* character_data = &font[2 + (character * (font_byte_length + 2))];
     return character_data;
 }
 
 int font_character_width(int* font, char character) {
-    return font_get_offset(font, character)[0];
+    return font_get_offset(font, character)[0]; // First character in character is width
 }
 
 int font_character_height(int* font) {
-    return font[1];
+    return font[1]; // Second character in font is height
 }
 
 int font_string_width(int* font, const char* string) {
+    // This is future-proofed for non-monospace fonts.
     int i = 0;
     int width = 0;
     while(string[i]) {

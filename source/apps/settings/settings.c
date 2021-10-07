@@ -25,17 +25,50 @@
 
 #include <ui/listmenu.h>
 
-void settings_run() {
+void settings_run() { // List submenus
     while(1) {
         flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
-        const char* menu_items[3] = {STRING_THEME, STRING_SLEEP_TIME, STRING_ERASE_DATA};
-        int choice = ui_list_menu(STRING_APP_SETTINGS, &menu_items, 3);
+        const char* menu_items[4] = {STRING_ABOUT, STRING_THEME, STRING_SLEEP_TIME, STRING_ERASE_DATA};
+        int choice = ui_list_menu(STRING_APP_SETTINGS, &menu_items, 4);
         if(choice == -1) return;
-        else if(choice == 0) settings_run_theme_picker();
-        else if(choice == 1) settings_run_sleep_time_picker();
-        else if(choice == 2) settings_run_factory_reset();
+        else if(choice == 0) settings_run_about();
+        else if(choice == 1) settings_run_theme_picker();
+        else if(choice == 2) settings_run_sleep_time_picker();
+        else if(choice == 3) settings_run_factory_reset();
         flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
         system_refresh_settings();
+    }
+}
+
+void settings_run_about() {
+    // This is based off the list menu code (ui/listmenu.c)
+    // Just loops through and prints all needed about menu items
+    while(1) {
+        int font_height = font_character_height(SCREEN_FONT_DEFAULT);
+        screen_fill(background_color);
+        screen_print_centered(10, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, STRING_ABOUT);
+
+        const char* items[1] = {BUILD_STRING};
+        int count = 1;
+
+        for(int i = 0; i < count; i++) {
+            int y = (10 * (i + 1)) + (font_height * 2) + (i * font_height);
+            if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
+            screen_print_centered(y, foreground_color, SCREEN_FONT_DEFAULT, items[i]);
+        }
+
+        screen_print(SCREEN_WIDTH - 10 - font_string_width(SCREEN_FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_BACK);
+
+        screen_refresh();
+
+        if(KEYPAD_HAS_DPAD) {
+
+        } else {
+            if(keypad_is_button_pressed(BUTTON_E)) {
+                keypad_wait_for_no_button();
+                return;
+            }
+        }
     }
 }
 
@@ -52,22 +85,30 @@ int settings_run_theme_picker() {
 int settings_run_sleep_time_picker() {
     screen_fill(background_color);
 
-    uint16_t sleep_time = 0;
-    uint16_t sleep_times[5] = {5000, 15000, 30000, 60000, 120000};
-    const char* sleep_times_menu[5] = {STRING_FIVE_SECONDS, STRING_FIFTEEN_SECONDS, STRING_THIRTY_SECONDS, STRING_ONE_MINUTE, STRING_TWO_MINUTES};
-    int result = ui_list_menu(STRING_SLEEP_TIME, &sleep_times_menu, 5);
-    if(result == -1) { keypad_wait_for_no_button(); return 1; }
-    sleep_time = sleep_times[result];
+    uint16_t sleep_times[4] = {0, 5000, 15000, 30000}; // These correspond to the string list below, times are in milliseconds
+    const char* sleep_times_menu[4] = {STRING_DO_NOT_SLEEP, STRING_FIVE_SECONDS, STRING_FIFTEEN_SECONDS, STRING_THIRTY_SECONDS};
+
+    int result = ui_list_menu(STRING_SLEEP_TIME, &sleep_times_menu, 4); // Basic list menu
+    if(result == -1) { keypad_wait_for_no_button(); return 1; } // Return if the user clicked back
+    uint16_t sleep_time = sleep_times[result]; // Cleans up the below code slightly + allows it to be more easily reused
+    
+    // Convert the uint16_t into two uint8_t variables and store them in the flash buffer
     flash_buffer[FLASH_SETTINGS_SLEEP_TIME] = sleep_time >> 8;
     flash_buffer[FLASH_SETTINGS_SLEEP_TIME + 1] = (uint8_t) sleep_time;
+
     keypad_wait_for_no_button();
     return 0;
 }
 
 void settings_run_factory_reset() {
-    const char* menu_items[6] = {STRING_NO, STRING_NO, STRING_NO, STRING_NO, STRING_YES, STRING_NO};
-    if(ui_list_menu(STRING_CONFIRM_ERASE_DATA, &menu_items, 6) == 4) {
-        flash_erase_user_data(FLASH_OFFSET_SETTINGS);
+    const char* menu_items[6] = {STRING_NO, STRING_NO, STRING_NO, STRING_NO, STRING_YES, STRING_NO}; // Shamelessly stolen from old Android bootloaders
+
+    if(ui_list_menu(STRING_CONFIRM_ERASE_DATA, &menu_items, 6) == 4) { // Make sure the user wants to wipe the phone
+        flash_erase_user_data(FLASH_OFFSET_SETTINGS); // Wipe the phone
+
+        // Show a screen telling the user to restart, then hang the phone.
+        // We do this so we can avoid issues relating to data accidentally sticking around after format.
+        // TODO: Use small fonts, the "restart your device" line runs past the edge of the screen.
         screen_fill(SCREEN_COLOR_RED);
         screen_print(10, 10, foreground_color, SCREEN_FONT_DEFAULT, STRING_DATA_ERASED);
         screen_print(10, 26, foreground_color, SCREEN_FONT_DEFAULT, STRING_RESTART_DEVICE);
@@ -77,9 +118,11 @@ void settings_run_factory_reset() {
 }
 
 void settings_run_oobe() {
+    // TODO: Use small fonts, most of the text runs past the screen edges.
     keypad_wait_for_no_button();
     flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
 
+    // Friendly boot screen
     screen_fill(background_color);
     screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_LARGE, STRING_HELLO);
     screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT, STRING_PRESS_MIDDLE_BUTTON);
@@ -112,9 +155,11 @@ void settings_run_oobe() {
     keypad_wait_for_no_button();
     while(settings_run_theme_picker()) {}
 
+    // Save the user's choices to flash
     flash_buffer[FLASH_SETTINGS_OOBE_COMPLETE] = 1;
     flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
 
+    // Friendly outro screen
     screen_fill(background_color);
     screen_print_centered(30, foreground_color, SCREEN_FONT_DEFAULT_LARGE, STRING_ALL_SET);
     screen_print_centered(SCREEN_HEIGHT - 42, foreground_color, SCREEN_FONT_DEFAULT, STRING_PRESS_MIDDLE_BUTTON);

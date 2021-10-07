@@ -22,12 +22,14 @@
 #include <pico/stdlib.h>
 #include <hardware/gpio.h>
 
-int keypad_buttons[8] = {7, 8, 9, 10, 11, 12, 13, 14};
+int keypad_buttons[8] = {7, 8, 9, 10, 11, 12, 13, 14}; // The GPIO pins the keypad is on
 
+// What buttons/characters are pressed
 uint16_t buttons_pressed = 0;
 char characters_pressed[16];
 
-uint16_t keypad_button_matrix[5][3] = { // I don't even know what the fuck causes this bug but there's no way in hell I'm hunting it down right now
+// Contains the button bit mapping.
+uint16_t keypad_button_matrix[5][3] = {
     {BUTTON_A, BUTTON_O, BUTTON_E},
     {BUTTON_1, BUTTON_2, BUTTON_3},
     {BUTTON_4, BUTTON_5, BUTTON_6},
@@ -35,6 +37,7 @@ uint16_t keypad_button_matrix[5][3] = { // I don't even know what the fuck cause
     {BUTTON_STAR, BUTTON_0, BUTTON_POUND}
 };
 
+// Contains the button character translation.
 char keypad_button_translation[5][3] = {
     {'A', 'O', 'E'},
     {'1', '2', '3'},
@@ -62,28 +65,33 @@ void keypad_init() {
 
 void keypad_refresh() {
     buttons_pressed = 0x0000;
+    
+    // TODO: Are the busy waits needed?
     for(int y = 3; y < 8; y++) {
-        gpio_put(keypad_buttons[y], 0);
-        busy_wait_us(200);
+        gpio_put(keypad_buttons[y], 0); // Set the Y pin low
+        busy_wait_us(200); // Bug fix(?)
 
-        for(int x = 0; x < 3; x++) {
-            busy_wait_us(200);
+        for(int x = 0; x < 3; x++) { // Scan the X pins and set the needed bits in buttons_pressed
+            busy_wait_us(200); // Bug fix(?)
             if(!gpio_get(keypad_buttons[x])) {
                 buttons_pressed |= keypad_button_matrix[y - 3][x];
                 characters_pressed[(y * 3) + x] = keypad_button_translation[y - 3][x];
             } else characters_pressed[(y * 3) + x] = 0x00;
         }
 
-        gpio_put(keypad_buttons[y], 1);
-        busy_wait_us(200);
+        gpio_put(keypad_buttons[y], 1); // Set the Y pin high
+        busy_wait_us(200); // Bug fix(?)
     }
 }
 
+// Returns 0 if buttons are pressed, otherwise returns 1.
 bool keypad_no_buttons_pressed() {
     keypad_refresh();
     return buttons_pressed == 0x0000;
 }
 
+// Returns 0 if character is not pressed, otherwise returns 1.
+// TODO: Fix this
 bool keypad_is_character_pressed(char character){ 
     keypad_refresh();
     for(int i = 0; i < 16; i++) {
@@ -92,11 +100,13 @@ bool keypad_is_character_pressed(char character){
     return false;
 }
 
+// Returns button bit mapping if button is pressed, otherwise returns 0.
 bool keypad_is_button_pressed(uint16_t button){ 
     keypad_refresh();
     return buttons_pressed & button;
 }
 
+// Waits until there is no button pressed.
 void keypad_wait_for_no_button() {
     while(buttons_pressed) {
         keypad_refresh();

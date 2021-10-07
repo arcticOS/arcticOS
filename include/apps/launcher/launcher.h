@@ -17,4 +17,5 @@
  * This is meant to run on RP2040-based boards.
  */
 
-void start_launcher();
+void launcher_run();
+void launcher_run_app_picker();

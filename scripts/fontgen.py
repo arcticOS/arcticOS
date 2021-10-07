@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Converts a TTF file to a c file for use with arcticOS.
 import sys, os, string, shlex
 
 fontpath = sys.argv[1]
@@ -14,8 +15,6 @@ output = "int " + name + "[] = {" + bytesperrow + "," + height + ","
 
 output += "\n"
 for character in " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~":
-    #os.system("convert +dither -resize " + size + "\\! -font " + fontpath + " -pointsize 32 label:" + shlex.quote(character) + " temp.xbm")
-    #os.system("convert +dither -scale " + size + "\\! -font " + fontpath + " -pointsize 32 label:" + shlex.quote(character) + " temp.xbm")
     os.system("convert +dither -scale " + size + " -font " + fontpath + " -pointsize 32 label:" + shlex.quote(character) + " temp.xbm")
     with open("temp.xbm") as tempfile:
         contents = tempfile.read()

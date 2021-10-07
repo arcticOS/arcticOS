@@ -26,6 +26,7 @@
 
 const uint8_t *flash_user_data = (const uint8_t *) (XIP_BASE + USER_DATA_ADDRESS);
 
+// Loads a sector of flash into the buffer in arcticOS.c
 void flash_load_user_data(uint32_t offset, uint8_t* buffer) {
     system_disable_interrupts();
     for(int i = 0; i < USER_DATA_SIZE; i++) {
@@ -34,13 +35,15 @@ void flash_load_user_data(uint32_t offset, uint8_t* buffer) {
     system_enable_interrupts();
 }
 
+// Writes a sector of flash from a buffer.
 void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
-    for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) {
+    for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) { // Writes always fail the first time for some reason.
         system_disable_interrupts();
-        flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE);
-        flash_range_program(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), buffer, USER_DATA_SIZE);
+        flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE); // Erase the sector.
+        flash_range_program(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), buffer, USER_DATA_SIZE); // Write the sector.
         system_enable_interrupts();
 
+        // Verify flash write.
         if(ENFORCE_FLASH_WRITE_SUCCESS) {
             int fail = 0;
             for(int i = 0; i < USER_DATA_SIZE; i++) {
@@ -52,15 +55,19 @@ void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
             if(!fail) return;
         } else return;
     }
+
+    // This will only be called if flash writes are enforced and the write fails 3 times.
     system_panic("Flash Failed to Verify");
 }
 
+// Erases a sector of flash.
 void flash_erase_user_data(uint32_t offset) {
-    for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) {
+    for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) { // Writes always fail the first time for some reason.
         system_disable_interrupts();
-        flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE);
+        flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE); // Erase the sector.
         system_enable_interrupts();
 
+        // Verify flash write.
         if(ENFORCE_FLASH_WRITE_SUCCESS) {
             int fail = 0;
             for(int i = 0; i < USER_DATA_SIZE; i++) {
@@ -72,6 +79,8 @@ void flash_erase_user_data(uint32_t offset) {
             if(!fail) return;
         } else return;
     }
+
+    // This will only be called if flash writes are enforced and the write fails 3 times.
     system_panic("Flash Failed to Verify");
 }
 #endif

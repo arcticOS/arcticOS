@@ -20,6 +20,8 @@
 #include <graphics/fonts/fontutils.h>
 
 void screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) {
+    // TODO: This won't work for non-monospace fonts. A width variable is needed - copy the
+    // fontutils width code.
     int i = 0;
 	while(string[i]) {
 		screen_putchar(x + (i * font_character_width(font, string[i])), y, color, font, string[i]);
@@ -28,8 +30,8 @@ void screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char*
 }
 
 void screen_print_centered(uint16_t y, uint16_t color, int* font, const char* string) {
-    uint16_t x = (SCREEN_WIDTH / 2) - (font_string_width(font, string) / 2);
-    screen_print(x, y, color, font, string);
+    uint16_t x = (SCREEN_WIDTH / 2) - (font_string_width(font, string) / 2); // Figure out where we need to draw the text to drop it in the center
+    screen_print(x, y, color, font, string); // Put it there
 }
 
 #if defined(EVT3) || defined(EVT4)

@@ -23,8 +23,7 @@
 #define ENFORCE_WATCHDOG_COUNT 0
 #define ENFORCE_FLASH_WRITE_SUCCESS 1
 
-#define BUILD_VERSION "0.2"
-#define BUILD_SUFFIX "-alpha"
+#define BUILD_STRING "Ver. 0.2a"
 
 // No longer build settings
 #include <pico/stdlib.h>
