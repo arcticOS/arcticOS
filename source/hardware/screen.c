@@ -34,6 +34,39 @@ void screen_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16
     }
 }
 
+void screen_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) {
+    // Bresenham's Algorithm
+    uint16_t dx = 0, dy = r;
+    int16_t d = 3 - (2 * r); // I spent 30 minutes debugging, turns out the problem was I was using unsigned ints. FML
+    screen_plot_pixel(x + dx, y + dy, color);
+    screen_plot_pixel(x - dx, y + dy, color);
+    screen_plot_pixel(x + dx, y - dy, color);
+    screen_plot_pixel(x - dx, y - dy, color);
+    screen_plot_pixel(x + dy, y + dx, color);
+    screen_plot_pixel(x - dy, y + dx, color);
+    screen_plot_pixel(x + dy, y - dx, color);
+    screen_plot_pixel(x - dy, y - dx, color);
+    while (dy >= dx)
+    {
+        dx++;
+ 
+        if (d > 0)
+        {
+            dy--;
+            d = d + 4 * (dx - dy) + 10;
+        }
+        else d = d + 4 * dx + 6;
+        screen_plot_pixel(x + dx, y + dy, color);
+        screen_plot_pixel(x - dx, y + dy, color);
+        screen_plot_pixel(x + dx, y - dy, color);
+        screen_plot_pixel(x - dx, y - dy, color);
+        screen_plot_pixel(x + dy, y + dx, color);
+        screen_plot_pixel(x - dy, y + dx, color);
+        screen_plot_pixel(x + dy, y - dx, color);
+        screen_plot_pixel(x - dy, y - dx, color);
+    }
+}
+
 void screen_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) {
     if(x == x2) screen_fastvline(x, y, y2, color);
     else if(y == y2) screen_fasthline(x, y, x2, color);

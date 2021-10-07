@@ -5,7 +5,6 @@ TODO for version 0.2a
     * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
 - printf implementation for screen functions
 - Add more primitives
-    - Circle
     - Round Rect
 
 == UI ==
