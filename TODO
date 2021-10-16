@@ -10,6 +10,7 @@ TODO for version 0.2a
 - printf implementation for screen functions
 - Add more primitives
     - Round Rect
+- Move whole OS to new graphics API
 
 == UI ==
 

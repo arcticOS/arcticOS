@@ -15,28 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef ARCTICOS_SYSCALL_H
-#define ARCTICOS_SYSCALL_H
+#include <pico/stdlib.h>
 
-#include <arcticOS.h>
-
-struct syscall_params {
-    int type;
-    uint16_t param0;
-    uint16_t param1;
-    uint16_t param2;
-    uint16_t param3;
-};
-
-void do_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3) {
-    struct syscall_params params;
-    params.type = type;
-    params.param0 = param0;
-    params.param1 = param1;
-    params.param2 = param2;
-    params.param3 = param3;
-    asm volatile("mov R1, %0" : : "r" (&params));
-    irq_set_pending(30);
-}
-
-#endif
+void screen_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void screen_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void screen_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
+void screen_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
+void screen_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void screen_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color);
+void screen_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color);

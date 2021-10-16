@@ -22,6 +22,8 @@
 #include <hardware/arcticOS/screen.h>
 #include <hardware/arcticOS/keypad.h>
 
+#include <arcticOS/graphics.h>
+
 #include <apps/launcher/launcher.h>
 #include <apps/settings/settings.h>
 
