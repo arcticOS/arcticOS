@@ -1,5 +1,9 @@
 TODO for version 0.2a
 
+== KERNEL ==
+- Figure out how to do multitasking
+- Create syscalls for API
+
 == GRAPHICS ==
 - Add bitmap rendering
     * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
