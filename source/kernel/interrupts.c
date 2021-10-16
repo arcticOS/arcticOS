@@ -44,14 +44,14 @@ bool system_timer_process(struct repeating_timer *t) {
 }
 
 void system_disable_interrupts() {
-    for(int i = 0; i < 25; i++) {
+    for(int i = 0; i < 32; i++) {
         irq_table[i] = irq_is_enabled(i); // We need to save IRQ state, see system_enable_interrupts() for reason
         irq_set_enabled(i, 0);
     }
 }
 
 void system_enable_interrupts() {
-    for(int i = 0; i < 25; i++) {
+    for(int i = 0; i < 32; i++) {
         irq_set_enabled(i, irq_table[i]); // If we enable unhandled interrupts, it triggers a breakpoint for some reason
     }
 }

@@ -58,6 +58,10 @@ void system_sleep_ok(); // Tell the system it is okay to go to sleep if needed.
 void system_disable_interrupts(); // Disable interrupts.
 void system_enable_interrupts(); // Enable interrupts.
 
+// System call functions
+void register_syscall_handler();
+void handle_syscall(void);
+
 // Debug functions
 void system_panic(const char* message); // Kernel panic.
 void system_hang(); // Freeze system.

@@ -58,7 +58,7 @@ uint16_t foreground_color = 0xFFFF;
 
 // Used for disabling/enabling interrupts
 #include <hardware/irq.h>
-int irq_table[25];
+int irq_table[32];
 
 // Used for interfacing with other hardware on motherboard
 #include <hardware/arcticOS/cellular.h>
@@ -78,6 +78,9 @@ uint8_t flash_buffer[USER_DATA_SIZE];
 
 // Initialise arcticOS
 int main(void) {
+    // Pre-init stage
+    register_syscall_handler();
+
     // Init cellular
     cellular_init();
 
