@@ -1,0 +1,13 @@
+Graphics API documentation
+=========
+
+FUNCTIONS:
+graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
+graphics_refresh() - Pushes the screen buffer to the screen.
+graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a rectangle to the screen.
+graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a filled rectangle to the screen.
+graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a circle to the screen.
+graphics_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a filled circle to the screen.
+graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a line on the screen.
+graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) - Quickly (skip DDA) draw a horizontal line on the screen.
+graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) - Quickly (skip DDA) draw a vertical line on the screen.
