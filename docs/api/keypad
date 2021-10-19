@@ -1,10 +1,12 @@
 Keypad API documentation
 =========
 
-DEVICE-SPECIFIC FUNCTIONS:
-keypad_init(); - Initialise keypad.
+FUNCTIONS:
+keypad_no_buttons_pressed(); - Returns 1 if no buttons are pressed.
+keypad_is_button_pressed(uint16_t button); - Returns 0 if button is not pressed.
+keypad_wait_for_no_button(); - Waits until no button is pressed, and then returns.
 
-DEVICE-SPECIFIC DEFINES:
+DEFINES:
 BUTTON_A - Bit mapping for the ANSWER button.
 BUTTON_O - Bit mapping for the OK button.
 BUTTON_E - Bit mapping for the END CALL button.

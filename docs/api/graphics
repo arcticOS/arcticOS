@@ -2,12 +2,57 @@ Graphics API documentation
 =========
 
 FUNCTIONS:
-graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
-graphics_refresh() - Pushes the screen buffer to the screen.
-graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a rectangle to the screen.
-graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a filled rectangle to the screen.
-graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a circle to the screen.
-graphics_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a filled circle to the screen.
-graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a line on the screen.
-graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) - Quickly (skip DDA) draw a horizontal line on the screen.
-graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) - Quickly (skip DDA) draw a vertical line on the screen.
+void graphics_get_screen_size() - Refreshes screen size and stores it in SCREEN_WIDTH and SCREEN_HEIGHT.
+void graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
+void graphics_refresh() - Pushes the screen buffer to the screen.
+void graphics_fill(uint16_t color) - Fills the screen with a color.
+void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a rectangle to the screen.
+void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a filled rectangle to the screen.
+void graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a circle to the screen.
+void graphics_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a filled circle to the screen.
+void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a line on the screen.
+void graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) - Quickly (skip DDA) draw a horizontal line on the screen.
+void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) - Quickly (skip DDA) draw a vertical line on the screen.
+
+int* text_get_offset(int* font, char character) - Gets offset of character inside font. Returns pointer to character.
+int text_character_width(int* font, char character) - Gets width of character in font. Returns width in pixels.
+int text_character_height(int* font) - Gets height of font. Returns height in pixels.
+int text_string_width(int* font, const char* string) - Gets witdth of a whole string in a given font. Returns width in pixels.
+void text_draw_character(uint16_t x, uint16_t y, uint16_t color, int* font, char character) - Draws one character to screen.
+void text_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) - Draws a string to the screen.
+void text_print_centered(uint16_t y, uint16_t color, int* font, const char* string) - Draws a string centered on the screen.
+
+void ui_draw_element_outline(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) - Draws the outside of a graphics element.
+void ui_draw_element_inside(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) - Draws the inside of a graphics element.
+void ui_draw_button(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, const char* text) - Draws an unpressed button.
+void ui_draw_button_pressed(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, const char* text) - Draws a pressed button.
+int ui_list_menu(const char* title, char** items, int count) - Creates a usable list. Returns index of selected item.
+
+DEFINES:
+COLOR_BLACK - Black in RGB565.
+COLOR_DARKER_GREY - Very dark grey in RGB565.
+COLOR_DARK_GREY - Dark grey in RGB565.
+COLOR_GREY - Grey in RGB565.
+COLOR_LIGHT_GREY - Light grey in RGB565.
+COLOR_WHITE - White in RGB565.
+
+COLOR_RED - Red in RGB565.
+COLOR_YELLOW - Yellow in RGB565.
+COLOR_GREEN - Green in RGB565.
+COLOR_CYAN - Cyan in RGB565.
+COLOR_BLUE - Blue in RGB565.
+COLOR_MAGENTA - Magenta in RGB565.
+
+FONT_VGA - VGA font.
+FONT_SONO_TINY - Tiny version of the Sono font.
+FONT_SONO_SMALL - Small version of the Sono font.
+FONT_SONO_MEDIUM - Medium version of the Sono font.
+FONT_DEFAULT_TINY - Default tiny font.
+FONT_DEFAULT_SMALL - Default small font.
+FONT_DEFAULT_MEDIUM - Default medium font.
+FONT_DEFAULT_LARGE - Default large font.
+FONT_DEFAULT - Default font.
+
+VARIABLES:
+int SCREEN_WIDTH - Stores width of screen.
+int SCREEN_HEIGHT - Stores height of screen.

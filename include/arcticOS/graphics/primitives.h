@@ -35,6 +35,7 @@
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
 
+void graphics_get_screen_size();
 void graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color);
 void graphics_refresh();
 void graphics_fill(uint16_t color);

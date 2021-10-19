@@ -10,24 +10,11 @@ screen_backlight_on() - Turn on the screen backlight.
 screen_backlight_off() - Turn off the screen backlight.
 screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
 screen_fill(uint16_t color) - Fills the screen with one color.
-screen_putchar(uint16_t x, uint16_t y, uint16_t color, int* font, char character) - Places one character on the screen.
 screen_refresh() - Pushes the screen buffer to the screen.
-
-GLOBAL FUNCTIONS:
-screen_print(uint16_t x, uint16_t y, uint16_t color, int* font, const char* string) - Print a string to the screen.
-screen_print_centered(uint16_t y, uint16_t color, int* font, const char* string) - Print a string to the screen, centered on the X axis.
 
 DEVICE-SPECIFIC DEFINES:
 SCREEN_WIDTH - Screen width.
 SCREEN_HEIGHT - Screen height.
-SCREEN_COLOR_BLACK - Value for the color black.
-SCREEN_COLOR_WHITE - Value for the color white.
-SCREEN_COLOR_RED - Value for the color red.
-SCREEN_COLOR_BLUE - Value for the color blue.
-SCREEN_COLOR_GREEN - Value for the color green.
-
-GLOBAL DEFINES:
-SCREEN_FONT_DEFAULT - Pointer to the default font.
 
 PORTING 
 =========
