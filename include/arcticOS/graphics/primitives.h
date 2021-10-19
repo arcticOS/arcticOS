@@ -17,10 +17,10 @@
 
 #include <pico/stdlib.h>
 
-void screen_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
-void screen_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
-void screen_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
-void screen_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
-void screen_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
-void screen_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color);
-void screen_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color);
+void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
+void graphics_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
+void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color);
+void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color);

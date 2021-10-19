@@ -50,7 +50,8 @@ void mode2_clear(uint16_t color) {
 void mode2_pixel(uint16_t x, uint16_t y, uint16_t color) {
 	if(x < 0 || x >= ILI9341_TFTWIDTH) return;
 	if(y < 0 || y >= ILI9341_TFTHEIGHT) return;
-	mode2_buffer[y*ILI9341_TFTWIDTH+x] = color;
+	uint16_t real_color = (color >> 8) | (color << 8);
+	mode2_buffer[y*ILI9341_TFTWIDTH+x] = real_color;
 }
 
 void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color) {

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/graphics.h>
+#include <arcticOS/graphics/primitives.h>
 #include <arcticOS/kernel/syscall.h>
 
 void graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {
@@ -28,7 +28,7 @@ void graphics_refresh() {
 
 void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) {
     graphics_fasthline(x, y, x2, color);
-    graphics_fasthline(x, y2, x2, color);
+    graphics_fasthline(x, y2, x2 + 1, color);
     graphics_fastvline(x, y, y2, color);
     graphics_fastvline(x2, y, y2, color);
 }

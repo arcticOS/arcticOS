@@ -22,7 +22,8 @@
 #include <hardware/arcticOS/screen.h>
 #include <hardware/arcticOS/keypad.h>
 
-#include <arcticOS/graphics.h>
+#include <arcticOS/graphics/primitives.h>
+#include <arcticOS/graphics/ui.h>
 
 #include <apps/launcher/launcher.h>
 #include <apps/settings/settings.h>
@@ -49,12 +50,16 @@ void launcher_run() {
         // Get date as a string
         sprintf(date_buffer, "%s %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
 
+        ui_draw_element_outline(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 70);
+        ui_draw_element_inside(4, 78, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
+
         // Draw the time & date
         screen_print_centered(10, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, &time_buffer);
         screen_print_centered(42, foreground_color, SCREEN_FONT_DEFAULT, &date_buffer);
 
         // Draw the bottom bar
-        screen_print_centered(SCREEN_HEIGHT - 26, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_MENU);
+        screen_print_centered(SCREEN_HEIGHT - 24, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_O)) launcher_run_app_picker();
 

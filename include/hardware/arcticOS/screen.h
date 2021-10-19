@@ -49,7 +49,6 @@ void screen_print_centered(uint16_t y, uint16_t color, int* font, const char* st
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 320
 
-// BRG for some stupid reason
 #define SCREEN_COLOR_BLACK 0x0000
 #define SCREEN_COLOR_WHITE 0xFFFF
 #define SCREEN_COLOR_RED 0x07E0
