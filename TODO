@@ -3,6 +3,8 @@ TODO for version 0.2a
 == KERNEL ==
 - Figure out how to do multitasking
 - Create syscalls for API
+    - Global settings
+    - Flash memory
 
 == GRAPHICS ==
 - Add bitmap rendering

@@ -56,28 +56,30 @@ int ui_list_menu(const char* title, char** items, int count) {
     int selected = 0;
 
     while(1) {
-        int font_height = text_character_height(FONT_DEFAULT);
-        graphics_fill(COLOR_WHITE);
+        int font_height = text_character_height(FONT_DEFAULT_TINY);
+
+        ui_draw_element_outline(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 42);
+        ui_draw_element_inside(4, 50, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
+
         text_print_centered(10, COLOR_BLACK, FONT_DEFAULT_MEDIUM, title);
 
         for(int i = 0; i < count; i++) { // Loop through all items
             // Draw text
-            int y = (10 * (i + 1)) + (font_height * 2) + (i * font_height);
+            int y = 51 + (i * font_height);
             if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
-            text_print_centered(y, COLOR_BLACK, FONT_DEFAULT, items[i]);
+            text_print(10, y, COLOR_BLACK, FONT_DEFAULT_TINY, items[i]);
 
             // Draw a line under the current line of text
             if(i == selected) {
-                int x = (SCREEN_WIDTH / 2) - (text_string_width(FONT_DEFAULT, items[i]) / 2);
-                for(int lx = x; lx < x + text_string_width(FONT_DEFAULT, items[i]); lx ++) {
-                    graphics_plot_pixel(lx, y + font_height, COLOR_BLACK);
-                }
+                graphics_filled_rect(5, y, SCREEN_WIDTH - 4, y + font_height, COLOR_BLUE);
+                text_print(10, y, COLOR_WHITE, FONT_DEFAULT_TINY, items[i]);
             }
         }
 
         // Draw hint bar
-        text_print_centered(SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_SELECT);
-        text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT_TINY, STRING_BACK), SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_BACK);
+        text_print_centered(SCREEN_HEIGHT - 24, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_SELECT);
+        text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT_TINY, STRING_BACK), SCREEN_HEIGHT - 24, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_BACK);
 
         graphics_refresh();
 

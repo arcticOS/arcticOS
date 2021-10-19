@@ -48,20 +48,25 @@ void settings_run_about() {
     // This is based off the list menu code (ui/listmenu.c)
     // Just loops through and prints all needed about menu items
     while(1) {
-        int font_height = text_character_height(FONT_DEFAULT);
-        graphics_fill(COLOR_WHITE);
-        text_print_centered(10, COLOR_BLACK, FONT_DEFAULT_MEDIUM, STRING_ABOUT);
-
         const char* items[1] = {BUILD_STRING};
         int count = 1;
 
-        for(int i = 0; i < count; i++) {
-            int y = (10 * (i + 1)) + (font_height * 2) + (i * font_height);
+        int font_height = text_character_height(FONT_DEFAULT_TINY);
+
+        ui_draw_element_outline(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 42);
+        ui_draw_element_inside(4, 50, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
+
+        text_print_centered(10, COLOR_BLACK, FONT_DEFAULT_MEDIUM, STRING_ABOUT);
+
+        for(int i = 0; i < count; i++) { // Loop through all items
+            // Draw text
+            int y = 50 + (i * font_height);
             if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
-            text_print_centered(y, COLOR_BLACK, FONT_DEFAULT, items[i]);
+            text_print(10, y, COLOR_BLACK, FONT_DEFAULT_TINY, items[i]);
         }
 
-        text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT, STRING_BACK);
+        text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT, STRING_BACK), SCREEN_HEIGHT - 24, COLOR_BLACK, FONT_DEFAULT, STRING_BACK);
 
         graphics_refresh();
 
