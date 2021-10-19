@@ -65,6 +65,8 @@ int irq_table[32];
 #include <hardware/arcticOS/keypad.h>
 #include <hardware/arcticOS/screen.h>
 
+#include <arcticOS/input/keypad.h>
+
 // Used for flash memory
 #include <hardware/arcticOS/flash.h>
 uint8_t flash_buffer[USER_DATA_SIZE];

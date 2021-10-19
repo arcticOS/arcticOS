@@ -18,12 +18,25 @@
 #include <arcticOS/graphics/primitives.h>
 #include <arcticOS/kernel/syscall.h>
 
+int SCREEN_WIDTH = 0;
+int SCREEN_HEIGHT = 0;
+
+void graphics_get_screen_size() {
+    do_returning_system_call(0, 4, 0, 0, 0, &SCREEN_WIDTH);
+    do_returning_system_call(0, 5, 0, 0, 0, &SCREEN_HEIGHT);
+}
+
 void graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {
     do_system_call(0, 2, x, y, color);
 }
 
 void graphics_refresh() {
     do_system_call(0, 3, 0, 0, 0);
+}
+
+void graphics_fill(uint16_t color) {
+    graphics_get_screen_size();
+    graphics_filled_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, color);
 }
 
 void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) {

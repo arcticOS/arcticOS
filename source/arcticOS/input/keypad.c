@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2021 Shawn Hyam, Johnny Stene
+ * arcticOS
+ * Copyright (C) 2021 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -14,17 +15,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef _MODE2_H
-#define _MODE2_H
+#include <arcticOS/input/keypad.h>
+#include <arcticOS/kernel/syscall.h>
 
-#include <hardware/ili9341/ili9341.h>
+int keypad_is_button_pressed(uint16_t bitmask) {
+    int result = 0;
+    do_returning_system_call(2, 0, 0, bitmask, 0, &result);
+    return result;
+}
 
-extern uint16_t mode2_buffer[ILI9341_TFTWIDTH*ILI9341_TFTHEIGHT];
+int keypad_no_buttons_pressed() {
+    int result = 0;
+    do_returning_system_call(2, 0, 1, 0, 0, &result);
+    return result;
+}
 
-void mode2_init();
-void mode2_clear(uint16_t color);
-void mode2_pixel(uint16_t x, uint16_t y, uint16_t color);
-void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
-void mode2_render();
-#endif
-
+void keypad_wait_for_no_button() {
+    while(1) {
+        int result = 0;
+        do_returning_system_call(2, 0, 1, 0, 0, &result);
+        if(result) return;
+    }
+}

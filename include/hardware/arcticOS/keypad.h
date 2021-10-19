@@ -18,10 +18,9 @@
 #include <pico/stdlib.h>
 
 void keypad_init();
-bool keypad_no_buttons_pressed();
-bool keypad_is_character_pressed(char character);
-bool keypad_is_button_pressed(uint16_t button);
-void keypad_wait_for_no_button();
+void keypad_refresh();
+
+extern uint16_t buttons_pressed;
 
 #if defined(EVT4)
 #define KEYPAD_HAS_DPAD 1

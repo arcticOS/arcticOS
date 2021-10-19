@@ -17,13 +17,22 @@
 
 #include <pico/stdlib.h>
 
-// General element outline
-void ui_draw_element_outline(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2);
-void ui_draw_element_inside(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2);
+#define BUTTON_A 0b0000000000000001
+#define BUTTON_O 0b0000000000000010
+#define BUTTON_E 0b0000000000000100
+#define BUTTON_1 0b0000000000001000
+#define BUTTON_2 0b0000000000010000
+#define BUTTON_3 0b0000000000100000
+#define BUTTON_4 0b0000000001000000
+#define BUTTON_5 0b0000000010000000
+#define BUTTON_6 0b0000000100000000
+#define BUTTON_7 0b0000001000000000
+#define BUTTON_8 0b0000010000000000
+#define BUTTON_9 0b0000100000000000
+#define BUTTON_STAR 0b0001000000000000
+#define BUTTON_0 0b0010000000000000
+#define BUTTON_POUND 0b0100000000000000
 
-// Buttons
-void ui_draw_button(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, const char* text);
-void ui_draw_button_pressed(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, const char* text);
-
-// Menus
-int ui_list_menu(const char* title, char** items, int count);
+int keypad_no_buttons_pressed();
+int keypad_is_button_pressed(uint16_t bitmask);
+void keypad_wait_for_no_button();

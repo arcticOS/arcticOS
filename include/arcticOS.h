@@ -16,7 +16,7 @@
  */
 
 // CHANGE THE LINE BELOW TO CHANGE LANGUAGE
-#include <strings/en-CA.h>
+#include <arcticOS/strings/en-CA.h>
 
 // Build settings
 #define ENFORCE_RTC_ENABLED 0

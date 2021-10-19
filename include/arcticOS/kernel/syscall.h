@@ -16,3 +16,4 @@
  */
 
 void do_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3);
+void do_returning_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3, int* pointer);

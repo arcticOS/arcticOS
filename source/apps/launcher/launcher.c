@@ -19,11 +19,11 @@
  
 #include <arcticOS.h>
 
-#include <hardware/arcticOS/screen.h>
 #include <hardware/arcticOS/keypad.h>
 
 #include <arcticOS/graphics/primitives.h>
 #include <arcticOS/graphics/ui.h>
+#include <arcticOS/graphics/text.h>
 
 #include <apps/launcher/launcher.h>
 #include <apps/settings/settings.h>
@@ -32,8 +32,10 @@ char time_buffer[9];
 char date_buffer[32];
 
 void launcher_run() { 
+    graphics_get_screen_size();
+    
     while(1) {
-        screen_fill(background_color);
+        graphics_fill(COLOR_WHITE);
 
         // Get the actual time
         if(!rtc_get_datetime(&time) && ENFORCE_RTC_ENABLED) {
@@ -55,15 +57,15 @@ void launcher_run() {
         ui_draw_element_inside(4, 78, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
 
         // Draw the time & date
-        screen_print_centered(10, foreground_color, SCREEN_FONT_DEFAULT_MEDIUM, &time_buffer);
-        screen_print_centered(42, foreground_color, SCREEN_FONT_DEFAULT, &date_buffer);
+        text_print_centered(10, COLOR_BLACK, FONT_DEFAULT_MEDIUM, &time_buffer);
+        text_print_centered(42, COLOR_BLACK, FONT_DEFAULT, &date_buffer);
 
         // Draw the bottom bar
-        screen_print_centered(SCREEN_HEIGHT - 24, foreground_color, SCREEN_FONT_DEFAULT_TINY, STRING_MENU);
+        text_print_centered(SCREEN_HEIGHT - 24, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_O)) launcher_run_app_picker();
 
-        screen_refresh();
+        graphics_refresh();
     }
 }
 

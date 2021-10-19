@@ -16,8 +16,8 @@
  */
 
 #include <arcticOS.h>
-#include <hardware/arcticOS/keypad.h>
 #include <hardware/irq.h>
+#include <arcticOS/input/keypad.h>
 
 // Global timer
 // Keep this as fast as possible

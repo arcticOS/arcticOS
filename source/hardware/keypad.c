@@ -83,33 +83,4 @@ void keypad_refresh() {
         busy_wait_us(200); // Bug fix(?)
     }
 }
-
-// Returns 0 if buttons are pressed, otherwise returns 1.
-bool keypad_no_buttons_pressed() {
-    keypad_refresh();
-    return buttons_pressed == 0x0000;
-}
-
-// Returns 0 if character is not pressed, otherwise returns 1.
-// TODO: Fix this
-bool keypad_is_character_pressed(char character){ 
-    keypad_refresh();
-    for(int i = 0; i < 16; i++) {
-        if(characters_pressed[i] == character) return true;
-    }
-    return false;
-}
-
-// Returns button bit mapping if button is pressed, otherwise returns 0.
-bool keypad_is_button_pressed(uint16_t button){ 
-    keypad_refresh();
-    return buttons_pressed & button;
-}
-
-// Waits until there is no button pressed.
-void keypad_wait_for_no_button() {
-    while(buttons_pressed) {
-        keypad_refresh();
-    }
-}
 #endif

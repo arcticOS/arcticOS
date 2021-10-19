@@ -21,30 +21,12 @@
 
 uint16_t mode2_buffer[SIZE] = { 0 };
 
-void mode2_draw_char(uint16_t x, uint16_t y, uint16_t color, int* font, char character) {
-	character -= 0x20; // Get rid of the 32 unused characters in the ASCII table
-	int font_byte_length = font[0] * font[1];
-	int* character_data = &font[2 + (character * (font_byte_length + 2))];
-	int character_width = character_data[0];
-	int character_height = character_data[1];
-	character_data = &character_data[2];
-
-	int i = 0; // Character data index
-	for(int font_y = 0; font_y < character_height; font_y ++) {
-		for(int byte = 0; byte < font[0]; byte++) {
-			for(int font_x = 0; font_x < 8; font_x++) {
-				if((character_data[i] >> font_x) & 1) mode2_pixel(x + font_x + (8*byte), y + font_y, color);
-			}
-			i ++;
-		}
-	}
-}
-
 void mode2_init() {
 }
 
 void mode2_clear(uint16_t color) {
-    memset(mode2_buffer, color, SIZE*sizeof(uint16_t));
+	uint16_t real_color = (color >> 8) | (color << 8);
+    memset(mode2_buffer, real_color, SIZE*sizeof(uint16_t));
 }
 
 void mode2_pixel(uint16_t x, uint16_t y, uint16_t color) {

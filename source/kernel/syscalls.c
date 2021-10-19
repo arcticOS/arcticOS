@@ -17,6 +17,7 @@
 
 #include <arcticOS.h>
 #include <hardware/arcticOS/screen.h>
+#include <hardware/arcticOS/keypad.h>
 
 struct syscall_params {
     int type;
@@ -24,6 +25,8 @@ struct syscall_params {
     uint16_t param1;
     uint16_t param2;
     uint16_t param3;
+
+    int* return_pointer;
 };
 
 void register_syscall_handler() {
@@ -50,7 +53,22 @@ void handle_syscall(void) {
             // Param3 - Color
             screen_plot_pixel(params->param1, params->param2, params->param3);
         } else if(params->param0 == 3) screen_refresh(); // Refresh
+        else if(params->param0 == 4) { // Get Screen Width
+            params->return_pointer[0] = SCREEN_WIDTH;
+        } else if(params->param0 == 5) { // Get Screen Height
+            params->return_pointer[0] = SCREEN_HEIGHT;
+        }
     } else if(params->type == 1) { // Panic
         system_panic("App caused system crash");
+    } else if(params->type == 2) { // User Input
+        if(params->param0 == 0) { // Keypad
+            keypad_refresh();
+            if(params->param1 == 0) { // Is button pressed
+                // Param2 - Button bitmask
+                params->return_pointer[0] = buttons_pressed & params->param2;
+            } else if(params->param1 == 1) { // Is no button pressed
+                params->return_pointer[0] = buttons_pressed == 0x0000;
+            }
+        }
     }
 }

@@ -23,6 +23,8 @@ struct syscall_params {
     uint16_t param1;
     uint16_t param2;
     uint16_t param3;
+
+    int* return_pointer;
 };
 
 void do_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3) {
@@ -32,6 +34,18 @@ void do_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2,
     params.param1 = param1;
     params.param2 = param2;
     params.param3 = param3;
+    asm volatile("mov R1, %0" : : "r" (&params));
+    irq_set_pending(30);
+}
+
+void do_returning_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3, int* pointer) {
+    struct syscall_params params;
+    params.type = type;
+    params.param0 = param0;
+    params.param1 = param1;
+    params.param2 = param2;
+    params.param3 = param3;
+    params.return_pointer = pointer;
     asm volatile("mov R1, %0" : : "r" (&params));
     irq_set_pending(30);
 }

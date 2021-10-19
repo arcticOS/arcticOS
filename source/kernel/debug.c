@@ -16,20 +16,22 @@
  */
 
 #include <arcticOS.h>
-#include <hardware/arcticOS/screen.h>
+#include <arcticOS/graphics/primitives.h>
+#include <arcticOS/graphics/ui.h>
+#include <arcticOS/graphics/text.h>
 
 // Kernel panic
 void system_panic(const char* message) {
     sleep_timer_goal = 0;
-    screen_fill(SCREEN_COLOR_RED);
-    screen_print(10, 56, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT_TINY, message); // Print error
+    graphics_fill(COLOR_RED);
+    text_print(10, 56, COLOR_WHITE, FONT_DEFAULT_TINY, message); // Print error
     while(1) { // Disable global timer and flash PANIC! on screen
         enable_global_timer = 0;
-        screen_print(10, 10, SCREEN_COLOR_WHITE, SCREEN_FONT_DEFAULT_LARGE, "PANIC!");
-        screen_refresh();
+        text_print(10, 10, COLOR_WHITE, FONT_DEFAULT_LARGE, "PANIC!");
+        graphics_refresh();
         sleep_ms(500);
-        screen_print(10, 10, SCREEN_COLOR_RED, SCREEN_FONT_DEFAULT_LARGE, "PANIC!");
-        screen_refresh();
+        text_print(10, 10, COLOR_RED, FONT_DEFAULT_LARGE, "PANIC!");
+        graphics_refresh();
         sleep_ms(500);
     }
 }
