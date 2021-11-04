@@ -1,25 +1,66 @@
-TODO for version 0.2a
++=============================+
+|                             +
+|     Development Roadmap     +
+|                             +
++=============================+
 
-== KERNEL ==
-- Figure out how to do multitasking
-- Create syscalls for API
-    - Global settings
-    - Flash memory
+Version 0.2-alpha:
+    KERNEL
+        GENERAL
+            - Figure out how to do multitasking
+            - Create syscalls for API
+                - Global settings
+                - Flash memory
+            - Permissions
+        STORAGE
 
-== GRAPHICS ==
-- Add bitmap rendering
-    * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
-- printf implementation for screen functions
-- Add more primitives
-    - Round Rect
 
-== UI ==
+    GRAPHICS
+        GENERAL
+            - Add bitmap rendering
+                * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
+            - printf implementation for screen functions
+            - Add more primitives
+                - Round Rect
+        UI
 
-== STORAGE ==
-- Add notes app or smth
+    APPLICATIONS
+        - Add notes app or smth
 
-== GPIO ==
-- Add PWM
+        SETTINGS
+            - Advanced Settings
+                - Overclock/Underclock
+            - Theme Settings
+                - Redmond, (insert modern looking themes here)
 
-== RTC ==
-Figure out how to make RTC actually run
+    DRIVERS
+        FLASH
+
+        GPIO
+            - Add PWM
+
+        RTC
+            - Figure out how to make RTC actually run
+
+Version 0.3-alpha:
+    DRIVERS
+        FLASHLIGHT
+            - Turn flashlight on/off with syscalls
+        SD CARD
+            - Read/save data to SD card
+            - FAT32 driver
+        AUDIO
+            - Play audio on second core, out to the amps
+        CELLULAR
+            - Send SMS
+            - Fire syscall when SMS comes in
+            - Start call
+            - End call
+            - Fire syscall when call comes in
+            - Get modem status
+        KEYPAD
+            - Joystick for navigation
+            - Syscalls for navigation buttons
+            - Special buttons
+        
+        

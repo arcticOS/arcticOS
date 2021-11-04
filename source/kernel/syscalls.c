@@ -25,6 +25,7 @@ struct syscall_params {
     uint16_t param1;
     uint16_t param2;
     uint16_t param3;
+    char* data;
 
     int* return_pointer;
 };
