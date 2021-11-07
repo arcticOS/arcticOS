@@ -158,13 +158,13 @@ void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t co
 }
 
 void graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) {
-    for(int dx = x; dx < x2; dx++) {
+    for(int dx = x; dx <= x2; dx++) {
         graphics_plot_pixel(dx, y, color);
     }
 }
 
 void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) {
-    for(int dy = y; dy < y2; dy++) {
+    for(int dy = y; dy <= y2; dy++) {
         graphics_plot_pixel(x, dy, color);
     }
 }

@@ -25,23 +25,34 @@
 
 void ui_draw_element_outline(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) {
     graphics_filled_rect(x, y, x2, y2, COLOR_GREY); // Background
+    
+    // Top & left side (White + Light Grey)
+    graphics_fasthline(x, y, x2 - 1, COLOR_WHITE);
+    graphics_fastvline(x, y, y2 - 1, COLOR_WHITE);
+    graphics_fasthline(x + 1, y + 1, x2 - 1, COLOR_LIGHT_GREY);
+    graphics_fastvline(x + 1, y + 1, y2 - 2, COLOR_LIGHT_GREY);
 
-    // Highlights/shadows
-    graphics_fastvline(x + 2, y + 2, y2 - 2, COLOR_WHITE);
-    graphics_fasthline(x + 2, y + 2, x2 - 2, COLOR_WHITE);
-    graphics_fastvline(x2 - 2, y + 2, y2 - 2, COLOR_LIGHT_GREY);
-    graphics_fasthline(x + 2, y2 - 2, x2 - 1, COLOR_LIGHT_GREY);
-
-    graphics_rect(x, y, x2, y2, COLOR_DARKER_GREY); // Dark outline
+    // Bottom & right side (Black + Dark Grey)
+    graphics_fasthline(x, y2, x2, COLOR_BLACK);
+    graphics_fastvline(x2, y, y2, COLOR_BLACK);
+    graphics_fasthline(x + 1, y2 - 1, x2 - 1, COLOR_DARK_GREY);
+    graphics_fastvline(x2 - 1, y + 1, y2 - 1, COLOR_DARK_GREY);
 }
 
 void ui_draw_element_inside(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) {
     graphics_filled_rect(x, y, x2, y2, COLOR_WHITE); // Background
 
-    // Outline
-    graphics_rect(x, y, x2, y2, COLOR_DARKER_GREY);
-    graphics_fasthline(x, y - 2, x2, COLOR_WHITE);
-    graphics_fasthline(x, y2 + 2, x2, COLOR_LIGHT_GREY);
+    // Top & left side (Black + Dark Grey)
+    graphics_fasthline(x, y, x2, COLOR_DARK_GREY);
+    graphics_fastvline(x, y, y2, COLOR_DARK_GREY);
+    graphics_fasthline(x + 1, y + 1, x2 - 1, COLOR_BLACK);
+    graphics_fastvline(x + 1, y + 1, y2 - 1, COLOR_BLACK);
+
+    // Bottom & right side (White + Light Grey)
+    graphics_fasthline(x, y2, x2, COLOR_WHITE);
+    graphics_fastvline(x2, y, y2, COLOR_WHITE);
+    graphics_fasthline(x + 1, y2 - 1, x2 - 1, COLOR_LIGHT_GREY);
+    graphics_fastvline(x2 - 1, y + 1, y2 - 1, COLOR_LIGHT_GREY);
 }
 
 void ui_draw_button(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, const char* text) {
@@ -72,8 +83,8 @@ int ui_list_menu(const char* title, char** items, int count) {
 
             // Draw a line under the current line of text
             if(i == selected) {
-                graphics_filled_rect(5, y, SCREEN_WIDTH - 4, y + font_height, COLOR_BLUE);
-                text_print(10, y, COLOR_WHITE, FONT_DEFAULT_TINY, items[i]);
+                graphics_filled_rect(6, y + 1, SCREEN_WIDTH - 5, y + 1 + font_height, COLOR_BLUE);
+                text_print(10, y + 1, COLOR_WHITE, FONT_DEFAULT_TINY, items[i]);
             }
         }
 
