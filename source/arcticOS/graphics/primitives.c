@@ -22,16 +22,23 @@ int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
 
 void graphics_get_screen_size() {
-    do_returning_system_call(0, 4, 0, 0, 0, &SCREEN_WIDTH);
-    do_returning_system_call(0, 5, 0, 0, 0, &SCREEN_HEIGHT);
+    int width_data[2] = {0x00, 0x04};
+    int* width_return[1] = {&SCREEN_WIDTH};
+    system_call(&width_data[0], &width_return[0]);
+
+    int height_data[2] = {0x00, 0x05};
+    int* height_return[1] = {&SCREEN_HEIGHT};
+    system_call(&height_data[0], &height_return[0]);
 }
 
-void graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {
-    do_system_call(0, 2, x, y, color);
+void graphics_plot_pixel(int x, int y, uint16_t color) {
+    int params[6] = {0x00, 0x02, x, y, (int) ((color & 0xFF00) >> 8), (int) (color & 0x00FF)};
+    system_call(&params[0], NULL);
 }
 
 void graphics_refresh() {
-    do_system_call(0, 3, 0, 0, 0);
+    int params[2] = {0x00, 0x03};
+    system_call(&params[0], NULL);
 }
 
 void graphics_fill(uint16_t color) {

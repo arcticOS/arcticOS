@@ -20,20 +20,20 @@
 
 int keypad_is_button_pressed(uint16_t bitmask) {
     int result = 0;
-    do_returning_system_call(2, 0, 0, bitmask, 0, &result);
+    int data[4] = {0x02, 0x00, bitmask};
+    int* return_data[1] = {&result};
+    system_call(data, return_data);
     return result;
 }
 
 int keypad_no_buttons_pressed() {
     int result = 0;
-    do_returning_system_call(2, 0, 1, 0, 0, &result);
+    int data[2] = {0x02, 0x02};
+    int* return_data[1] = {&result};
+    system_call(data, return_data);
     return result;
 }
 
 void keypad_wait_for_no_button() {
-    while(1) {
-        int result = 0;
-        do_returning_system_call(2, 0, 1, 0, 0, &result);
-        if(result) return;
-    }
+    while(!keypad_no_buttons_pressed()) {}
 }

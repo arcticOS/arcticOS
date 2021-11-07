@@ -18,51 +18,15 @@
 #include <hardware/irq.h>
 
 struct syscall_params {
-    int type;
-    uint16_t param0;
-    uint16_t param1;
-    uint16_t param2;
-    uint16_t param3;
-    char* data;
-
-    int* return_pointer;
+    int* data;
+    int** return_values;
 };
 
-void do_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3) {
+void system_call(int* data, int** return_values) {
+    //int* arguments[2] = {data, return_values[0]};
     struct syscall_params params;
-    params.type = type;
-    params.param0 = param0;
-    params.param1 = param1;
-    params.param2 = param2;
-    params.param3 = param3;
-    asm volatile("mov R1, %0" : : "r" (&params));
-    irq_set_pending(30);
-}
-
-void do_data_system_call(int type, char* data) {
-    struct syscall_params params;
-    params.type = type;
     params.data = data;
-    asm volatile("mov R1, %0" : : "r" (&params));
-    irq_set_pending(30);
-}
-void do_returning_data_system_call(int type, char* data, int* pointer) {
-    struct syscall_params params;
-    params.type = type;
-    params.data = data;
-    params.return_pointer = pointer;
-    asm volatile("mov R1, %0" : : "r" (&params));
-    irq_set_pending(30);
-}
-
-void do_returning_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3, int* pointer) {
-    struct syscall_params params;
-    params.type = type;
-    params.param0 = param0;
-    params.param1 = param1;
-    params.param2 = param2;
-    params.param3 = param3;
-    params.return_pointer = pointer;
+    params.return_values = return_values;
     asm volatile("mov R1, %0" : : "r" (&params));
     irq_set_pending(30);
 }

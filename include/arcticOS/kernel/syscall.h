@@ -15,5 +15,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-void do_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3);
-void do_returning_system_call(int type, uint16_t param0, uint16_t param1, uint16_t param2, uint16_t param3, int* pointer);
+void system_call(int* data, int** return_values);

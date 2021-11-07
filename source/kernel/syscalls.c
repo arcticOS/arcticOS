@@ -20,14 +20,8 @@
 #include <hardware/arcticOS/keypad.h>
 
 struct syscall_params {
-    int type;
-    uint16_t param0;
-    uint16_t param1;
-    uint16_t param2;
-    uint16_t param3;
-    char* data;
-
-    int* return_pointer;
+    int* data;
+    int** return_values;
 };
 
 void register_syscall_handler() {
@@ -35,41 +29,85 @@ void register_syscall_handler() {
     irq_set_enabled(30, 1);
 }
 
+void display_syscall(int* data, int** return_data) {
+    uint16_t color;
+
+    switch(data[1]) {
+        case 0x00: // Backlight (int on/off)
+            if(data[2]) screen_backlight_on();
+            else screen_backlight_off();
+            break;
+        case 0x01: // Fill (uint16_t* color)
+            color = ((uint16_t*) data[2])[0];
+            screen_fill(color);
+            break;
+        case 0x02: // Plot (int x) (int y) (int color_high) (int color_low)
+            color = data[4] << 8;
+            color |= data[5];
+            screen_plot_pixel(data[2], data[3], color);
+            break;
+        case 0x03: // Refresh
+            screen_refresh();
+            break;
+        case 0x04: // Get screen width
+            return_data[0][0] = SCREEN_WIDTH;
+            break;
+        case 0x05: // Get screen height
+            return_data[0][0] = SCREEN_HEIGHT;
+            break;
+    }
+}
+
+void panic_syscall(int* data, int** return_data) {
+    // Panic (const int* message)
+    system_panic(&data[1]);
+}
+
+void input_syscall(int* data, int** return_data) {
+    keypad_refresh();
+    switch(data[1]) {
+        case 0x00: // Is button pressed (uint16_t* mask)
+            return_data[0][0] = buttons_pressed & data[2];
+            break;
+        case 0x01: // Is button not pressed (uint16_t* mask)
+            return_data[0][0] = buttons_pressed & data[2] == 0x0000;
+            break;
+        case 0x02: // Is no button pressed 
+            return_data[0][0] = buttons_pressed == 0x0000;
+            break;
+    }
+}
+
 void handle_syscall(void) {
     struct syscall_params* params;
     asm volatile("mov %0, R1" : "=r" (params));
 
-    if(params->type == 0) { // Screen
-        // Param0 - Operation type
-        if(params->param0 == 0) { // Backlight
-            // Param1 - On/Off
-            if(params->param1) screen_backlight_on();
-            else screen_backlight_off();
-        } else if(params->param0 == 1) { // Fill
-            // Param1 - Color
-            screen_fill(params->param1); 
-        } else if(params->param0 == 2) { // Plot
-            // Param1 - X
-            // Param2 - Y
-            // Param3 - Color
-            screen_plot_pixel(params->param1, params->param2, params->param3);
-        } else if(params->param0 == 3) screen_refresh(); // Refresh
-        else if(params->param0 == 4) { // Get Screen Width
-            params->return_pointer[0] = SCREEN_WIDTH;
-        } else if(params->param0 == 5) { // Get Screen Height
-            params->return_pointer[0] = SCREEN_HEIGHT;
-        }
-    } else if(params->type == 1) { // Panic
-        system_panic("App caused system crash");
-    } else if(params->type == 2) { // User Input
-        if(params->param0 == 0) { // Keypad
-            keypad_refresh();
-            if(params->param1 == 0) { // Is button pressed
-                // Param2 - Button bitmask
-                params->return_pointer[0] = buttons_pressed & params->param2;
-            } else if(params->param1 == 1) { // Is no button pressed
-                params->return_pointer[0] = buttons_pressed == 0x0000;
-            }
-        }
+    int* data = params->data;
+    int** return_data = params->return_values;
+
+    // TODO: Check permissions
+
+    switch(data[0]) {
+        case 0x00: // Display
+            display_syscall(data, return_data);
+            break;
+        case 0x01: // Kernel Panic
+            panic_syscall(data, return_data);
+            break;
+        case 0x02: // User Input
+            input_syscall(data, return_data);
+            break;
+        case 0x03: // Filesystem
+            break;
+        case 0x04: // Cellular
+            break;
+        case 0x05: // GPIO
+            break;
+        case 0x06: // Internal Communication (UART/SPI)
+            break;
+        case 0x07: // Secure Messaging
+            break;
+        case 0x08: // General Cryptography
+            break;
     }
 }

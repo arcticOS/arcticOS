@@ -7,3 +7,4 @@ RTC Failure             | The internal system clock is not running.             
 Flash Failed to Verify  | Writing to memory failed 3 times.                     | Check to make sure the internal flash memory has not failed.
 Launcher exited         | The home menu crashed.                                | Discontinue use of whatever app caused the crash.
 App caused system crash | An application indicated a severe error.              | Report the problem to the app's developer.
+Invalid system call     | An application called a non-existent function.        | Report the problem to the app's developer.
