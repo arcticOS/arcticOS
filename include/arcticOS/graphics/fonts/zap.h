@@ -15,6 +15,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-extern int sono_tiny[];
-extern int sono_small[];
-extern int sono_medium[];
+extern int zapsmall[];
+extern int zapmed[];

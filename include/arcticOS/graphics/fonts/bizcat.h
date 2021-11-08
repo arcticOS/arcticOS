@@ -1,4 +1,5 @@
 /*
+ * arcticOS
  * Copyright (C) 2021 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,4 +15,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-extern int vga[];
+extern int bizcat[];

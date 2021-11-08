@@ -19,19 +19,19 @@
 
 #include <pico/stdlib.h>
 
-#include <arcticOS/graphics/fonts/vga.h>
-#include <arcticOS/graphics/fonts/sono.h>
+#include <arcticOS/graphics/fonts/zap.h>
+#include <arcticOS/graphics/fonts/bizcat.h>
 
-#define FONT_VGA &vga[0]
+#define FONT_BIZCAT_SMALL &bizcat[0]
 
-#define FONT_SONO_TINY &sono_tiny[0]
-#define FONT_SONO_SMALL &sono_small[0]
-#define FONT_SONO_MEDIUM &sono_medium[0]
+#define FONT_ZAP_TINY &zapsmall[0]
+#define FONT_ZAP_SMALL &zapsmall[0]
+#define FONT_ZAP_MEDIUM &zapmed[0]
 
-#define FONT_DEFAULT_TINY FONT_VGA
-#define FONT_DEFAULT_SMALL FONT_SONO_SMALL
-#define FONT_DEFAULT_MEDIUM FONT_SONO_MEDIUM
-#define FONT_DEFAULT_LARGE FONT_SONO_MEDIUM
+#define FONT_DEFAULT_TINY FONT_ZAP_TINY
+#define FONT_DEFAULT_SMALL FONT_BIZCAT_SMALL
+#define FONT_DEFAULT_MEDIUM FONT_ZAP_MEDIUM
+#define FONT_DEFAULT_LARGE FONT_ZAP_MEDIUM
 
 #define FONT_DEFAULT FONT_DEFAULT_SMALL
 

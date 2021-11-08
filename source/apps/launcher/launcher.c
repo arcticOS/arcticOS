@@ -57,15 +57,15 @@ void launcher_run() {
         sprintf(date_buffer, "%s %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
 
         ui_draw_element_outline(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 70);
-        ui_draw_element_inside(4, 78, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
+        ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 52);
+        ui_draw_element_inside(4, 60, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
 
         // Draw the time & date
         text_print_centered(10, foreground_color, FONT_DEFAULT_MEDIUM, &time_buffer);
-        text_print_centered(42, foreground_color, FONT_DEFAULT, &date_buffer);
+        text_print_centered(32, foreground_color, FONT_DEFAULT_TINY, &date_buffer);
 
         // Draw the bottom bar
-        text_print_centered(SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_TINY, STRING_MENU);
+        text_print_centered(SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_SMALL, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_O)) launcher_run_app_picker();
 

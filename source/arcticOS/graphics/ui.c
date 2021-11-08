@@ -92,7 +92,7 @@ int ui_list_menu(const char* title, char** items, int count) {
         ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 42);
         ui_draw_element_inside(4, 50, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
 
-        text_print_centered(10, foreground_color, FONT_DEFAULT_MEDIUM, title);
+        text_print_centered(14, foreground_color, FONT_DEFAULT_MEDIUM, title);
 
         for(int i = 0; i < count; i++) { // Loop through all items
             // Draw text
@@ -108,8 +108,8 @@ int ui_list_menu(const char* title, char** items, int count) {
         }
 
         // Draw hint bar
-        text_print_centered(SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_TINY, STRING_SELECT);
-        text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT_TINY, STRING_BACK), SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_TINY, STRING_BACK);
+        text_print_centered(SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_SMALL, STRING_SELECT);
+        text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT_SMALL, STRING_BACK), SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_SMALL, STRING_BACK);
 
         graphics_refresh();
 
