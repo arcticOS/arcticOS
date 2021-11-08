@@ -98,7 +98,7 @@ int ui_list_menu(const char* title, char** items, int count) {
             // Draw text
             int y = 51 + (i * font_height);
             if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
-            text_print(10, y, foreground_color, FONT_DEFAULT_TINY, items[i]);
+            text_print(10, y + 1, foreground_color, FONT_DEFAULT_TINY, items[i]);
 
             // Draw a line under the current line of text
             if(i == selected) {
