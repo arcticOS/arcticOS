@@ -24,6 +24,7 @@
 #include <arcticOS/graphics/primitives.h>
 #include <arcticOS/graphics/ui.h>
 #include <arcticOS/graphics/text.h>
+#include <arcticOS/graphics/theme.h>
 
 #include <apps/launcher/launcher.h>
 #include <apps/settings/settings.h>
@@ -33,8 +34,11 @@ char date_buffer[32];
 
 void launcher_run() { 
     graphics_get_screen_size();
-    
+
     while(1) {
+        uint16_t background_color = get_background_color();
+        uint16_t foreground_color = get_foreground_color();
+
         graphics_fill(COLOR_WHITE);
 
         // Get the actual time
@@ -57,11 +61,11 @@ void launcher_run() {
         ui_draw_element_inside(4, 78, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
 
         // Draw the time & date
-        text_print_centered(10, COLOR_BLACK, FONT_DEFAULT_MEDIUM, &time_buffer);
-        text_print_centered(42, COLOR_BLACK, FONT_DEFAULT, &date_buffer);
+        text_print_centered(10, foreground_color, FONT_DEFAULT_MEDIUM, &time_buffer);
+        text_print_centered(42, foreground_color, FONT_DEFAULT, &date_buffer);
 
         // Draw the bottom bar
-        text_print_centered(SCREEN_HEIGHT - 24, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_MENU);
+        text_print_centered(SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_TINY, STRING_MENU);
 
         if(keypad_is_button_pressed(BUTTON_O)) launcher_run_app_picker();
 

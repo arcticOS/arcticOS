@@ -17,13 +17,7 @@
 
 // CHANGE THE LINE BELOW TO CHANGE LANGUAGE
 #include <arcticOS/strings/en-CA.h>
-
-// Build settings
-#define ENFORCE_RTC_ENABLED 0
-#define ENFORCE_WATCHDOG_COUNT 0
-#define ENFORCE_FLASH_WRITE_SUCCESS 1
-
-#define BUILD_STRING "Ver. 0.2a"
+#include <arcticOS/build_settings.h>
 
 // No longer build settings
 #include <pico/stdlib.h>

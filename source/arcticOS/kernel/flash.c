@@ -15,11 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <pico/stdlib.h>
-#include <hardware/flash.h>
 #include <arcticOS/kernel/flash.h>
 
-uint8_t flash_load_byte(uint32_t offset);
-void flash_load_user_data(uint32_t offset, uint8_t* buffer);
-void flash_write_user_data(uint32_t offset, uint8_t* buffer);
-void flash_erase_user_data(uint32_t offset);
+uint8_t flash_get_byte(uint32_t offset) {
+    int result;
+    int data[6] = {0x03, 0x00, offset};
+    int* return_data[1] = {&result};
+    system_call(&data[0], &return_data[0]);
+    return (uint8_t) result;
+}

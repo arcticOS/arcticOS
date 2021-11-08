@@ -31,12 +31,26 @@ void settings_run() { // List submenus
 
     while(1) {
         flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
-        const char* menu_items[4] = {STRING_ABOUT, STRING_SLEEP_TIME, STRING_ERASE_DATA};
-        int choice = ui_list_menu(STRING_APP_SETTINGS, &menu_items, 3);
-        if(choice == -1) return;
-        else if(choice == 0) settings_run_about();
-        else if(choice == 1) settings_run_sleep_time_picker();
-        else if(choice == 2) settings_run_factory_reset();
+        const char* menu_items[4] = {STRING_ABOUT, STRING_SLEEP_TIME, STRING_THEME, STRING_ERASE_DATA};
+        int choice = ui_list_menu(STRING_APP_SETTINGS, &menu_items, 4);
+        
+        switch(choice) {
+            case -1:
+                return;
+            case 0:
+                settings_run_about();
+                break;
+            case 1:
+                settings_run_sleep_time_picker();
+                break;
+            case 2:
+                settings_run_theme_picker();
+                break;
+            case 3:
+                settings_run_factory_reset();
+                break;
+        }
+
         flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
         system_refresh_settings();
     }
@@ -100,6 +114,22 @@ int settings_run_sleep_time_picker() {
     return 0;
 }
 
+int settings_run_theme_picker() {
+    graphics_get_screen_size();
+    graphics_fill(COLOR_WHITE);
+
+    const char* theme_menu[4] = {STRING_REDMOND, STRING_FLAT};
+
+    int result = ui_list_menu(STRING_THEME, &theme_menu, 2); // Basic list menu
+    if(result == -1) { keypad_wait_for_no_button(); return 1; } // Return if the user clicked back
+    
+    // Convert the uint16_t into two uint8_t variables and store them in the flash buffer
+    flash_buffer[FLASH_SETTINGS_THEME] = result;
+
+    keypad_wait_for_no_button();
+    return 0;
+}
+
 void settings_run_factory_reset() {
     graphics_get_screen_size();
     const char* menu_items[6] = {STRING_NO, STRING_NO, STRING_NO, STRING_NO, STRING_YES, STRING_NO}; // Shamelessly stolen from old Android bootloaders
@@ -122,33 +152,40 @@ void settings_run_oobe() {
     keypad_wait_for_no_button();
     flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
 
+    // Load in theme
+    flash_buffer[FLASH_SETTINGS_THEME] = 1;
+    flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
+    flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
+    uint16_t foreground_color = get_foreground_color();
+    uint16_t background_color = get_background_color();
+
     // Friendly boot screen
-    graphics_fill(COLOR_WHITE);
-    text_print_centered(30, COLOR_BLACK, FONT_DEFAULT_MEDIUM, STRING_HELLO);
-    text_print_centered(SCREEN_HEIGHT - 42, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
-    text_print_centered(SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_TO_SET_UP_PHONE);
+    graphics_fill(background_color);
+    text_print_centered(30, foreground_color, FONT_DEFAULT_MEDIUM, STRING_HELLO);
+    text_print_centered(SCREEN_HEIGHT - 42, foreground_color, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    text_print_centered(SCREEN_HEIGHT - 26, foreground_color, FONT_DEFAULT_TINY, STRING_TO_SET_UP_PHONE);
     graphics_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();
 
     // Friendly warning
-    graphics_fill(COLOR_WHITE);
-    text_print_centered(30, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE1);
-    text_print_centered(46, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE2);
-    text_print_centered(62, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE3);
-    text_print_centered(SCREEN_HEIGHT - 42, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
-    text_print_centered(SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
+    graphics_fill(background_color);
+    text_print_centered(30, foreground_color, FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE1);
+    text_print_centered(46, foreground_color, FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE2);
+    text_print_centered(62, foreground_color, FONT_DEFAULT_TINY, STRING_OOBE_PROTOTYPE3);
+    text_print_centered(SCREEN_HEIGHT - 42, foreground_color, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    text_print_centered(SCREEN_HEIGHT - 26, foreground_color, FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
     graphics_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();
 
     // Time until sleep
-    graphics_fill(COLOR_WHITE);
-    text_print_centered(30, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_OOBE_SLEEP1);
-    text_print_centered(46, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_OOBE_SLEEP2);
-    text_print_centered(62, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_OOBE_SLEEP3);
-    text_print_centered(SCREEN_HEIGHT - 42, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
-    text_print_centered(SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
+    graphics_fill(background_color);
+    text_print_centered(30, foreground_color, FONT_DEFAULT_TINY, STRING_OOBE_SLEEP1);
+    text_print_centered(46, foreground_color, FONT_DEFAULT_TINY, STRING_OOBE_SLEEP2);
+    text_print_centered(62, foreground_color, FONT_DEFAULT_TINY, STRING_OOBE_SLEEP3);
+    text_print_centered(SCREEN_HEIGHT - 42, foreground_color, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    text_print_centered(SCREEN_HEIGHT - 26, foreground_color, FONT_DEFAULT_TINY, STRING_TO_CONTINUE);
     graphics_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();
@@ -159,10 +196,10 @@ void settings_run_oobe() {
     flash_write_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
 
     // Friendly outro screen
-    graphics_fill(COLOR_WHITE);
-    text_print_centered(30, COLOR_BLACK, FONT_DEFAULT_MEDIUM, STRING_ALL_SET);
-    text_print_centered(SCREEN_HEIGHT - 42, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
-    text_print_centered(SCREEN_HEIGHT - 26, COLOR_BLACK, FONT_DEFAULT_TINY, STRING_TO_USE_PHONE);
+    graphics_fill(background_color);
+    text_print_centered(30, foreground_color, FONT_DEFAULT_MEDIUM, STRING_ALL_SET);
+    text_print_centered(SCREEN_HEIGHT - 42, foreground_color, FONT_DEFAULT_TINY, STRING_PRESS_MIDDLE_BUTTON);
+    text_print_centered(SCREEN_HEIGHT - 26, foreground_color, FONT_DEFAULT_TINY, STRING_TO_USE_PHONE);
     graphics_refresh();
     while(!keypad_is_button_pressed(BUTTON_O)) {}
     keypad_wait_for_no_button();

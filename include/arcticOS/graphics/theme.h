@@ -13,13 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * This is meant to run on RP2040-based boards.
  */
 
-#include <pico/stdlib.h>
-#include <hardware/flash.h>
+#include <stdint.h>
 #include <arcticOS/kernel/flash.h>
 
-uint8_t flash_load_byte(uint32_t offset);
-void flash_load_user_data(uint32_t offset, uint8_t* buffer);
-void flash_write_user_data(uint32_t offset, uint8_t* buffer);
-void flash_erase_user_data(uint32_t offset);
+int get_current_theme();
+uint16_t get_foreground_color();
+uint16_t get_background_color();
+uint16_t get_accent_color();

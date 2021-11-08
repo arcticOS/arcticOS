@@ -31,6 +31,8 @@
 #define STRING_THEME "Theme"
 #define STRING_DARK "Dark"
 #define STRING_LIGHT "Light"
+#define STRING_REDMOND "Redmond"
+#define STRING_FLAT "Flat"
 
 // Sleep time text
 #define STRING_DO_NOT_SLEEP "Do not sleep"

@@ -15,11 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <pico/stdlib.h>
-#include <hardware/flash.h>
-#include <arcticOS/kernel/flash.h>
+#define ENFORCE_RTC_ENABLED 0
+#define ENFORCE_WATCHDOG_COUNT 0
+#define ENFORCE_FLASH_WRITE_SUCCESS 1
 
-uint8_t flash_load_byte(uint32_t offset);
-void flash_load_user_data(uint32_t offset, uint8_t* buffer);
-void flash_write_user_data(uint32_t offset, uint8_t* buffer);
-void flash_erase_user_data(uint32_t offset);
+#define BUILD_STRING "Ver. 0.2a"

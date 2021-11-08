@@ -26,6 +26,14 @@
 
 const uint8_t *flash_user_data = (const uint8_t *) (XIP_BASE + USER_DATA_ADDRESS);
 
+// Loads a byte from flash
+uint8_t flash_load_byte(uint32_t offset) {
+    system_disable_interrupts();
+    uint8_t value = flash_user_data[offset];
+    system_enable_interrupts();
+    return value;
+}
+
 // Loads a sector of flash into the buffer in arcticOS.c
 void flash_load_user_data(uint32_t offset, uint8_t* buffer) {
     system_disable_interrupts();

@@ -78,6 +78,13 @@ void input_syscall(int* data, int** return_data) {
     }
 }
 
+void storage_syscall(int* data, int** return_data) {
+    switch(data[1]) {
+        case 0: // Load byte at offset
+            return_data[0][0] = flash_load_byte((uint32_t) data[2]);
+    }
+}
+
 void handle_syscall(void) {
     struct syscall_params* params;
     asm volatile("mov %0, R1" : "=r" (params));
@@ -97,7 +104,8 @@ void handle_syscall(void) {
         case 0x02: // User Input
             input_syscall(data, return_data);
             break;
-        case 0x03: // Filesystem
+        case 0x03: // Storage
+            storage_syscall(data, return_data);
             break;
         case 0x04: // Cellular
             break;

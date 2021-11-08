@@ -10,7 +10,6 @@ Version 0.2-alpha:
             - Figure out how to do multitasking
             - Create syscalls for API
                 - Global settings
-                - Flash memory
             - Permissions
         STORAGE
 
@@ -30,8 +29,6 @@ Version 0.2-alpha:
         SETTINGS
             - Advanced Settings
                 - Overclock/Underclock
-            - Theme Settings
-                - Redmond, (insert modern looking themes here)
 
     DRIVERS
         FLASH
@@ -43,6 +40,18 @@ Version 0.2-alpha:
             - Figure out how to make RTC actually run
 
 Version 0.3-alpha:
+    * Needs new dev hardware b/c EVT3 has no support for most new features
+
+    KERNEL
+        GENERAL
+            - Application Permissions
+            - Memory Protection
+            - Find some way to protect UART, SPI, etc...
+        CRYPTOGRAPHY
+            - SHA-256 hashing
+            - AES-256 encryption
+                - Have to find a way to securely store key
+
     DRIVERS
         FLASHLIGHT
             - Turn flashlight on/off with syscalls
