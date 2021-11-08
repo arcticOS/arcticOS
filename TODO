@@ -22,13 +22,13 @@ Version 0.2-alpha:
             - Add more primitives
                 - Round Rect
         UI
+            - ui_draw_text function that draws text in the current theme's foreground color
 
     APPLICATIONS
         - Add notes app or smth
 
         SETTINGS
-            - Advanced Settings
-                - Overclock/Underclock
+            
 
     DRIVERS
         FLASH

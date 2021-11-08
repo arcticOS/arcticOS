@@ -17,20 +17,10 @@
 
 #include <stdint.h>
 
-uint8_t flash_get_byte(uint32_t offset);
+#define CPU_OVERCLOCK_50MHZ (50 * 1000)
+#define CPU_OVERCLOCK_100MHZ (100 * 1000)
+#define CPU_OVERCLOCK_BASE (133 * 1000)
+#define CPU_OVERCLOCK_200MHZ (200 * 1000)
+#define CPU_OVERCLOCK_250MHZ (250 * 1000)
 
-#define USER_DATA_ADDRESS (256 * 1024)
-#define USER_DATA_SIZE 1024
-
-// Flash layout
-#define FLASH_OFFSET_SETTINGS (0 * USER_DATA_SIZE)
-// 1 byte
-#define FLASH_SETTINGS_OOBE_COMPLETE 0
-// 2 bytes
-#define FLASH_SETTINGS_SLEEP_TIME 1
-// 1 byte
-#define FLASH_SETTINGS_THEME 3
-// 1 byte
-#define FLASH_SETTINGS_CLOCK 4
-
-#define FLASH_OFFSET_CONTACTS (1 * USER_DATA_SIZE)
+void set_cpu_clock(int clock);

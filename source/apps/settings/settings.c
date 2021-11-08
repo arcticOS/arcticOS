@@ -31,8 +31,8 @@ void settings_run() { // List submenus
 
     while(1) {
         flash_load_user_data(FLASH_OFFSET_SETTINGS, &flash_buffer[0]);
-        const char* menu_items[4] = {STRING_ABOUT, STRING_SLEEP_TIME, STRING_THEME, STRING_ERASE_DATA};
-        int choice = ui_list_menu(STRING_APP_SETTINGS, &menu_items, 4);
+        const char* menu_items[5] = {STRING_ABOUT, STRING_SLEEP_TIME, STRING_THEME, STRING_ERASE_DATA, STRING_OVERCLOCK};
+        int choice = ui_list_menu(STRING_APP_SETTINGS, &menu_items, 5);
         
         switch(choice) {
             case -1:
@@ -48,6 +48,9 @@ void settings_run() { // List submenus
                 break;
             case 3:
                 settings_run_factory_reset();
+                break;
+            case 4:
+                settings_run_overclock_menu();
                 break;
         }
 
@@ -128,6 +131,21 @@ int settings_run_theme_picker() {
 
     keypad_wait_for_no_button();
     return 0;
+}
+
+int settings_run_overclock_menu() {
+    graphics_get_screen_size();
+    graphics_fill(COLOR_WHITE);
+
+    const char* menu[5] = {STRING_OC_50MHZ, STRING_OC_100MHZ, STRING_OC_BASE, STRING_OC_200MHZ, STRING_OC_250MHZ};
+
+    int result = ui_list_menu(STRING_OVERCLOCK, &menu, 5); // Basic list menu
+    if(result == -1) { keypad_wait_for_no_button(); return 1; } // Return if the user clicked back
+    
+    // Convert the uint16_t into two uint8_t variables and store them in the flash buffer
+    flash_buffer[FLASH_SETTINGS_CLOCK] = result;
+
+    keypad_wait_for_no_button();
 }
 
 void settings_run_factory_reset() {

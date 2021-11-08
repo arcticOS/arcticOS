@@ -34,6 +34,14 @@
 #define STRING_REDMOND "Redmond"
 #define STRING_FLAT "Flat"
 
+// Overclock text
+#define STRING_OVERCLOCK "Overclock"
+#define STRING_OC_50MHZ "50 MHz"
+#define STRING_OC_100MHZ "100 MHz"
+#define STRING_OC_BASE "Base"
+#define STRING_OC_200MHZ "200 MHz"
+#define STRING_OC_250MHZ "250 MHz"
+
 // Sleep time text
 #define STRING_DO_NOT_SLEEP "Do not sleep"
 #define STRING_SLEEP_TIME "Sleep Time"

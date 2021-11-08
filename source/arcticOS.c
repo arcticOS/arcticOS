@@ -17,6 +17,9 @@
 
 #include <arcticOS.h>
 
+// Used for overclocking
+#include <hardware/arcticOS/cpu.h>
+
 // Used for I/O
 #include <stdio.h>
 #include <pico/stdlib.h>
@@ -80,6 +83,12 @@ uint8_t flash_buffer[USER_DATA_SIZE];
 
 // Initialise arcticOS
 int main(void) {
+    // Set CPU clock
+    // This needs to be done first
+    int clock_speed_selected = flash_load_byte(USER_DATA_ADDRESS + FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_CLOCK);
+    if(clock_speed_selected == 0xFF) clock_speed_selected = 2;
+    set_cpu_clock(clock_speed_selected);
+
     // Pre-init stage
     register_syscall_handler();
 
