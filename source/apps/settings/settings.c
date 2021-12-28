@@ -121,7 +121,7 @@ int settings_run_theme_picker() {
     graphics_get_screen_size();
     graphics_fill(COLOR_WHITE);
 
-    const char* theme_menu[4] = {STRING_REDMOND, STRING_FLAT};
+    const char* theme_menu[4] = {STRING_GREEN, STRING_ORANGE, STRING_BLUE};
 
     int result = ui_list_menu(STRING_THEME, &theme_menu, 2); // Basic list menu
     if(result == -1) { keypad_wait_for_no_button(); return 1; } // Return if the user clicked back

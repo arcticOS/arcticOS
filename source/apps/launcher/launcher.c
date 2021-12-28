@@ -39,7 +39,7 @@ void launcher_run() {
         uint16_t background_color = get_background_color();
         uint16_t foreground_color = get_foreground_color();
 
-        graphics_fill(COLOR_WHITE);
+        graphics_fill(background_color);
 
         // Get the actual time
         if(!rtc_get_datetime(&time) && ENFORCE_RTC_ENABLED) {
@@ -55,10 +55,6 @@ void launcher_run() {
 
         // Get date as a string
         sprintf(date_buffer, "%s %s %d", weekday_names[time.dotw - 1], month_names[time.month - 1], time.day);
-
-        ui_draw_element_outline(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        ui_draw_element_inside(4, 4, SCREEN_WIDTH - 4, 52);
-        ui_draw_element_inside(4, 60, SCREEN_WIDTH - 4, SCREEN_HEIGHT - 34);
 
         // Draw the time & date
         text_print_centered(10, foreground_color, FONT_DEFAULT_MEDIUM, &time_buffer);

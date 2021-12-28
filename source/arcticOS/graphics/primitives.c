@@ -17,6 +17,7 @@
 
 #include <arcticOS/graphics/primitives.h>
 #include <arcticOS/kernel/syscall.h>
+#include <arcticOS/math.h>
 
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
@@ -58,6 +59,17 @@ void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint
         for(int dy = y; dy < y2; dy ++) {
             graphics_plot_pixel(dx, dy, color);
         }
+    }
+}
+
+void graphics_gradient_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color, uint16_t step) { 
+    uint16_t dcolor = color;
+    uint16_t band_thickness = (y2 - y) / 10;
+
+    for(int dy = y; dy < y2; dy++) {
+        graphics_fasthline(x, dy, x2, dcolor);
+        if((dy - y) % band_thickness == 0)
+            dcolor -= step;
     }
 }
 
@@ -167,4 +179,9 @@ void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) {
     for(int dy = y; dy <= y2; dy++) {
         graphics_plot_pixel(x, dy, color);
     }
+}
+
+uint16_t graphics_to_565(uint8_t r, uint8_t g, uint8_t b) {
+    uint16_t rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
+    return rgb;
 }

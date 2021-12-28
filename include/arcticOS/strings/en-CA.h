@@ -34,6 +34,16 @@
 #define STRING_REDMOND "Redmond"
 #define STRING_FLAT "Flat"
 
+// Color Text
+#define STRING_BLACK "Black"
+#define STRING_WHITE "White"
+#define STRING_RED "Red"
+#define STRING_ORANGE "Orange"
+#define STRING_YELLOW "Yellow"
+#define STRING_GREEN "Green"
+#define STRING_BLUE "Blue"
+#define STRING_PURPLE "Purple"
+
 // Overclock text
 #define STRING_OVERCLOCK "Overclock"
 #define STRING_OC_50MHZ "50 MHz"

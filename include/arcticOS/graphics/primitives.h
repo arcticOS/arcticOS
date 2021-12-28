@@ -15,7 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <pico/stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 // https://chrishewett.com/blog/true-rgb565-colour-picker/
 #define COLOR_BLACK 0x0000
@@ -42,8 +43,10 @@ void graphics_refresh();
 void graphics_fill(uint16_t color);
 void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
 void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
+void graphics_gradient_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color, uint16_t color2);
 void graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
 void graphics_filled_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color);
 void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
 void graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color);
 void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color);
+uint16_t graphics_to_565(uint8_t r, uint8_t g, uint8_t b);

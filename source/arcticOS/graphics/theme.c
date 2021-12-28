@@ -21,9 +21,9 @@
 #include <arcticOS/graphics/theme.h>
 
 // Redmond, Flat
-uint16_t foreground_colors[2] = {COLOR_BLACK, COLOR_WHITE};
-uint16_t background_colors[2] = {COLOR_WHITE, COLOR_BLACK};
-uint16_t accent_colors[2] =     {COLOR_BLUE, COLOR_ORANGE};
+uint16_t foreground_colors[3] = {COLOR_WHITE, COLOR_WHITE, COLOR_WHITE};
+uint16_t background_colors[3] = {COLOR_DARKER_GREY, COLOR_DARKER_GREY, COLOR_DARKER_GREY};
+uint16_t accent_colors[3] =     {COLOR_GREEN, COLOR_ORANGE, COLOR_BLUE};
 
 int get_current_theme() {
     int theme = flash_get_byte(FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_THEME);
