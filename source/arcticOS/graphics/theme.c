@@ -20,7 +20,6 @@
 #include <arcticOS/graphics/primitives.h>
 #include <arcticOS/graphics/theme.h>
 
-// Redmond, Flat
 uint16_t foreground_colors[3] = {COLOR_WHITE, COLOR_WHITE, COLOR_WHITE};
 uint16_t background_colors[3] = {COLOR_DARKER_GREY, COLOR_DARKER_GREY, COLOR_DARKER_GREY};
 uint16_t accent_colors[3] =     {COLOR_GREEN, COLOR_ORANGE, COLOR_BLUE};

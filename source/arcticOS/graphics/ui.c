@@ -88,51 +88,53 @@ int ui_list_menu(const char* title, char** items, int count) {
     uint16_t accent_color = get_accent_color();
     int selected = 0;
 
+    uint16_t goal_y = 0;
+    float draw_y = SCREEN_HEIGHT;
+    int font_height = text_character_height(FONT_DEFAULT_MEDIUM);
+    int full_vertical_padding = UI_LIST_MENU_ITEM_PADDING_VERTICAL * 2;
+    int full_height = font_height + full_vertical_padding;
+    int center = (SCREEN_HEIGHT / 2) - (text_character_height(FONT_DEFAULT_MEDIUM) / 2);
+
+    graphics_fill(background_color);
+
     while(1) {
-        int font_height = text_character_height(FONT_DEFAULT_MEDIUM);
-
-        graphics_fill(background_color);
-        text_print_centered(14, foreground_color, FONT_DEFAULT_LARGE, title);
-
+        int y = draw_y;
         for(int i = 0; i < count; i++) { // Loop through all items
             // Draw text
-            int y = 51 + (i * (font_height + (UI_LIST_MENU_ITEM_PADDING_VERTICAL * 2)));
-            if(y + font_height >= SCREEN_HEIGHT - font_height - 20) break;
-
-            if(items[i][0] != 0x00) {
-                if(i == selected) {
-                    graphics_gradient_rect(0, y + 1, SCREEN_WIDTH, y + 1 + font_height + (UI_LIST_MENU_ITEM_PADDING_VERTICAL * 2), accent_color, 0x0020);
-                    text_print(UI_LIST_MENU_ITEM_PADDING_HORIZONTAL, y + 1 + UI_LIST_MENU_ITEM_PADDING_VERTICAL, COLOR_WHITE, FONT_DEFAULT_MEDIUM, items[i]);
-                } else {
-                    graphics_filled_rect(0, y + 1, SCREEN_WIDTH, y + 1 + font_height + (UI_LIST_MENU_ITEM_PADDING_VERTICAL * 2), COLOR_DARK_GREY);
-                    if(i != count - 1)
-                        graphics_fasthline(0, y + font_height + (UI_LIST_MENU_ITEM_PADDING_VERTICAL * 2), SCREEN_WIDTH, COLOR_GREY);
-                    text_print(UI_LIST_MENU_ITEM_PADDING_HORIZONTAL, y + 1 + UI_LIST_MENU_ITEM_PADDING_VERTICAL, foreground_color, FONT_DEFAULT_MEDIUM, items[i]);
-                }
-            } else continue;
+            if(i == selected) {
+                text_print(UI_LIST_MENU_ITEM_PADDING_HORIZONTAL, y + UI_LIST_MENU_ITEM_PADDING_VERTICAL, COLOR_WHITE, FONT_DEFAULT_MEDIUM, items[i]);
+            } else {
+                text_print(UI_LIST_MENU_ITEM_PADDING_HORIZONTAL, y + UI_LIST_MENU_ITEM_PADDING_VERTICAL, COLOR_GREY, FONT_DEFAULT_MEDIUM, items[i]);
+            }
+            y += full_height;
         }
 
-        // Draw hint bar
-        //text_print_centered(SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_SMALL, STRING_SELECT);
-        //text_print(SCREEN_WIDTH - 10 - text_string_width(FONT_DEFAULT_SMALL, STRING_BACK), SCREEN_HEIGHT - 24, foreground_color, FONT_DEFAULT_SMALL, STRING_BACK);
-
         graphics_refresh();
+
+        y = draw_y;
+        for(int i = 0; i < count; i++) { // Loop through all items
+            graphics_filled_rect(UI_LIST_MENU_ITEM_PADDING_HORIZONTAL, y + UI_LIST_MENU_ITEM_PADDING_VERTICAL, SCREEN_WIDTH, y + full_height, background_color);
+            y += full_height;
+        }
+
+        goal_y = center - draw_y - (selected * full_height);
+        draw_y += (goal_y - draw_y) / 5;
 
         // Basic menu code
         if(keypad_is_button_pressed(BUTTON_8)) {
             selected ++;
-            if(items[selected][0] == 0x00) selected ++;
+            //if(items[selected][0] == 0x00) selected ++;
             if(selected >= count) selected = 0;
         } else if(keypad_is_button_pressed(BUTTON_2)) {
             selected --;
-            if(items[selected][0] == 0x00) selected --;
+            //if(items[selected][0] == 0x00) selected --;
             if(selected < 0) selected = count - 1;
         } else if(keypad_is_button_pressed(BUTTON_O)) {
             keypad_wait_for_no_button();
             return selected;
         } else if(keypad_is_button_pressed(BUTTON_E)) {
             return -1;
-        }
+        } else continue;
         
         keypad_wait_for_no_button();
     }
