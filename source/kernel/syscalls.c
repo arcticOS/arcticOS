@@ -17,8 +17,8 @@
 
 #include <arcticOS.h>
 #include <arcticOS/kernel/flash.h>
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
 #include <hardware/arcticOS/screen.h>
 #include <hardware/arcticOS/keypad.h>
 

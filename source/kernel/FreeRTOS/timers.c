@@ -32,10 +32,10 @@
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
-#include <freeRTOS/queue.h>
-#include <freeRTOS/timers.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/queue.h>
+#include <FreeRTOS/timers.h>
 
 #if ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 0 )
     #error configUSE_TIMERS must be set to 1 to make the xTimerPendFunctionCall() function available.

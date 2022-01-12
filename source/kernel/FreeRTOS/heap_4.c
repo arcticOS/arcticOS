@@ -39,8 +39,8 @@
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
 
 #undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 

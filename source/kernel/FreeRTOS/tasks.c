@@ -34,10 +34,10 @@
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
 /* FreeRTOS includes. */
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
-#include <freeRTOS/timers.h>
-#include <freeRTOS/stack_macros.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/timers.h>
+#include <FreeRTOS/stack_macros.h>
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified
  * because the MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined

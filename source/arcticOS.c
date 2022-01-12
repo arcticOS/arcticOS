@@ -16,7 +16,7 @@
  */
 
 #include <arcticOS.h>
-#include <freeRTOS/FreeRTOS.h>
+#include <FreeRTOS/FreeRTOS.h>
 
 // Used for overclocking
 #include <hardware/arcticOS/cpu.h>

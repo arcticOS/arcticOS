@@ -38,7 +38,7 @@
 #endif
 /* *INDENT-ON* */
 
-#include <freeRTOS/task.h>
+#include <FreeRTOS/task.h>
 
 /**
  * Type by which queues are referenced.  For example, a call to xQueueCreate()

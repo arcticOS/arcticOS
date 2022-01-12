@@ -16,8 +16,8 @@
  */
 
 // This is just a small wrapper around FreeRTOS
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
 #define MAX_SERVICES 8
 
 TaskHandle_t services[MAX_SERVICES];

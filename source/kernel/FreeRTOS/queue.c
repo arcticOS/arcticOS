@@ -32,12 +32,12 @@
  * task.h is included from an application file. */
 #define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
 
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
-#include <freeRTOS/queue.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/queue.h>
 
 #if ( configUSE_CO_ROUTINES == 1 )
-    #include <freeRTOS/croutine.h>
+    #include <FreeRTOS/croutine.h>
 #endif
 
 /* Lint e9021, e961 and e750 are suppressed as a MISRA exception justified

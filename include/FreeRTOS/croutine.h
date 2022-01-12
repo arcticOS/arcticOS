@@ -31,7 +31,7 @@
     #error "include FreeRTOS.h must appear in source files before include croutine.h"
 #endif
 
-#include <freeRTOS/list.h>
+#include <FreeRTOS/list.h>
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus

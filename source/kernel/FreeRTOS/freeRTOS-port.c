@@ -29,8 +29,8 @@
 *----------------------------------------------------------*/
 
 /* Scheduler includes. */
-#include <freeRTOS/FreeRTOS.h>
-#include <freeRTOS/task.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
 
 /* Constants required to manipulate the NVIC. */
 #define portNVIC_SYSTICK_CTRL_REG             ( *( ( volatile uint32_t * ) 0xe000e010 ) )

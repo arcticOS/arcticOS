@@ -66,7 +66,7 @@
 #endif
 
 /* Message buffers are built onto of stream buffers. */
-#include <freeRTOS/stream_buffer.h>
+#include <FreeRTOS/stream_buffer.h>
 
 /* *INDENT-OFF* */
 #if defined( __cplusplus )
