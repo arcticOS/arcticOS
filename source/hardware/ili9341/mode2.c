@@ -19,17 +19,20 @@
 
 #define SIZE (ILI9341_TFTHEIGHT*ILI9341_TFTWIDTH)
 
+int mode2_is_rendering = 0;
 uint16_t mode2_buffer[SIZE] = { 0 };
 
 void mode2_init() {
 }
 
 void mode2_clear(uint16_t color) {
+	while(mode2_is_rendering) {}
 	uint16_t real_color = (color >> 8) | (color << 8);
     memset(mode2_buffer, real_color, SIZE*sizeof(uint16_t));
 }
 
 void mode2_pixel(uint16_t x, uint16_t y, uint16_t color) {
+	while(mode2_is_rendering) {}
 	if(x < 0 || x >= ILI9341_TFTWIDTH) return;
 	if(y < 0 || y >= ILI9341_TFTHEIGHT) return;
 	uint16_t real_color = (color >> 8) | (color << 8);
@@ -37,6 +40,7 @@ void mode2_pixel(uint16_t x, uint16_t y, uint16_t color) {
 }
 
 void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color) {
+	while(mode2_is_rendering) {}
 	uint16_t *base_loc = &mode2_buffer[x*ILI9341_TFTWIDTH+y];
 
 	for (int h=0; h<width; h++) {
@@ -48,8 +52,10 @@ void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_
 }
 
 void mode2_render() {
+	mode2_is_rendering = 1;
     ili9341_start_writing();
 	ili9341_write_data_continuous(mode2_buffer, SIZE*sizeof(uint16_t));
 	ili9341_stop_writing();
+	mode2_is_rendering = 0;
 }
 

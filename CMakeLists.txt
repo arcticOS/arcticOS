@@ -17,7 +17,7 @@ add_executable(arcticOS ${INCLUDE_DIRECTORIES} ${arcticOS_SOURCE})
 IF (NOT DEFINED _MODEL)
     SET(_MODEL EVT4)
 ENDIF()
-ADD_DEFINITIONS(-D${_MODEL}=1)
+ADD_DEFINITIONS(-O0 -D${_MODEL}=1)
 
 include_directories(include/)
 include_directories(include/strings)

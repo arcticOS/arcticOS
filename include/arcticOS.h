@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2021 Johnny Stene
+ * Copyright (C) 2022 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -54,11 +54,15 @@ void system_enable_interrupts(); // Enable interrupts.
 
 // System call functions
 void register_syscall_handler();
-void handle_syscall(void);
 
 // Debug functions
 void system_panic(const char* message); // Kernel panic.
 void system_hang(); // Freeze system.
+void system_break();
 
 // Functions for managing global data
 void system_refresh_settings();
+
+// Multitasking Functions
+int create_service(void (*handler)(void), const char* name);
+void kill_service(int id);

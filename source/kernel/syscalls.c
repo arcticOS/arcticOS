@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2021 Johnny Stene
+ * Copyright (C) 2022 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,6 +16,9 @@
  */
 
 #include <arcticOS.h>
+#include <arcticOS/kernel/flash.h>
+#include <freeRTOS/FreeRTOS.h>
+#include <freeRTOS/task.h>
 #include <hardware/arcticOS/screen.h>
 #include <hardware/arcticOS/keypad.h>
 
@@ -23,11 +26,6 @@ struct syscall_params {
     int* data;
     int** return_values;
 };
-
-void register_syscall_handler() {
-    irq_set_exclusive_handler(30, &handle_syscall);
-    irq_set_enabled(30, 1);
-}
 
 void display_syscall(int* data, int** return_data) {
     uint16_t color;
@@ -85,13 +83,8 @@ void storage_syscall(int* data, int** return_data) {
     }
 }
 
-void handle_syscall(void) {
-    struct syscall_params* params;
-    asm volatile("mov %0, R1" : "=r" (params));
-
-    int* data = params->data;
-    int** return_data = params->return_values;
-
+void handle_syscall(int* data, int** return_data) {
+    screen_backlight_off();
     // TODO: Check permissions
 
     switch(data[0]) {
@@ -117,5 +110,35 @@ void handle_syscall(void) {
             break;
         case 0x08: // General Cryptography
             break;
+    }
+}
+
+void register_syscall_handler() {
+    flash_buffer[0] = &handle_syscall;
+
+    uint8_t* write_target = (uint8_t*) (XIP_BASE + SYSTEM_INFO_ADDRESS);
+    for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) { // Writes always fail the first time for some reason.
+        flash_range_erase(SYSTEM_INFO_ADDRESS, USER_DATA_SIZE); // Erase the sector.
+        flash_range_program(SYSTEM_INFO_ADDRESS, flash_buffer, USER_DATA_SIZE); // Write the sector.
+
+        // Verify flash write.
+        if(ENFORCE_FLASH_WRITE_SUCCESS) {
+            int fail = 0;
+            for(int i = 0; i < USER_DATA_SIZE; i++) {
+                if(flash_buffer[i] != write_target[i]) {
+                    fail = 1;
+                    break;
+                }
+            }
+            if(!fail) return;
+        } else return;
+    }
+
+    // This will only be called if flash writes are enforced and the write fails 3 times.
+    for(;;) {
+        screen_backlight_off();
+        sleep_ms(500);
+        screen_backlight_on();
+        sleep_ms(500);
     }
 }

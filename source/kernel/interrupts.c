@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2021 Johnny Stene
+ * Copyright (C) 2022 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -44,14 +44,14 @@ bool system_timer_process(struct repeating_timer *t) {
 }
 
 void system_disable_interrupts() {
-    for(int i = 0; i < 32; i++) {
-        irq_table[i] = irq_is_enabled(i); // We need to save IRQ state, see system_enable_interrupts() for reason
-        irq_set_enabled(i, 0);
-    }
+    //for(int i = 0; i < 32; i++) {
+    //    irq_table[i] = irq_is_enabled(i); // We need to save IRQ state, see system_enable_interrupts() for reason
+    //    irq_set_enabled(i, 0);
+    //}
 }
 
 void system_enable_interrupts() {
-    for(int i = 0; i < 32; i++) {
-        irq_set_enabled(i, irq_table[i]); // If we enable unhandled interrupts, it triggers a breakpoint for some reason
-    }
+    //for(int i = 0; i < 32; i++) {
+    //    irq_set_enabled(i, irq_table[i]); // If we enable unhandled interrupts, it triggers a breakpoint for some reason
+    //}
 }

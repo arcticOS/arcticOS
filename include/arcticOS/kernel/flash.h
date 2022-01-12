@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2021 Johnny Stene
+ * Copyright (C) 2022 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,6 +20,7 @@
 uint8_t flash_get_byte(uint32_t offset);
 
 #define USER_DATA_ADDRESS (256 * 1024)
+#define SYSTEM_INFO_ADDRESS (255 * 1024)
 #define USER_DATA_SIZE 1024
 
 // Flash layout

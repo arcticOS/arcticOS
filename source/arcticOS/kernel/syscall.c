@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2021 Johnny Stene
+ * Copyright (C) 2022 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,18 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <hardware/irq.h>
+#include <arcticOS/kernel/flash.h>
+#include <pico/stdlib.h>
 
 struct syscall_params {
     int* data;
     int** return_values;
 };
 
-void system_call(int* data, int** return_values) {
-    //int* arguments[2] = {data, return_values[0]};
-    struct syscall_params params;
-    params.data = data;
-    params.return_values = return_values;
-    asm volatile("mov R1, %0" : : "r" (&params));
-    irq_set_pending(30);
+void system_call(int data, int** return_data) {
+    uint8_t** system_call_location = (uint8_t**) (XIP_BASE + SYSTEM_INFO_ADDRESS);
+    void (*system_call_function)(int*, int**) = (void (*)(int*, int**)) system_call_location[0];
+    system_call_function(data, return_data);
 }

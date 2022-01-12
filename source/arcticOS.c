@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2021 Johnny Stene
+ * Copyright (C) 2022 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -16,6 +16,7 @@
  */
 
 #include <arcticOS.h>
+#include <freeRTOS/FreeRTOS.h>
 
 // Used for overclocking
 #include <hardware/arcticOS/cpu.h>
@@ -81,16 +82,17 @@ uint8_t flash_buffer[USER_DATA_SIZE];
 #include <apps/launcher/launcher.h>
 #include <apps/settings/settings.h>
 
+// First process to run after boot
+void init(void) {
+    create_service(launcher_run, "Launcher");
+
+    for(;;);
+}
+
 // Initialise arcticOS
 int main(void) {
-    // Set CPU clock
-    // This needs to be done first
-    int clock_speed_selected = flash_load_byte(USER_DATA_ADDRESS + FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_CLOCK);
-    if(clock_speed_selected == 0xFF) clock_speed_selected = 2;
-    set_cpu_clock(clock_speed_selected);
-
     // Pre-init stage
-    register_syscall_handler();
+    //register_syscall_handler();
 
     // Init cellular
     cellular_init();
@@ -102,23 +104,22 @@ int main(void) {
     screen_init();
 
     // Factory reset if user is holding down end call button
-    if(keypad_is_button_pressed(BUTTON_E)) { keypad_wait_for_no_button(); settings_run_factory_reset(); }
+    //if(keypad_is_button_pressed(BUTTON_E)) { keypad_wait_for_no_button(); settings_run_factory_reset(); }
 
     // Init RTC
     rtc_init();
     rtc_set_datetime(&time);
 
-    // Init global timer + sleep mode
-    add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
-    
     // Load user settings from flash
     system_refresh_settings();
 
-    // Start launcher app
-    launcher_run();
+    // Init global timer + sleep mode
+    //add_repeating_timer_ms(GLOBAL_TIMER_INTERVAL, system_timer_process, NULL, &global_timer);
 
-    // This code should never run. If it does, the RAM has been so horribly corrupted that 
-    // it is somehow dropping a return call in the launcher.
-    system_panic("Launcher exited!");
+    // Start init process
+    xTaskCreate(init, "init", 256, NULL, 1, NULL);
+    vTaskStartScheduler();
+
+    system_panic("Failed to enable multitasking!");
     return 0;
 }
