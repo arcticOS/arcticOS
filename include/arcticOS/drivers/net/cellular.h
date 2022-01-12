@@ -15,10 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <hardware/arcticOS/cpu.h>
-#include <pico/stdlib.h>
-
-void set_cpu_clock(int clock) {
-    uint32_t clocks[5] = {CPU_OVERCLOCK_50MHZ, CPU_OVERCLOCK_100MHZ, CPU_OVERCLOCK_BASE, CPU_OVERCLOCK_200MHZ, CPU_OVERCLOCK_250MHZ};
-    set_sys_clock_khz(clocks[clock], 0);
-}
+#if defined(EVT4)
+#include <arcticOS/drivers/net/ec25/cellular.h>
+#elif defined(EVT3)
+#include <arcticOS/drivers/net/ec25/cellular.h>
+#endif

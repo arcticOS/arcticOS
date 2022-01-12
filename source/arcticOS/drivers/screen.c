@@ -15,36 +15,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/graphics/primitives.h>
-#include <arcticOS/kernel/syscall.h>
+#include <arcticOS.h>
+#include <arcticOS/drivers/display/screen.h>
 #include <arcticOS/math.h>
 
-int SCREEN_WIDTH = 0;
-int SCREEN_HEIGHT = 0;
-
 void graphics_get_screen_size() {
-    int width_data[2] = {0x00, 0x04};
-    int* width_return[1] = {&SCREEN_WIDTH};
-    system_call(&width_data[0], &width_return[0]);
-
-    int height_data[2] = {0x00, 0x05};
-    int* height_return[1] = {&SCREEN_HEIGHT};
-    system_call(&height_data[0], &height_return[0]);
-}
-
-void graphics_plot_pixel(int x, int y, uint16_t color) {
-    int params[6] = {0x00, 0x02, x, y, (int) ((color & 0xFF00) >> 8), (int) (color & 0x00FF)};
-    system_call(&params[0], NULL);
-}
-
-void graphics_refresh() {
-    int params[2] = {0x00, 0x03};
-    system_call(&params[0], NULL);
-}
-
-void graphics_fill(uint16_t color) {
-    graphics_get_screen_size();
-    graphics_filled_rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, color);
+    // TODO: THIS
 }
 
 void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) {
@@ -57,7 +33,7 @@ void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t co
 void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) { 
     for(int dx = x; dx < x2; dx ++) {
         for(int dy = y; dy < y2; dy ++) {
-            graphics_plot_pixel(dx, dy, color);
+            screen_plot_pixel(dx, dy, color);
         }
     }
 }
@@ -77,14 +53,14 @@ void graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) {
     // Bresenham's Algorithm
     uint16_t dx = 0, dy = r;
     int16_t d = 3 - (2 * r); // I spent 30 minutes debugging, turns out the problem was I was using unsigned ints. FML
-    graphics_plot_pixel(x + dx, y + dy, color);
-    graphics_plot_pixel(x - dx, y + dy, color);
-    graphics_plot_pixel(x + dx, y - dy, color);
-    graphics_plot_pixel(x - dx, y - dy, color);
-    graphics_plot_pixel(x + dy, y + dx, color);
-    graphics_plot_pixel(x - dy, y + dx, color);
-    graphics_plot_pixel(x + dy, y - dx, color);
-    graphics_plot_pixel(x - dy, y - dx, color);
+    screen_plot_pixel(x + dx, y + dy, color);
+    screen_plot_pixel(x - dx, y + dy, color);
+    screen_plot_pixel(x + dx, y - dy, color);
+    screen_plot_pixel(x - dx, y - dy, color);
+    screen_plot_pixel(x + dy, y + dx, color);
+    screen_plot_pixel(x - dy, y + dx, color);
+    screen_plot_pixel(x + dy, y - dx, color);
+    screen_plot_pixel(x - dy, y - dx, color);
     while (dy >= dx)
     {
         dx++;
@@ -95,14 +71,14 @@ void graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) {
             d = d + 4 * (dx - dy) + 10;
         }
         else d = d + 4 * dx + 6;
-        graphics_plot_pixel(x + dx, y + dy, color);
-        graphics_plot_pixel(x - dx, y + dy, color);
-        graphics_plot_pixel(x + dx, y - dy, color);
-        graphics_plot_pixel(x - dx, y - dy, color);
-        graphics_plot_pixel(x + dy, y + dx, color);
-        graphics_plot_pixel(x - dy, y + dx, color);
-        graphics_plot_pixel(x + dy, y - dx, color);
-        graphics_plot_pixel(x - dy, y - dx, color);
+        screen_plot_pixel(x + dx, y + dy, color);
+        screen_plot_pixel(x - dx, y + dy, color);
+        screen_plot_pixel(x + dx, y - dy, color);
+        screen_plot_pixel(x - dx, y - dy, color);
+        screen_plot_pixel(x + dy, y + dx, color);
+        screen_plot_pixel(x - dy, y + dx, color);
+        screen_plot_pixel(x + dy, y - dx, color);
+        screen_plot_pixel(x - dy, y - dx, color);
     }
 }
 
@@ -162,7 +138,7 @@ void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t co
         float py = y;
 
         for(int v = 0; v < steps; v ++) {
-            graphics_plot_pixel(px, py, color);
+            screen_plot_pixel(px, py, color);
             px += x_increment;
             py += y_increment;
         }
@@ -171,13 +147,13 @@ void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t co
 
 void graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color) {
     for(int dx = x; dx <= x2; dx++) {
-        graphics_plot_pixel(dx, y, color);
+        screen_plot_pixel(dx, y, color);
     }
 }
 
 void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color) {
     for(int dy = y; dy <= y2; dy++) {
-        graphics_plot_pixel(x, dy, color);
+        screen_plot_pixel(x, dy, color);
     }
 }
 
@@ -185,3 +161,37 @@ uint16_t graphics_to_565(uint8_t r, uint8_t g, uint8_t b) {
     uint16_t rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
     return rgb;
 }
+
+#if defined(EVT3) || defined(EVT4)
+
+#include <hardware/spi.h>
+#include <arcticOS/drivers/display/ili9341/mode2.h>
+#include <arcticOS/drivers/display/ili9341/ili9341.h>
+
+void screen_init() {
+    ili9341_init();
+    mode2_init();
+    ili9341_backlight(1);
+}
+
+void screen_backlight_on() {
+    ili9341_backlight(1);
+}
+
+void screen_backlight_off() {
+    ili9341_backlight(0);
+}
+
+void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {
+    mode2_pixel(x, y, color);
+}
+
+void screen_fill(uint16_t color) {
+    mode2_clear(color);
+}
+
+void screen_refresh() {
+    mode2_render();
+}
+
+#endif

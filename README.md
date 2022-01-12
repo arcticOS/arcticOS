@@ -40,7 +40,7 @@ TBD
 ## Building
 
 Building arcticOS requires the Raspberry Pi Pico SDK to be located at `~/.pico_sdk` and the Raspberry Pi Pico toolchain binaries to be located at `~/opt/arm/bin`.  
-To build, run `build-<DEVICE>.sh`. For custom devices, create a new buildscript and sections in the files in `include/hardware/arcticOS` and `source/hardware`.
+To build, run `build-<DEVICE>.sh`. For custom devices, create a new buildscript and sections in the files in `include/arcticOS/drivers` and `source/hardware`.
 
 ## FAQ
 

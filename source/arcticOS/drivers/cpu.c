@@ -15,16 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <arcticOS/drivers/cpu.h>
 #include <pico/stdlib.h>
 
-void screen_init();
-void screen_backlight_on();
-void screen_backlight_off();
-void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color);
-void screen_fill(uint16_t color);
-void screen_refresh();
-
-#if defined(EVT3) || defined(EVT4)
-#define SCREEN_WIDTH 240
-#define SCREEN_HEIGHT 320
-#endif
+void set_cpu_clock(int clock) {
+    uint32_t clocks[5] = {CPU_OVERCLOCK_50MHZ, CPU_OVERCLOCK_100MHZ, CPU_OVERCLOCK_BASE, CPU_OVERCLOCK_200MHZ, CPU_OVERCLOCK_250MHZ};
+    set_sys_clock_khz(clocks[clock], 0);
+}

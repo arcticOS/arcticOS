@@ -3,9 +3,9 @@ Graphics API documentation
 
 FUNCTIONS:
 void graphics_get_screen_size() - Refreshes screen size and stores it in SCREEN_WIDTH and SCREEN_HEIGHT.
-void graphics_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
-void graphics_refresh() - Pushes the screen buffer to the screen.
-void graphics_fill(uint16_t color) - Fills the screen with a color.
+void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) - Puts one pixel on the screen.
+void screen_refresh() - Pushes the screen buffer to the screen.
+void screen_fill(uint16_t color) - Fills the screen with a color.
 void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a rectangle to the screen.
 void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color) - Draw a filled rectangle to the screen.
 void graphics_circle(uint16_t x, uint16_t y, int16_t r, uint16_t color) - Draws a circle to the screen.

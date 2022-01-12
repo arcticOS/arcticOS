@@ -25,5 +25,5 @@ BUTTON_POUND - Bit mapping for the POUND button.
 
 PORTING 
 =========
-All devices must provide a (or use a pre-existing) section in include/hardware/arcticOS/keypad.h and source/hardware/keypad.c with the device-specific functions and defines above.
+All devices must provide a (or use a pre-existing) section in include/arcticOS/drivers/keypad.h and source/hardware/keypad.c with the device-specific functions and defines above.
 All devices must at least have the buttons in EVT3.

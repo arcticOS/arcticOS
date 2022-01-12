@@ -17,7 +17,7 @@
  * This is meant to run on RP2040-based boards.
  */
 
-#include <arcticOS/graphics/primitives.h>
+#include <arcticOS/drivers/display/screen.h>
 #include <arcticOS/graphics/text.h>
 
 int* text_get_offset(int* font, char character) {
@@ -61,7 +61,7 @@ void text_draw_character(uint16_t x, uint16_t y, uint16_t color, int* font, char
 		for(int byte = 0; byte < font[0]; byte++) {
             int draw_x = font[0];
 			for(int font_x = 0; font_x < 8; font_x++) {
-				if((character_data[i] >> font_x) & 1) graphics_plot_pixel(x + draw_x + 8 + (8*byte), y + font_y, color);
+				if((character_data[i] >> font_x) & 1) screen_plot_pixel(x + draw_x + 8 + (8*byte), y + font_y, color);
                 draw_x --;
 			}
 			i ++;

@@ -15,8 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-#include <stdlib.h>
+#include <pico/stdlib.h>
 
 // https://chrishewett.com/blog/true-rgb565-colour-picker/
 #define COLOR_BLACK 0x0000
@@ -34,13 +33,14 @@
 #define COLOR_BLUE 0x001F
 #define COLOR_MAGENTA 0xF81F
 
-extern int SCREEN_WIDTH;
-extern int SCREEN_HEIGHT;
+void screen_init();
+void screen_backlight_on();
+void screen_backlight_off();
+void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color);
+void screen_fill(uint16_t color);
+void screen_refresh();
 
 void graphics_get_screen_size();
-void graphics_plot_pixel(int x, int y, uint16_t color);
-void graphics_refresh();
-void graphics_fill(uint16_t color);
 void graphics_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
 void graphics_filled_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color);
 void graphics_gradient_rect(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t color, uint16_t color2);
@@ -50,3 +50,8 @@ void graphics_line(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2, uint16_t co
 void graphics_fasthline(uint16_t x, uint16_t y, uint16_t x2, uint16_t color);
 void graphics_fastvline(uint16_t x, uint16_t y, uint16_t y2, uint16_t color);
 uint16_t graphics_to_565(uint8_t r, uint8_t g, uint8_t b);
+
+#if defined(EVT3) || defined(EVT4)
+#define SCREEN_WIDTH 240
+#define SCREEN_HEIGHT 320
+#endif

@@ -18,7 +18,7 @@
  */
 
 #include <stdint.h>
-#include <arcticOS/kernel/flash.h>
+#include <arcticOS/drivers/flash.h>
 
 int get_current_theme();
 uint16_t get_foreground_color();

@@ -17,7 +17,7 @@
  * This is meant to run on RP2040-based boards.
  */
 
-#include <pico/stdlib.h>
+#include <stdint.h>
 
 #include <arcticOS/graphics/fonts/zap.h>
 #include <arcticOS/graphics/fonts/bizcat.h>

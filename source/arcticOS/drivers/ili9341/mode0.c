@@ -17,8 +17,8 @@
 #include <pico/stdlib.h>
 #include <string.h>
 #include <hardware/spi.h>
-#include <hardware/ili9341/ili9341.h>
-#include <hardware/ili9341/mode0.h>
+#include <arcticOS/drivers/display/ili9341/ili9341.h>
+#include <arcticOS/drivers/display/ili9341/mode0.h>
 
 /* Character graphics mode */
 

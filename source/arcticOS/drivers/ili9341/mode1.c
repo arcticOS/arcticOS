@@ -14,8 +14,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <hardware/ili9341/ili9341.h>
-#include <hardware/ili9341/mode1.h>
+#include <arcticOS/drivers/display/ili9341/ili9341.h>
+#include <arcticOS/drivers/display/ili9341/mode1.h>
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240

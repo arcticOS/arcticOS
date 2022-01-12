@@ -17,8 +17,8 @@ GLOBAL DEFINES:
 FLASH_OFFSET_SETTINGS - Offset in flash where user settings are stored.
 FLASH_OFFSET_CONTACTS - Offset in flash where user contacts are stored.
 
-See include/hardware/arcticOS/flash.h for offsets of individual variables.
+See include/arcticOS/kernel/flash.h for offsets of individual variables.
 
 PORTING 
 =========
-All devices must provide a (or use a pre-existing) section in include/hardware/arcticOS/flash.h and source/hardware/screen.c with the device-specific functions and defines above.
+All devices must provide a (or use a pre-existing) section in include/arcticOS/kernel/flash.h and source/hardware/screen.c with the device-specific functions and defines above.

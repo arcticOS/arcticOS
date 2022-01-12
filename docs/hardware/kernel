@@ -8,8 +8,8 @@ system_reset_sleep_timer(); - Resets the amount of milliseconds passed in the sl
 system_timer_process(struct repeating_timer *t); - Increments the sleep timer, or resets it if user input given.
 system_sleep_ok(); - Tell the system it is okay to go to sleep if needed.
 
-system_disable_interrupts(); - Disable interrupts.
-system_enable_interrupts(); - Enable interrupts.
+taskENTER_CRITICAL(); - Disable interrupts.
+taskEXIT_CRITICAL(); - Enable interrupts.
 
 system_panic(const char* message); - Kernel panic.
 system_hang(); - Freeze system.

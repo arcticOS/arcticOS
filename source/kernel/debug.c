@@ -16,53 +16,24 @@
  */
 
 #include <arcticOS.h>
-#include <arcticOS/graphics/primitives.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <arcticOS/drivers/display/screen.h>
 #include <arcticOS/graphics/ui.h>
 #include <arcticOS/graphics/text.h>
-#include <arcticOS/input/keypad.h>
 
 // Kernel panic
 void system_panic(const char* message) {
-    system_disable_interrupts();
-    sleep_timer_goal = 0;
-    graphics_fill(COLOR_RED);
+    vTaskSuspendAll();
+    screen_fill(COLOR_RED);
     text_print(10, 56, COLOR_WHITE, FONT_DEFAULT_TINY, message); // Print error
     while(1) { // Disable global timer and flash PANIC! on screen
-        enable_global_timer = 0;
         text_print(10, 10, COLOR_WHITE, FONT_DEFAULT_LARGE, "PANIC!");
-        graphics_refresh();
+        screen_refresh();
         screen_backlight_on();
         sleep_ms(500);
         text_print(10, 10, COLOR_RED, FONT_DEFAULT_LARGE, "PANIC!");
-        graphics_refresh();
+        screen_refresh();
         screen_backlight_off();
         sleep_ms(500);
     }
-}
-
-// Kill interrupts and stop running.
-void system_hang() {
-    system_disable_interrupts();
-    while(1) {}
-}
-
-void system_break(const char* message) {
-    system_disable_interrupts();
-    sleep_timer_goal = 0;
-    graphics_fill(COLOR_RED);
-    text_print(10, 56, COLOR_WHITE, FONT_DEFAULT_TINY, message); // Print error
-    keypad_wait_for_no_button();
-    while(!keypad_is_button_pressed(BUTTON_E)) { // Disable global timer and flash PANIC! on screen
-        enable_global_timer = 0;
-        text_print(10, 10, COLOR_WHITE, FONT_DEFAULT_LARGE, "BREAK!");
-        graphics_refresh();
-        screen_backlight_off();
-        sleep_ms(500);
-        text_print(10, 10, COLOR_RED, FONT_DEFAULT_LARGE, "BREAK!");
-        graphics_refresh();
-        screen_backlight_on();
-        sleep_ms(500);
-    }
-    enable_global_timer = 1;
-    system_enable_interrupts();
 }

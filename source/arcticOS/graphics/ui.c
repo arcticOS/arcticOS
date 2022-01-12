@@ -15,18 +15,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/graphics/primitives.h>
+#include <arcticOS/drivers/display/screen.h>
+#include <arcticOS/drivers/flash.h>
+
 #include <arcticOS/graphics/ui.h>
 #include <arcticOS/graphics/text.h>
-
-#include <arcticOS/input/keypad.h>
-
-#include <arcticOS/kernel/flash.h>
 
 #include <arcticOS/strings/en-CA.h> // TODO: Find a better solution
 
 void ui_draw_element_outline(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) {
-    switch(flash_get_byte(FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_THEME)) {
+    switch(flash_load_byte(FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_THEME)) {
         case 0: // Redmond
             graphics_filled_rect(x, y, x2, y2, COLOR_GREY); // Background
             
@@ -49,7 +47,7 @@ void ui_draw_element_outline(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) {
 }
 
 void ui_draw_element_inside(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2) {
-    switch(flash_get_byte(FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_THEME)) {
+    switch(flash_load_byte(FLASH_OFFSET_SETTINGS + FLASH_SETTINGS_THEME)) {
         case 0: // Redmond
             graphics_filled_rect(x, y, x2, y2, COLOR_WHITE); // Background
 
@@ -91,7 +89,7 @@ int ui_list_menu(const char* title, char** items, int count) {
     while(1) {
         int font_height = text_character_height(FONT_DEFAULT_MEDIUM);
 
-        graphics_fill(background_color);
+        screen_fill(background_color);
         text_print_centered(14, foreground_color, FONT_DEFAULT_LARGE, title);
 
         for(int i = 0; i < count; i++) { // Loop through all items
@@ -112,23 +110,7 @@ int ui_list_menu(const char* title, char** items, int count) {
             } else continue;
         }
 
-        graphics_refresh();
-
-        // Basic menu code
-        if(keypad_is_button_pressed(BUTTON_8)) {
-            selected ++;
-            if(selected >= count) selected = 0;
-        } else if(keypad_is_button_pressed(BUTTON_2)) {
-            selected --;
-            if(selected < 0) selected = count - 1;
-        } else if(keypad_is_button_pressed(BUTTON_O)) {
-            keypad_wait_for_no_button();
-            return selected;
-        } else if(keypad_is_button_pressed(BUTTON_E)) {
-            return -1;
-        }
-        
-        keypad_wait_for_no_button();
+        screen_refresh();
     }
 }
 

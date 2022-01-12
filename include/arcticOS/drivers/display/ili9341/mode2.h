@@ -1,6 +1,5 @@
 /*
- * arcticOS
- * Copyright (C) 2022 Johnny Stene
+ * Copyright (C) 2021 Shawn Hyam, Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -13,9 +12,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * This is meant to run on RP2040-based boards.
  */
 
-void launcher_run();
-void launcher_run_app_picker();
+#ifndef _MODE2_H
+#define _MODE2_H
+
+#include <arcticOS/drivers/display/ili9341/ili9341.h>
+
+extern uint16_t mode2_buffer[ILI9341_TFTWIDTH*ILI9341_TFTHEIGHT];
+
+void mode2_init();
+void mode2_clear(uint16_t color);
+void mode2_pixel(uint16_t x, uint16_t y, uint16_t color);
+void mode2_rect(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
+void mode2_render();
+#endif
+

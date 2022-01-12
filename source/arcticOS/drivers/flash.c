@@ -15,7 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <hardware/arcticOS/flash.h>
+#include <arcticOS/drivers/flash.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
 
 #if defined(EVT3)
 #include <stdio.h>
@@ -28,28 +30,28 @@ const uint8_t *flash_user_data = (const uint8_t *) (XIP_BASE + USER_DATA_ADDRESS
 
 // Loads a byte from flash
 uint8_t flash_load_byte(uint32_t offset) {
-    system_disable_interrupts();
+    taskENTER_CRITICAL();
     uint8_t value = flash_user_data[offset];
-    system_enable_interrupts();
+    taskEXIT_CRITICAL();
     return value;
 }
 
 // Loads a sector of flash into the buffer in arcticOS.c
 void flash_load_user_data(uint32_t offset, uint8_t* buffer) {
-    system_disable_interrupts();
+    taskENTER_CRITICAL();
     for(int i = 0; i < USER_DATA_SIZE; i++) {
         buffer[i] = flash_user_data[i + (offset * USER_DATA_SIZE)];
     }
-    system_enable_interrupts();
+    taskEXIT_CRITICAL();
 }
 
 // Writes a sector of flash from a buffer.
 void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
     for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) { // Writes always fail the first time for some reason.
-        system_disable_interrupts();
+        taskENTER_CRITICAL();
         flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE); // Erase the sector.
         flash_range_program(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), buffer, USER_DATA_SIZE); // Write the sector.
-        system_enable_interrupts();
+        taskEXIT_CRITICAL();
 
         // Verify flash write.
         if(ENFORCE_FLASH_WRITE_SUCCESS) {
@@ -71,9 +73,9 @@ void flash_write_user_data(uint32_t offset, uint8_t* buffer) {
 // Erases a sector of flash.
 void flash_erase_user_data(uint32_t offset) {
     for(int i = 0; i < 3 * ENFORCE_FLASH_WRITE_SUCCESS; i++) { // Writes always fail the first time for some reason.
-        system_disable_interrupts();
+        taskENTER_CRITICAL();
         flash_range_erase(USER_DATA_ADDRESS + (offset * USER_DATA_SIZE), USER_DATA_SIZE); // Erase the sector.
-        system_enable_interrupts();
+        taskEXIT_CRITICAL();
 
         // Verify flash write.
         if(ENFORCE_FLASH_WRITE_SUCCESS) {

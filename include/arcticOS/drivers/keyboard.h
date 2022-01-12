@@ -15,39 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS.h>
-#include <hardware/arcticOS/screen.h>
-
-#if defined(EVT3) || defined(EVT4)
-
-#include <hardware/ili9341/mode2.h>
-#include <hardware/ili9341/ili9341.h>
-
-void screen_init() {
-    ili9341_init();
-    mode2_init();
-    ili9341_backlight(1);
-}
-
-void screen_backlight_on() {
-    ili9341_backlight(1);
-}
-
-void screen_backlight_off() {
-    ili9341_backlight(0);
-}
-
-void screen_plot_pixel(uint16_t x, uint16_t y, uint16_t color) {
-    mode2_pixel(x, y, color);
-}
-
-void screen_fill(uint16_t color) {
-    mode2_clear(color);
-}
-
-void screen_refresh() {
-    mode2_render();
-    system_sleep_ok();
-}
-
-#endif
+void keyboard_init();
+char keyboard_get_character();
+int keyboard_is_pressed(char character);

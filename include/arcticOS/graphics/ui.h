@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <pico/stdlib.h>
+#include <stdint.h>
 
 // General element outline
 void ui_draw_element_outline(uint16_t x, uint16_t y, uint16_t x2, uint16_t y2);

@@ -14,7 +14,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <hardware/ili9341/mode2.h>
+#include <arcticOS/drivers/display/ili9341/mode2.h>
 #include <string.h>
 
 #define SIZE (ILI9341_TFTHEIGHT*ILI9341_TFTWIDTH)
