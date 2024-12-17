@@ -1,6 +1,6 @@
 # arcticOS
 
-A custom operating system written in C for RP2040-based phones.
+A custom "dumbphone" operating system written in C.
 
 ## Vision
 
@@ -10,16 +10,6 @@ Every modern phone company either sells your data or your attention, and they ma
 - As modular as possible, with no stupid software locks to prevent you from extending, repairing, or upgrading your phone
 - Completely ad-free
 - Easy for anyone with basic knowledge in SMD soldering and 3D printing to replicate
-
-## Features
-
-- ILI9341 display driver
-- Keypad driver for EVT1/EVT3
-- Font rendering
-- Basic menus
-- Settings app
-- Factory reset
-- Low-power sleep mode
   
 ## Planned features
 - Calls and SMS with the EC25X series of modems.
@@ -31,7 +21,6 @@ Every modern phone company either sells your data or your attention, and they ma
 - Easy updates
 - User Data Encryption
 - Flashlight
-- Custom T9 engine
 
 ## Roadmap
 
@@ -40,7 +29,7 @@ TBD
 ## Building
 
 Building arcticOS requires the Raspberry Pi Pico SDK to be located at `~/.pico_sdk` and the Raspberry Pi Pico toolchain binaries to be located at `~/opt/arm/bin`.  
-To build, run `build-<DEVICE>.sh`. For custom devices, create a new buildscript and sections in the files in `include/arcticOS/drivers` and `source/hardware`.
+To build, run `build-<DEVICE>.sh`. For custom devices, create a new buildscript and update the relevant files to all parts of the hardware.
 
 ## FAQ
 
@@ -55,11 +44,12 @@ Group messaging is not currently planned but may be added.
 #### What will the final hardware look like?
 
 The final hardware configuration hasn't been fully decided yet, but it should look something like this:
-- 2.8" LCD display
-- RP2040 CPU
+- Decent sized display
+- RP2350 CPU
 - Quectel EC25X modem (depends on region)
 - USB Type C
-- Triple-tap keypad + directional stick.
+- QWERTY keypad + directional stick.
+- Utilize off-the-shelf hardware where possible (screen, battery, modem, etc...) to allow for easier repair and DIY construction
 
 ## License
 

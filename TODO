@@ -1,4 +1,8 @@
 TODO
+    Core
+        - More cohesive project structure
+        - Clearly separate drivers
+        
     UI
         Top Bar
             - Implement top bar in process_interface
@@ -10,6 +14,7 @@ TODO
                 - scroll through elements with directional stick
                 - when in these menus input is sent to the selected element
                 - allow choosing whether or not to allow selecting the element (eg. select some labels for lists but not all)
+
     Menus
         General OS Menus
             Home screen
@@ -23,6 +28,7 @@ TODO
             Send SMS
         Recyclable
             Contact Picker
+
     Hardware
         - Decide screen type for EVT5
         - Finish designing rest of EVT5 modules
