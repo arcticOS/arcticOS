@@ -26,6 +26,7 @@
 #if defined(EVT5)
 // Datasheet: https://www.ti.com/lit/ds/symlink/tca8418.pdf?ts=1734365985479
 
+#include <hardware/gpio.h>
 #include <hardware/i2c.h>
 
 #define KEYBOARD_ADDRESS 0x00
