@@ -33,6 +33,7 @@
 #define PROCESSES_H
 
 #include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/queue.h>
 
 /*
  * SYSQ
