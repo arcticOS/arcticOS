@@ -1,75 +1,32 @@
-+=============================+
-|                             +
-|     Development Roadmap     +
-|                             +
-+=============================+
-
-Version 0.2-alpha:
-    KERNEL
-        GENERAL
-            - Figure out how to do multitasking
-            - Create syscalls for API
-                - Global settings
-            - Permissions
-        STORAGE
-
-
-    GRAPHICS
-        GENERAL
-            - Add bitmap rendering
-                * Should be very easy, just copy the font rendering but use a uint16_t for each pixel and allow variable sizes
-            - printf implementation for screen functions
-            - Add more primitives
-                - Round Rect
-        UI
-            - ui_draw_text function that draws text in the current theme's foreground color
-
-    APPLICATIONS
-        - Add notes app or smth
-
-        SETTINGS
-            
-
-    DRIVERS
-        FLASH
-
-        GPIO
-            - Add PWM
-
-        RTC
-            - Figure out how to make RTC actually run
-
-Version 0.3-alpha:
-    * Needs new dev hardware b/c EVT3 has no support for most new features
-
-    KERNEL
-        GENERAL
-            - Application Permissions
-            - Memory Protection
-            - Find some way to protect UART, SPI, etc...
-        CRYPTOGRAPHY
-            - SHA-256 hashing
-            - AES-256 encryption
-                - Have to find a way to securely store key
-
-    DRIVERS
-        FLASHLIGHT
-            - Turn flashlight on/off with syscalls
-        SD CARD
-            - Read/save data to SD card
-            - FAT32 driver
-        AUDIO
-            - Play audio on second core, out to the amps
-        CELLULAR
-            - Send SMS
-            - Fire syscall when SMS comes in
-            - Start call
-            - End call
-            - Fire syscall when call comes in
-            - Get modem status
-        KEYPAD
-            - Joystick for navigation
-            - Syscalls for navigation buttons
-            - Special buttons
-        
-        
+TODO
+    UI
+        Top Bar
+            - Implement top bar in process_interface
+            - Draw in top 16-24px? Apps can draw over if need be
+        Recyclable Menu System
+            - Come up with more solid design:
+                - pre-made elements (buttons, list, etc...)
+                - put all elements in linked list(maybe?)
+                - scroll through elements with directional stick
+                - when in these menus input is sent to the selected element
+                - allow choosing whether or not to allow selecting the element (eg. select some labels for lists but not all)
+    Menus
+        General OS Menus
+            Home screen
+            Apps Menu
+        Call Menus
+            Incoming Call
+            In-Call
+            Dialer
+        SMS Menus
+            Received SMS
+            Send SMS
+        Recyclable
+            Contact Picker
+    Hardware
+        - Decide screen type for EVT5
+        - Finish designing rest of EVT5 modules
+        - Actually get EVT5 hardware to test with
+    
+    Graphics
+        - Implement libschrift for text rendering (https://github.com/tomolt/libschrift)
