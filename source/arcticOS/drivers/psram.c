@@ -16,6 +16,8 @@
  */
 
 #include <arcticOS/drivers/psram.h>
+#include <pico/stdlib.h>
+#include <hardware/structs/xip_ctrl.h>
 
 void os_enable_psram() {
     gpio_set_function(CPU_PSRAM_PIN, GPIO_FUNC_XIP_CS1);
