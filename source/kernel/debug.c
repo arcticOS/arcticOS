@@ -17,6 +17,7 @@
 
 #include <arcticOS.h>
 #include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
 
 // Kernel panic
 void system_panic(const char* message) {
