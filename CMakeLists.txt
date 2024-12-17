@@ -24,7 +24,7 @@ include_directories(include/strings)
 include_directories(include/hardware/evt4)
 include_directories(include/arcticOS/drivers/display/ili9341)
 
-target_link_libraries(arcticOS pico_stdlib hardware_spi hardware_flash hardware_rtc)
+target_link_libraries(arcticOS pico_stdlib hardware_spi hardware_flash hardware_rtc hardware_i2c hardware_gpio)
 
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 foreach(dir ${dirs})
