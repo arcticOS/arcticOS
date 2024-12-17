@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2022 Johnny Stene
+ * Copyright (C) 2024 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -23,4 +23,8 @@
 #define CPU_OVERCLOCK_200MHZ (200 * 1000)
 #define CPU_OVERCLOCK_250MHZ (250 * 1000)
 
+#define CPU_RAM_ADDRESS 0x11000000
+#define CPU_PSRAM_PIN 41 // TODO: change
+
 void set_cpu_clock(int clock);
+void os_enable_psram();

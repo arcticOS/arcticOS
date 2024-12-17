@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2022 Johnny Stene
+ * Copyright (C) 2024 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,36 +15,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS.h>
-#include <FreeRTOS/FreeRTOS.h>
-
-// Used for I/O
 #include <stdio.h>
 
-// Theme
-uint16_t background_color = 0x0000;
-uint16_t foreground_color = 0xFFFF;
-
-// Used for disabling/enabling interrupts
-#include <hardware/irq.h>
-int irq_table[32];
-
-// Used for interfacing with other hardware on motherboard
-#include <arcticOS/drivers/net/cellular.h>
-#include <arcticOS/drivers/display/screen.h>
+#include <arcticOS.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <arcticOS/processes.h>
+#include <arcticOS/menus.h>
 
 // Used for flash memory
 #include <arcticOS/drivers/flash.h>
 uint8_t flash_buffer[USER_DATA_SIZE];
 
-// First process to run after boot
-void init(void) {
-    
-    for(;;);
-}
-
-// Initialise arcticOS
 int main(void) {
+    /* TODO: Init all hardware
     // Init cellular
     cellular_init();
 
@@ -52,12 +35,18 @@ int main(void) {
     keyboard_init();
 
     // Init screen
-    screen_init();
-    
-    // Start init process
-    xTaskCreate(init, "init", 256, NULL, 1, NULL);
+    screen_init();*/
+
+    // Override interface handlers
+    interface_incoming_call = menu_incoming_call;
+    interface_in_call = menu_in_call;
+    interface_incoming_sms = menu_incoming_sms;
+
+    // Start multitasking
+    os_create_processes();
     vTaskStartScheduler();
 
+    // Should never reach here
     system_panic("Failed to enable multitasking!");
-    return 0;
+    return;
 }

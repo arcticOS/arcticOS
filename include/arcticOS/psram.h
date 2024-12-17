@@ -15,10 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/drivers/cpu.h>
-#include <pico/stdlib.h>
+#define CPU_RAM_ADDRESS 0x11000000
+#define CPU_PSRAM_PIN 41 // TODO: change
 
-void set_cpu_clock(int clock) {
-    uint32_t clocks[5] = {CPU_OVERCLOCK_50MHZ, CPU_OVERCLOCK_100MHZ, CPU_OVERCLOCK_BASE, CPU_OVERCLOCK_200MHZ, CPU_OVERCLOCK_250MHZ};
-    set_sys_clock_khz(clocks[clock], 0);
-}
+void os_enable_psram();

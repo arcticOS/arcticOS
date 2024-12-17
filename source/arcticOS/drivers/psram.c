@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2022 Johnny Stene
+ * Copyright (C) 2024 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,26 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// This is just a small wrapper around FreeRTOS
-#include <FreeRTOS/FreeRTOS.h>
-#include <FreeRTOS/task.h>
-#define MAX_SERVICES 8
+#include <arcticOS/drivers/psram.h>
 
-TaskHandle_t services[MAX_SERVICES];
-int services_running[MAX_SERVICES];
-
-int create_service(void (*handler)(void), const char* name) {
-    for(int i = 0; i < MAX_SERVICES; i++) {
-        if(services_running[i]) continue;
-        services_running[i] = 1;
-        xTaskCreate(handler, name, 512, NULL, 1, NULL);
-        return i;
-    }
-    system_panic("Too many services");
-    return -1;
-}
-
-void kill_service(int id) {
-    vTaskDelete(services[id]);
-    services_running[id] = 0;
+void os_enable_psram() {
+    gpio_set_function(CPU_PSRAM_PIN, GPIO_FUNC_XIP_CS1);
+    xip_ctrl_hw->ctrl |= XIP_CTRL_WRITABLE_M1_BITS;
 }

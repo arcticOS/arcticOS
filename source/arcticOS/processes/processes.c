@@ -15,10 +15,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/drivers/cpu.h>
-#include <pico/stdlib.h>
+#include <arcticOS/processes.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/queue.h>
+#include <stdint.h>
 
-void set_cpu_clock(int clock) {
-    uint32_t clocks[5] = {CPU_OVERCLOCK_50MHZ, CPU_OVERCLOCK_100MHZ, CPU_OVERCLOCK_BASE, CPU_OVERCLOCK_200MHZ, CPU_OVERCLOCK_250MHZ};
-    set_sys_clock_khz(clocks[clock], 0);
+void os_create_processes() {
+    // First create the system queue
+    sysq = xQueueCreate(1, sizeof(uint32_t));
+    if(!sysq) system_panic("Failed to init system queue");
+
+    // Then create both processes
+    xTaskCreate(process_system, "system", 256, NULL, 1, NULL);
+    xTaskCreate(process_interface, "interface", 256, NULL, 1, NULL);
 }
