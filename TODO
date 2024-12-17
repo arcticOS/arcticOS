@@ -2,7 +2,8 @@ TODO
     Core
         - More cohesive project structure
         - Clearly separate drivers
-        
+        - SD Card driver
+
     UI
         Top Bar
             - Implement top bar in process_interface
@@ -14,6 +15,8 @@ TODO
                 - scroll through elements with directional stick
                 - when in these menus input is sent to the selected element
                 - allow choosing whether or not to allow selecting the element (eg. select some labels for lists but not all)
+        Font Rendering
+            - map_file and unmap_file implementations for arcticOS
 
     Menus
         General OS Menus
@@ -49,6 +52,3 @@ TODO
                 - Add E-Ink driver circuit
                 - Create E-Ink driver
                 - Layout PCB
-
-    Graphics
-        - Implement libschrift for text rendering (https://github.com/tomolt/libschrift)
