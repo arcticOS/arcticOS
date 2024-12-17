@@ -30,9 +30,25 @@ TODO
             Contact Picker
 
     Hardware
-        - Decide screen type for EVT5
-        - Finish designing rest of EVT5 modules
-        - Actually get EVT5 hardware to test with
-    
+        EVT5 "later"
+            Keyboard
+                - Finish Layout
+                - Create small bench test program for TI chip
+                - Finish driver for TI chip
+
+            Cellular + Audio
+                - Migrate old audio schematic from EVT4
+                - Make new power supply schematic
+                - Switch from soldered modem to mini-PCIe socketed
+                - Layout PCB
+                - Finish EC25 driver
+
+            CPU + Display
+                - Finish schematic for CPU
+                - Add PSRAM module
+                - Add E-Ink driver circuit
+                - Create E-Ink driver
+                - Layout PCB
+
     Graphics
         - Implement libschrift for text rendering (https://github.com/tomolt/libschrift)
