@@ -17,23 +17,11 @@
 
 #include <arcticOS.h>
 #include <FreeRTOS/FreeRTOS.h>
-#include <arcticOS/drivers/display/screen.h>
-#include <arcticOS/graphics/ui.h>
-#include <arcticOS/graphics/text.h>
 
 // Kernel panic
 void system_panic(const char* message) {
     vTaskSuspendAll();
-    screen_fill(COLOR_RED);
-    text_print(10, 56, COLOR_WHITE, FONT_DEFAULT_TINY, message); // Print error
-    while(1) { // Disable global timer and flash PANIC! on screen
-        text_print(10, 10, COLOR_WHITE, FONT_DEFAULT_LARGE, "PANIC!");
-        screen_refresh();
-        screen_backlight_on();
-        sleep_ms(500);
-        text_print(10, 10, COLOR_RED, FONT_DEFAULT_LARGE, "PANIC!");
-        screen_refresh();
-        screen_backlight_off();
-        sleep_ms(500);
+    // TODO: print issue
+    while(1) { 
     }
 }
