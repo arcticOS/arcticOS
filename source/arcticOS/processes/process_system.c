@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <arcticOS.h>
 #include <arcticOS/processes.h>
 #include <FreeRTOS/FreeRTOS.h>
 #include <FreeRTOS/queue.h>
@@ -43,7 +44,7 @@ void process_system(void) {
         // Send packet
         if(xQueueSend(sysq, (void*) &current_packet, (TickType_t) 16) != pdPASS) {
             // Packet send failure
-            system_panic("SYSQ full, interface hung?")
+            system_panic("SYSQ full, interface hung?");
         }
     }
 }

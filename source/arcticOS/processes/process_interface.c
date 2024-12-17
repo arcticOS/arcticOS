@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <arcticOS.h>
 #include <arcticOS/processes.h>
 #include <FreeRTOS/FreeRTOS.h>
 #include <FreeRTOS/queue.h>
@@ -33,7 +34,7 @@ void process_interface(void) {
         uint32_t system_packet;
         if(xQueueReceive(sysq, &(system_packet), (TickType_t) 16) != pdPASS) {
             // Get packet failed
-            system_panic("SYSQ empty, system hung?")
+            system_panic("SYSQ empty, system hung?");
         }
 
         // Handle key debounce
