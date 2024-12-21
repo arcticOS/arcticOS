@@ -15,11 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/drivers/psram.h>
-#include <pico/stdlib.h>
-#include <hardware/structs/xip_ctrl.h>
-
-void os_enable_psram() {
-    gpio_set_function(CPU_PSRAM_PIN, GPIO_FUNC_XIP_CS1);
-    xip_ctrl_hw->ctrl |= XIP_CTRL_WRITABLE_M1_BITS;
-}
+void keyboard_init();
+char keyboard_get_character();
+int keyboard_is_pressed(char character);

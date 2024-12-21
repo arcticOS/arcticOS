@@ -27,4 +27,3 @@
 #define CPU_PSRAM_PIN 41 // TODO: change
 
 void set_cpu_clock(int clock);
-void os_enable_psram();

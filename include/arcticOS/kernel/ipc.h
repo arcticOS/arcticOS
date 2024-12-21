@@ -16,21 +16,14 @@
  */
 
 /*
- * arcticOS System Processes
- * 
- * arcticOS uses two processes to handle all of the OS tasks - process_system
- * handles input, cellular, and other general OS tasks, and process_interface 
- * handles everything user-facing.
+ * arcticOS Inter-Process Communication
  *
- * The two processes communicate via SYSQ, a single 32-bit integer in a FreeRTOS
+ * Processes communicate via SYSQ, a single 32-bit integer in a FreeRTOS
  * queue. SYSQ carries keyboard input and hardware status information. If either
  *   a) process_system fails to generate a new SYSQ entry within 16 ticks, or
  *   b) process_interface fails to accept a SYSQ entry within 16 ticks,
  * then the other process of the two will assume the worst and kernel panic.
  */
-
-#ifndef PROCESSES_H
-#define PROCESSES_H
 
 #include <FreeRTOS/FreeRTOS.h>
 #include <FreeRTOS/queue.h>
@@ -38,7 +31,7 @@
 /*
  * SYSQ
  */
-QueueHandle_t sysq;
+extern QueueHandle_t sysq;
 
 // Data
 #define SYSQ_BUTTON_PRESS           0b11111111000000000000000000000000
@@ -50,23 +43,3 @@ QueueHandle_t sysq;
 #define SYSQ_CELL_NEW_SMS            0b00000000000000000000000000000010
 #define SYSQ_CELL_CONNECTED         0b00000000000000000000000000000100
 #define SYSQ_CELL_IN_CALL           0b00000000000000000000000000001000
-
-/*
- * PROCESS_INTERFACE
- */
-void (*interface_current_screen)(char); // Function pointer to current screen handler
-
-// Handlers
-void (*interface_incoming_call)(char); // Function pointer to incoming call handler
-void (*interface_in_call)(char); // Function pointer to in-call handler
-void (*interface_incoming_sms)(char); // Function pointer to incoming SMS handler
-
-/*
- * FUNCTIONS
- */
-void os_create_processes();
-
-void process_system(void);
-void process_interface(void);
-
-#endif

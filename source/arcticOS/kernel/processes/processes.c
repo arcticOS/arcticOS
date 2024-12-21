@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2022 Johnny Stene
+ * Copyright (C) 2024 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,8 +15,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#define ENFORCE_RTC_ENABLED 0
-#define ENFORCE_WATCHDOG_COUNT 0
-#define ENFORCE_FLASH_WRITE_SUCCESS 1
+#include <arcticOS/kernel/processes.h>
+#include <arcticOS/kernel/ipc.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/task.h>
+#include <FreeRTOS/queue.h>
+#include <stdint.h>
 
-#define BUILD_STRING "Ver. 0.2a"
+QueueHandle_t sysq;
+
+void os_create_processes() {
+    // First create the system queue
+    sysq = xQueueCreate(1, sizeof(uint32_t));
+    if(!sysq) system_panic("Failed to init system queue");
+
+    // Then create both processes
+    xTaskCreate(process_system, "system", 256, NULL, 1, NULL);
+    xTaskCreate(process_interface, "interface", 256, NULL, 1, NULL);
+}

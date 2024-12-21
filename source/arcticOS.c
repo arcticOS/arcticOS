@@ -19,12 +19,9 @@
 
 #include <arcticOS.h>
 #include <FreeRTOS/FreeRTOS.h>
-#include <arcticOS/processes.h>
+#include <arcticOS/kernel/ipc.h>
+#include <arcticOS/kernel/processes.h>
 #include <arcticOS/menus.h>
-
-// Used for flash memory
-#include <arcticOS/drivers/flash.h>
-uint8_t flash_buffer[USER_DATA_SIZE];
 
 int main(void) {
     /* TODO: Init all hardware

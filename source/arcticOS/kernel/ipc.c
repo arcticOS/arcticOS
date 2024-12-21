@@ -1,6 +1,6 @@
 /*
  * arcticOS
- * Copyright (C) 2022 Johnny Stene
+ * Copyright (C) 2024 Johnny Stene
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -15,8 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/math.h>
+#include <FreeRTOS/FreeRTOS.h>
+#include <FreeRTOS/queue.h>
 
-uint16_t lerp(uint16_t n1, uint16_t n2, float t) { 
-    return n1 + t * (n2 - n1); 
-}
+QueueHandle_t sysq;

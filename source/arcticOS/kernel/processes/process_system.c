@@ -16,7 +16,8 @@
  */
 
 #include <arcticOS.h>
-#include <arcticOS/processes.h>
+#include <arcticOS/kernel/processes.h>
+#include <arcticOS/kernel/ipc.h>
 #include <FreeRTOS/FreeRTOS.h>
 #include <FreeRTOS/queue.h>
 

@@ -15,18 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <arcticOS/processes.h>
-#include <FreeRTOS/FreeRTOS.h>
-#include <FreeRTOS/task.h>
-#include <FreeRTOS/queue.h>
-#include <stdint.h>
+#include <arcticOS/drivers/memory/psram.h>
+#include <pico/stdlib.h>
+#include <hardware/structs/xip_ctrl.h>
 
-void os_create_processes() {
-    // First create the system queue
-    sysq = xQueueCreate(1, sizeof(uint32_t));
-    if(!sysq) system_panic("Failed to init system queue");
-
-    // Then create both processes
-    xTaskCreate(process_system, "system", 256, NULL, 1, NULL);
-    xTaskCreate(process_interface, "interface", 256, NULL, 1, NULL);
+void os_enable_psram() {
+    gpio_set_function(CPU_PSRAM_PIN, GPIO_FUNC_XIP_CS1);
+    xip_ctrl_hw->ctrl |= XIP_CTRL_WRITABLE_M1_BITS;
 }

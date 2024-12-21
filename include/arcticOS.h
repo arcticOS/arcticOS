@@ -15,14 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// CHANGE THE LINE BELOW TO CHANGE LANGUAGE
-#include <arcticOS/strings/en-CA.h>
-#include <arcticOS/build_settings.h>
-
 #include <stdint.h>
-
-extern uint16_t background_color;
-extern uint16_t foreground_color;
 
 extern uint8_t flash_buffer[];
 

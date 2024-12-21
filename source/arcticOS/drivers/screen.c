@@ -16,8 +16,7 @@
  */
 
 #include <arcticOS.h>
-#include <arcticOS/drivers/display/screen.h>
-#include <arcticOS/math.h>
+#include <arcticOS/screen.h>
 
 void graphics_get_screen_size() {
     // TODO: THIS
